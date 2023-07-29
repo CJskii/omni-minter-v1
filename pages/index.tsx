@@ -1,12 +1,9 @@
 import type { NextPage } from "next";
 import Head from "next/head";
 import Navbar from "../components/Navbar";
-import Mint from "../components/Mint";
-import Bridge from "../components/Bridge";
-import { useState } from "react";
+import Main from "../components/ONFT/Main";
 
 const Home: NextPage = () => {
-  const [mintId, setMintId] = useState(0);
   return (
     <div className="flex flex-col justify-between items-center min-h-screen">
       <Head>
@@ -18,9 +15,8 @@ const Home: NextPage = () => {
         <link href="/favicon.ico" rel="icon" />
       </Head>
       <Navbar />
-      <main className="flex flex-col justify-center items-center gap-4">
-        <Mint setMintId={setMintId} />
-        <Bridge mintId={mintId} setMintId={setMintId} />
+      <main className="flex flex-col justify-center items-center gap-4 bg-base-300 py-8 px-4 min-w-[60vw] rounded-lg">
+        <Main />
       </main>
 
       <footer className="bg-base-200 min-w-full p-4 flex justify-center items-center">
