@@ -3,8 +3,10 @@ import Head from "next/head";
 import Navbar from "../components/Navbar";
 import Mint from "../components/Mint";
 import Bridge from "../components/Bridge";
+import { useState } from "react";
 
 const Home: NextPage = () => {
+  const [mintId, setMintId] = useState(0);
   return (
     <div className="flex flex-col justify-between items-center min-h-screen">
       <Head>
@@ -17,8 +19,8 @@ const Home: NextPage = () => {
       </Head>
       <Navbar />
       <main className="flex flex-col justify-center items-center gap-4">
-        <Mint />
-        <Bridge />
+        <Mint setMintId={setMintId} />
+        <Bridge mintId={mintId} setMintId={setMintId} />
       </main>
 
       <footer className="bg-base-200 min-w-full p-4 flex justify-center items-center">

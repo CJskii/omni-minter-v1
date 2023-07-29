@@ -1,7 +1,4 @@
-export const GOERLI_ONFT_CONTRACT_ADDRESS =
-  "0x80Ee8e7aF77029Ee953E3b75237548cf8327b2D1";
-
-export const GOERLI_ABI = [
+export const CONTRACT_ABI = [
   {
     inputs: [
       {

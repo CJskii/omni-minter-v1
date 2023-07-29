@@ -1,8 +1,9 @@
 import { useState } from "react";
 import { ethers, providers } from "ethers";
 import { Contract } from "@ethersproject/contracts";
-import { GOERLI_ONFT_CONTRACT_ADDRESS, GOERLI_ABI } from "../constants/goerli";
-import { parse } from "path";
+import CONTRACT_ADDRESS_JSON from "../constants/contractAddress.json";
+import { CONTRACT_ABI } from "../constants/contractABI";
+import getProviderOrSigner from "../utils/getProviderOrSigner";
 
 declare global {
   interface Window {
@@ -10,49 +11,56 @@ declare global {
   }
 }
 
-export const Mint = () => {
-  const [selectedNetwork, setSelectedNetwork] = useState(""); // State for network selection
+interface MintProps {
+  setMintId: (id: number) => void;
+}
 
+interface ContractAddressMap {
+  [key: string]: string;
+}
+
+export const Mint = (props: MintProps) => {
+  const [selectedNetwork, setSelectedNetwork] = useState(""); // State for network selection
+  const CONTRACT_ADDRESS: ContractAddressMap =
+    CONTRACT_ADDRESS_JSON as ContractAddressMap;
   const mintNft = async () => {
     if (selectedNetwork === "") {
       alert("Please select a network");
       return;
     } else {
-      console.log(selectedNetwork);
-      console.log("Minting NFT");
+      console.log(`Minting NFT on ${selectedNetwork} network...`);
+      const provider = await getProviderOrSigner();
+      const signer = await getProviderOrSigner(true);
 
-      await window.ethereum.request({ method: "eth_requestAccounts" });
-      const provider = new ethers.providers.Web3Provider(window.ethereum);
-      const signer = provider.getSigner();
+      if (!(provider instanceof ethers.providers.Web3Provider)) {
+        console.error("Provider is not an instance of Web3Provider");
+        return;
+      }
       const contract = new Contract(
-        GOERLI_ONFT_CONTRACT_ADDRESS,
-        GOERLI_ABI,
+        CONTRACT_ADDRESS[selectedNetwork.toLowerCase()],
+        CONTRACT_ABI,
         signer
       );
-      // Retrieve contract fee in wei
-      const contractFeeInWei = await contract.fee();
-      console.log(contractFeeInWei.toString());
+      console.log(contract);
 
-      // Convert contract fee to ether and use it for transaction
+      const contractFeeInWei = await contract.fee();
+
       const feeInEther = ethers.utils.formatEther(contractFeeInWei);
-      console.log(feeInEther);
-      //const fee = ethers.utils.parseEther("0.0004"); // Set the fee in ether, you can adjust the value as needed
-      // Use the fee for your function call
+      console.log(`Fee: ${feeInEther} ETH`);
+      const nextMintId = await contract.nextMintId();
+      console.log(`Next mint ID: ${nextMintId.toString()}`);
       let tx = await (
         await contract.mint({ value: ethers.utils.parseEther(feeInEther) })
       ).wait();
-      console.log(tx);
-      let onftTokenId = await provider.getTransactionReceipt(
+
+      let transactionReceipt = await provider.getTransactionReceipt(
         tx.transactionHash
       );
-      console.log(`ONFT nftId: ${parseInt(onftTokenId.logs[0].topics[3], 16)}`);
+      const mintedID = parseInt(transactionReceipt.logs[0].topics[3], 16);
+      props.setMintId(mintedID);
+
+      console.log(`ONFT nftId: ${mintedID.toString()}`);
       console.log(tx.transactionHash);
-      // let tx = await (await contract.mint({ value: fee })).wait();
-      // let onftTokenId = await provider.getTransactionReceipt(
-      //   tx.transactionHash
-      // );
-      // console.log(`ONFT nftId: ${parseInt(onftTokenId.logs[0].topics[3], 16)}`);
-      // console.log(tx.transactionHash);
     }
   };
 
