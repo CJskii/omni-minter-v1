@@ -15,12 +15,16 @@ const Home: NextPage = () => {
         <link href="/favicon.ico" rel="icon" />
       </Head>
       <Navbar />
-      <main className="flex flex-col justify-center items-center gap-4 bg-base-300 py-8 px-4 min-w-[60vw] rounded-lg">
+      <main className="flex flex-col justify-center items-center gap-4 bg-base-300 py-8 px-4 min-w-[60vw] rounded-lg my-4">
         <Main />
       </main>
 
       <footer className="bg-base-200 min-w-full p-4 flex justify-center items-center">
-        <a href="https://rainbow.me" rel="noopener noreferrer" target="_blank">
+        <a
+          href="https://twitter.com/cjski_web3"
+          rel="noopener noreferrer"
+          target="_blank"
+        >
           Made with ❤️ by CJski
         </a>
       </footer>

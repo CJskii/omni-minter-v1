@@ -25,7 +25,7 @@ export const Mint = (props: MintProps) => {
   const { address } = useAccount();
   const { chain } = useNetwork();
   const { fromNetwork } = props;
-
+  console.log(chain?.name);
   const [isLoading, setIsLoading] = useState(false);
 
   const CONTRACT_ADDRESS: ContractAddressMap =
@@ -33,7 +33,7 @@ export const Mint = (props: MintProps) => {
 
   const mintNft = async () => {
     if (fromNetwork.toLowerCase() !== chain?.name.toLowerCase())
-      return alert("Please change network");
+      return alert("Please change network in your wallet\n\n:)");
 
     console.log(`Minting NFT on ${fromNetwork} network...`);
 

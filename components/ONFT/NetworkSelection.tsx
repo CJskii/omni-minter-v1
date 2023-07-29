@@ -16,7 +16,7 @@ const NetworkSelection = (props: NetworkSelectionProps) => {
           <span className="label-text">From Network</span>
         </label>
         <select
-          className="select w-full max-w-xs text-xl"
+          className="select w-full max-w-xs text-lg"
           value={props.fromNetwork}
           onChange={(e) => setFromNetwork(e.target.value)}
         >
@@ -25,6 +25,7 @@ const NetworkSelection = (props: NetworkSelectionProps) => {
           </option>
           <option value="Goerli">Goerli</option>
           <option value="Polygon Mumbai">Mumbai</option>
+          <option value="Optimism Goerli">Optimism Goerli</option>
         </select>
       </div>
 
@@ -33,7 +34,7 @@ const NetworkSelection = (props: NetworkSelectionProps) => {
           <span className="label-text">To Network</span>
         </label>
         <select
-          className="select w-full max-w-xs text-xl"
+          className="select w-full max-w-xs text-lg"
           value={toNetwork}
           onChange={(e) => setToNetwork(e.target.value)}
         >
@@ -42,6 +43,7 @@ const NetworkSelection = (props: NetworkSelectionProps) => {
           </option>
           <option value="Goerli">Goerli</option>
           <option value="Polygon Mumbai">Mumbai</option>
+          <option value="Optimism Goerli">Optimism Goerli</option>
         </select>
       </div>
     </div>

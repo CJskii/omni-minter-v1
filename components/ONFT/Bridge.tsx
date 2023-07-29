@@ -110,17 +110,30 @@ export const Bridge = (props: BridgeProps) => {
         <h1 className="p-4 text-xl font-bold text-white w-full text-left">
           Step 2: Bridge
         </h1>
-        {props.mintId ? (
-          <input
-            placeholder="NFT Id"
-            className="text-xl"
-            type="number"
-            value={props.mintId || ""}
-            onChange={(e) => props.setMintId(parseInt(e.target.value))}
-          />
-        ) : (
-          <></>
-        )}
+
+        <div className="form-control w-full max-w-xs mb-4">
+          <label className="label">
+            <span className="label-text">NFT ID</span>
+          </label>
+          {address && fromNetwork != "" && toNetwork != "" ? (
+            <input
+              placeholder="Type here"
+              className="text-xl input input-bordered w-full max-w-xs text-center"
+              type="number"
+              value={props.mintId || ""}
+              onChange={(e) => props.setMintId(parseInt(e.target.value))}
+            />
+          ) : (
+            <input
+              disabled
+              placeholder="Type here"
+              className="text-xl input input-bordered w-full max-w-xs text-center"
+              type="number"
+              value={props.mintId || ""}
+              onChange={(e) => props.setMintId(parseInt(e.target.value))}
+            />
+          )}
+        </div>
 
         {address && fromNetwork != "" && toNetwork != "" ? (
           <button
