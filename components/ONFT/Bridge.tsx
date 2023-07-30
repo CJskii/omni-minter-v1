@@ -82,6 +82,7 @@ export const Bridge = (props: BridgeProps) => {
 
       await tx.wait();
       console.log("NFT sent!");
+      props.setMintId(0);
       setIsLoading(false);
     } catch (e) {
       console.error(e);

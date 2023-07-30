@@ -3,15 +3,31 @@ import "@rainbow-me/rainbowkit/styles.css";
 import { getDefaultWallets, RainbowKitProvider } from "@rainbow-me/rainbowkit";
 import type { AppProps } from "next/app";
 import { configureChains, createConfig, WagmiConfig } from "wagmi";
-import { goerli, mainnet, polygonMumbai, optimismGoerli } from "wagmi/chains";
+import {
+  goerli,
+  mainnet,
+  polygonMumbai,
+  optimismGoerli,
+  arbitrumGoerli,
+  sepolia,
+  baseGoerli,
+  lineaTestnet,
+  bscTestnet,
+} from "wagmi/chains";
 import { publicProvider } from "wagmi/providers/public";
 
 const { chains, publicClient, webSocketPublicClient } = configureChains(
   [
     mainnet,
-    polygonMumbai,
     goerli,
+    sepolia,
+    arbitrumGoerli,
     optimismGoerli,
+    baseGoerli,
+    lineaTestnet,
+    polygonMumbai,
+    bscTestnet,
+
     ...(process.env.NEXT_PUBLIC_ENABLE_TESTNETS === "true" ? [goerli] : []),
   ],
   [publicProvider()]
