@@ -24,7 +24,7 @@ const { chains, publicClient, webSocketPublicClient } = configureChains(
     arbitrumGoerli,
     optimismGoerli,
     baseGoerli,
-    lineaTestnet,
+    //lineaTestnet,
     polygonMumbai,
     bscTestnet,
 
