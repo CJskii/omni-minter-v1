@@ -52,10 +52,20 @@ export const Bridge = (props: BridgeProps) => {
       targetNetwork = "mumbai";
     }
 
+    if (toNetwork.toLowerCase() === "optimism goerli") {
+      targetNetwork = "optimism-goerli";
+    }
+
+    console.log(targetNetwork);
+
     try {
       setIsLoading(true);
       const signer = await getProviderOrSigner(true);
       const ownerAddress = await (signer as JsonRpcSigner).getAddress();
+
+      // REMOTE CHAIN ID IS THE CHAIN OF THE RECEIVING NETWORK
+      // ex. if you are sending from Ethereum to Polygon, the remote chain id is the Polygon chain id
+
       const remoteChainId = CHAIN_ID[targetNetwork.toLowerCase()];
 
       console.log(
