@@ -1,10 +1,10 @@
 import { useState } from "react";
-import { ethers, providers } from "ethers";
+import { ethers } from "ethers";
 import { Contract } from "@ethersproject/contracts";
-import CONTRACT_ADDRESS_JSON from "../../constants/contractAddress.json";
 import { CONTRACT_ABI } from "../../constants/contractABI";
-import getProviderOrSigner from "../../utils/getProviderOrSigner";
 import { useAccount, useNetwork } from "wagmi";
+import { getContractAddress } from "../../utils/getConstants";
+import getProviderOrSigner from "../../utils/getProviderOrSigner";
 
 declare global {
   interface Window {
@@ -17,27 +17,23 @@ interface MintProps {
   fromNetwork: string;
 }
 
-interface ContractAddressMap {
-  [key: string]: string;
-}
-
 export const Mint = (props: MintProps) => {
   const { address } = useAccount();
   const { chain } = useNetwork();
   const { fromNetwork } = props;
   console.log(chain?.name);
-  const [isLoading, setIsLoading] = useState(false);
 
-  const CONTRACT_ADDRESS: ContractAddressMap =
-    CONTRACT_ADDRESS_JSON as ContractAddressMap;
+  const [isLoading, setIsLoading] = useState(false);
 
   const mintNft = async () => {
     if (fromNetwork.toLowerCase() !== chain?.name.toLowerCase())
       return alert("Please change network in your wallet\n\n:)");
 
     console.log(`Minting NFT on ${fromNetwork} network...`);
+    const CONTRACT_ADDRESS = getContractAddress(fromNetwork);
 
     try {
+      // Initiate provider and signer
       const provider = await getProviderOrSigner();
       const signer = await getProviderOrSigner(true);
       setIsLoading(true);
@@ -45,16 +41,14 @@ export const Mint = (props: MintProps) => {
         console.error("Provider is not an instance of Web3Provider");
         return;
       }
-      const contract = new Contract(
-        CONTRACT_ADDRESS[fromNetwork.toLowerCase()],
-        CONTRACT_ABI,
-        signer
-      );
 
+      // Initiate contract instance and get fee
+      const contract = new Contract(CONTRACT_ADDRESS, CONTRACT_ABI, signer);
       const contractFeeInWei = await contract.fee();
-
       const feeInEther = ethers.utils.formatEther(contractFeeInWei);
       console.log(`Fee: ${feeInEther} ETH`);
+
+      // Mint NFT
       const nextMintId = await contract.nextMintId();
       console.log(`Next mint ID: ${nextMintId.toString()}`);
       let tx = await (

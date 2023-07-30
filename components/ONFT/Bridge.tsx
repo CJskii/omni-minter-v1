@@ -4,9 +4,9 @@ import { ethers } from "ethers";
 import { JsonRpcSigner } from "@ethersproject/providers";
 import { Contract } from "@ethersproject/contracts";
 import { CONTRACT_ABI } from "../../constants/contractABI";
-import CHAIN_ID_JSON from "../../constants/chainId.json";
-import CONTRACT_ADDRESS_JSON from "../../constants/contractAddress.json";
 import { useAccount } from "wagmi";
+import { getContractAddress } from "../../utils/getConstants";
+import { getRemoteChainId } from "../../utils/getConstants";
 
 interface BridgeProps {
   mintId: number;
@@ -15,27 +15,17 @@ interface BridgeProps {
   toNetwork: string;
 }
 
-interface ChainIdMap {
-  [key: string]: number;
-}
-
-interface ContractAddressMap {
-  [key: string]: string;
-}
-
 export const Bridge = (props: BridgeProps) => {
   const { address } = useAccount();
   const { fromNetwork, toNetwork } = props;
 
   const [isLoading, setIsLoading] = useState(false);
 
-  const CHAIN_ID: ChainIdMap = CHAIN_ID_JSON as ChainIdMap;
-  const CONTRACT_ADDRESS: ContractAddressMap =
-    CONTRACT_ADDRESS_JSON as ContractAddressMap;
-
   const bridgeNft = async () => {
     const TOKEN_ID = props.mintId;
+    const CONTRACT_ADDRESS = getContractAddress(fromNetwork);
     let targetNetwork = toNetwork.toLowerCase();
+
     if (TOKEN_ID === 0) {
       alert("Please enter a valid NFT Id");
       return;
@@ -47,17 +37,6 @@ export const Bridge = (props: BridgeProps) => {
       return;
     }
 
-    if (toNetwork.toLowerCase() === "polygon mumbai") {
-      console.log("changing network");
-      targetNetwork = "mumbai";
-    }
-
-    if (toNetwork.toLowerCase() === "optimism goerli") {
-      targetNetwork = "optimism-goerli";
-    }
-
-    console.log(targetNetwork);
-
     try {
       setIsLoading(true);
       const signer = await getProviderOrSigner(true);
@@ -66,17 +45,13 @@ export const Bridge = (props: BridgeProps) => {
       // REMOTE CHAIN ID IS THE CHAIN OF THE RECEIVING NETWORK
       // ex. if you are sending from Ethereum to Polygon, the remote chain id is the Polygon chain id
 
-      const remoteChainId = CHAIN_ID[targetNetwork.toLowerCase()];
+      const remoteChainId = getRemoteChainId(targetNetwork);
 
       console.log(
         `Sending NFT #${TOKEN_ID} from ${fromNetwork} to ${toNetwork}`
       );
 
-      const contract = new Contract(
-        CONTRACT_ADDRESS[fromNetwork.toLowerCase()],
-        CONTRACT_ABI,
-        signer
-      );
+      const contract = new Contract(CONTRACT_ADDRESS, CONTRACT_ABI, signer);
 
       const adapterParams = ethers.utils.solidityPack(
         ["uint16", "uint256"],
@@ -145,7 +120,7 @@ export const Bridge = (props: BridgeProps) => {
           )}
         </div>
 
-        {address && fromNetwork != "" && toNetwork != "" ? (
+        {address && fromNetwork != "" && toNetwork != "" && !isLoading ? (
           <button
             onClick={bridgeNft}
             className="btn rounded-lg border-accent w-full hover:border-primary hover:border-2"
