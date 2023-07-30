@@ -1,4 +1,6 @@
 const { useState } = require("react");
+import { networks } from "../../constants/networkConfig";
+import SelectWithLogo from "./SelectWithLogo";
 
 interface NetworkSelectionProps {
   setFromNetwork: (network: string) => void;
@@ -23,9 +25,11 @@ const NetworkSelection = (props: NetworkSelectionProps) => {
           <option disabled selected value="">
             Select Network
           </option>
-          <option value="Goerli">Goerli</option>
-          <option value="Polygon Mumbai">Mumbai</option>
-          <option value="Optimism Goerli">Optimism Goerli</option>
+          {networks.map((network: any) => (
+            <option key={network.name} value={network.name}>
+              {network.name}
+            </option>
+          ))}
         </select>
       </div>
 
@@ -41,9 +45,11 @@ const NetworkSelection = (props: NetworkSelectionProps) => {
           <option disabled selected value="">
             Select Network
           </option>
-          <option value="Goerli">Goerli</option>
-          <option value="Polygon Mumbai">Mumbai</option>
-          <option value="Optimism Goerli">Optimism Goerli</option>
+          {networks.map((network: any) => (
+            <option key={network.name} value={network.name}>
+              {network.name}
+            </option>
+          ))}
         </select>
       </div>
     </div>
