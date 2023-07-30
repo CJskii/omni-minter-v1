@@ -14,6 +14,7 @@ const CONTRACT_ADDRESS: ContractAddressMap =
   CONTRACT_ADDRESS_JSON as ContractAddressMap;
 
 export const getContractAddress = (fromNetwork: string) => {
+  fromNetwork = transformNetworkName(fromNetwork);
   const address = CONTRACT_ADDRESS[fromNetwork.toLowerCase()];
   return address;
 };
@@ -25,12 +26,27 @@ export const getRemoteChainId = (targetNetwork: string) => {
 };
 
 const transformNetworkName = (networkName: string) => {
-  if (networkName.toLowerCase() === "polygon mumbai") {
-    console.log("changing network");
-    networkName = "mumbai";
-  }
-  if (networkName.toLowerCase() === "optimism goerli") {
-    networkName = "optimism-goerli";
+  switch (networkName.toLowerCase()) {
+    case "polygon mumbai":
+      networkName = "mumbai";
+      break;
+    case "optimism goerli":
+      networkName = "optimism-goerli";
+      break;
+    case "arbitrum goerli":
+      networkName = "arbitrum-goerli";
+      break;
+    case "base goerli":
+      networkName = "base-testnet";
+      break;
+    case "linea goerli testnet":
+      networkName = "linea-testnet";
+      break;
+    case "binance smart chain testnet":
+      networkName = "bsc-testnet";
+      break;
+    default:
+      break;
   }
   return networkName;
 };
