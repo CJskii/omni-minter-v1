@@ -1,6 +1,7 @@
 const { useState } = require("react");
 import { networks } from "../../constants/networkConfig";
 import SelectWithLogo from "./SelectWithLogo";
+import Image from "next/image";
 
 interface NetworkSelectionProps {
   setFromNetwork: (network: string) => void;
