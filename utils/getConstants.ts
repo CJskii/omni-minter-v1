@@ -45,6 +45,15 @@ const transformNetworkName = (networkName: string) => {
     case "binance smart chain testnet":
       networkName = "bsc-testnet";
       break;
+    case "polygon zkevm testnet":
+      networkName = "zkevm-testnet";
+      break;
+    case "mantle testnet":
+      networkName = "mantle-testnet";
+      break;
+    case "metis goerli":
+      networkName = "metis-testnet";
+      break;
     default:
       break;
   }

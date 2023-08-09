@@ -13,6 +13,9 @@ import {
   baseGoerli,
   lineaTestnet,
   bscTestnet,
+  mantleTestnet,
+  metisGoerli,
+  polygonZkEvmTestnet,
 } from "wagmi/chains";
 import { publicProvider } from "wagmi/providers/public";
 
@@ -27,6 +30,9 @@ const { chains, publicClient, webSocketPublicClient } = configureChains(
     //lineaTestnet,
     polygonMumbai,
     bscTestnet,
+    polygonZkEvmTestnet,
+    mantleTestnet,
+    metisGoerli,
 
     ...(process.env.NEXT_PUBLIC_ENABLE_TESTNETS === "true" ? [goerli] : []),
   ],
