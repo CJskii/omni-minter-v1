@@ -57,7 +57,7 @@ export const CustomButton = () => {
                 );
               }
               return (
-                <div style={{ display: "flex", gap: 12 }}>
+                <div style={{ display: "flex", gap: 12, fontSize: "16px" }}>
                   <button
                     onClick={openChainModal}
                     style={{ display: "flex", alignItems: "center" }}
@@ -84,7 +84,7 @@ export const CustomButton = () => {
                         )}
                       </div>
                     )}
-                    {/* {chain.name} */}
+                    {chain.name}
                   </button>
 
                   <button onClick={openAccountModal} type="button">
