@@ -19,6 +19,8 @@ import {
 } from "wagmi/chains";
 import { publicProvider } from "wagmi/providers/public";
 
+// TODO: Add coreDAO chain
+
 const { chains, publicClient, webSocketPublicClient } = configureChains(
   [
     mainnet,
@@ -27,9 +29,9 @@ const { chains, publicClient, webSocketPublicClient } = configureChains(
     arbitrumGoerli,
     optimismGoerli,
     baseGoerli,
-    //lineaTestnet,
     polygonMumbai,
     bscTestnet,
+    lineaTestnet,
     polygonZkEvmTestnet,
     mantleTestnet,
     metisGoerli,

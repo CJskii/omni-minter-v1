@@ -4,7 +4,7 @@ export const networks = [
   { name: "Optimism Goerli", logo: "./polygon.png" },
   { name: "Arbitrum Goerli", logo: "./polygon.png" },
   { name: "Base Goerli", logo: "./polygon.png" },
-  // { name: "Linea Goerli Testnet", logo: "./polygon.png" },
+  { name: "Linea Goerli Testnet", logo: "./polygon.png" },
   { name: "Polygon Mumbai", logo: "./polygon.png" },
   { name: "Binance Smart Chain Testnet", logo: "./polygon.png" },
   { name: "Polygon zkEVM Testnet", logo: "./polygon.png" },
