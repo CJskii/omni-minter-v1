@@ -2,6 +2,7 @@ import type { NextPage } from "next";
 import Head from "next/head";
 import Navbar from "../components/Navbar";
 import Main from "../components/ONFT/Main";
+import Image from "next/image";
 
 const Home: NextPage = () => {
   return (
@@ -16,9 +17,8 @@ const Home: NextPage = () => {
       </Head>
       <Navbar />
       <main className="flex flex-col justify-center items-center gap-4 bg-base-300 py-8 px-4 min-w-[60vw] rounded-lg my-4">
-        <Main />
+        {/* <Main /> */}
       </main>
-
       <footer className="bg-base-200 min-w-full p-4 flex justify-center items-center">
         <a
           href="https://twitter.com/cjski_web3"
