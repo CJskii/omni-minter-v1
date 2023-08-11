@@ -3,9 +3,12 @@ import CustomButtonMobile from "./CustomButtonMobile";
 import { ConnectButton } from "@rainbow-me/rainbowkit";
 import { useState } from "react";
 import Image from "next/image";
+import Link from "next/link";
+import { useRouter } from "next/router";
 
 const Navbar = () => {
   const [expanded, setExpanded] = useState(false);
+  const router = useRouter();
 
   return (
     <div className="navbar bg-base-200 border-orange-700 justify-between">
@@ -16,13 +19,26 @@ const Navbar = () => {
       </div>
       <div className="navbar-center flex gap-8 text-xl max-sm:hidden">
         <div className="btn-group">
-          <button className="btn btn-active">ONFT Bridge</button>
-          <button className="btn" disabled>
-            OFT Bridge
-          </button>
-          <button className="btn" disabled>
-            Button
-          </button>
+          <Link
+            href="/"
+            className={`btn ${router.pathname === "/" ? "btn-active" : ""}`}
+          >
+            ONFT Bridge
+          </Link>
+          <Link
+            href="/faq"
+            className={`btn ${router.pathname === "/faq" ? "btn-active" : ""}`}
+          >
+            FAQ
+          </Link>
+          <Link
+            href="/about"
+            className={`btn ${
+              router.pathname === "/about" ? "btn-active" : ""
+            }`}
+          >
+            About
+          </Link>
         </div>
       </div>
       <div className="navbar-end max-sm:hidden">
@@ -63,10 +79,13 @@ const Navbar = () => {
             className="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-64"
           >
             <li onClick={() => setExpanded(false)}>
-              <a>Bridge</a>
+              <Link href="/">ONFT Bridge</Link>
             </li>
             <li onClick={() => setExpanded(false)}>
-              <a>FAQ</a>
+              <Link href="/faq">FAQ</Link>
+            </li>
+            <li onClick={() => setExpanded(false)}>
+              <Link href="/gallery">Gallery</Link>
             </li>
             <li onClick={() => setExpanded(false)}>
               <CustomButtonMobile />

@@ -3,7 +3,7 @@ import Mint from "./Mint";
 import { useState } from "react";
 import NetworkSelection from "./NetworkSelection";
 
-const Main = () => {
+const ONFTBridge = () => {
   const [mintId, setMintId] = useState(0);
   const [fromNetwork, setFromNetwork] = useState(""); // State for "From" network selection
   const [toNetwork, setToNetwork] = useState(""); // State for "To" network selection
@@ -27,4 +27,4 @@ const Main = () => {
   );
 };
 
-export default Main;
+export default ONFTBridge;
