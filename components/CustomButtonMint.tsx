@@ -37,7 +37,6 @@ export const CustomButtonMint = (props: MintButtonProps) => {
   }, [chain, mintNetwork]);
 
   const handleMint = async () => {
-    console.log("Custom Button Mint", selectedNetwork);
     if (mintNetwork.toLowerCase() !== chain?.name.toLowerCase())
       return alert("Please change network in your wallet\n\n:)");
 
@@ -152,6 +151,7 @@ export const CustomButtonMint = (props: MintButtonProps) => {
                     showMintModal={showMintModal}
                     setShowMintModal={setShowMintModal}
                     minting={minting}
+                    mintNetwork={mintNetwork}
                   />
                   <button
                     onClick={isLoading ? () => {} : handleMint}

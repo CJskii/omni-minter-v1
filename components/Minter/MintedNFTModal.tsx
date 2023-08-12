@@ -1,15 +1,18 @@
 import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
+import { useRouter } from "next/router";
 
 interface MintedNFTModalProps {
   showMintModal: boolean;
   setShowMintModal: (show: boolean) => void;
   minting: boolean;
   mintedNFT: any;
+  mintNetwork: string;
 }
 
 const MintedNFTModal = (props: MintedNFTModalProps) => {
-  const { showMintModal, setShowMintModal, minting, mintedNFT } = props;
+  const { showMintModal, setShowMintModal, minting, mintedNFT, mintNetwork } =
+    props;
   const [metadata, setMetadata] = useState<{
     name?: string;
     description?: string;
@@ -17,6 +20,7 @@ const MintedNFTModal = (props: MintedNFTModalProps) => {
   } | null>(null);
   const [imageLoaded, setImageLoaded] = useState(false);
   const dialogRef = useRef(null);
+  const router = useRouter();
 
   useEffect(() => {
     if (showMintModal && dialogRef.current) {
@@ -62,6 +66,12 @@ const MintedNFTModal = (props: MintedNFTModalProps) => {
     }
   }, [mintedNFT]);
 
+  const handleBridgeClick = () => {
+    if (mintedNFT) {
+      router.push(`/onft-bridge?nftId=${mintedNFT}&network=${mintNetwork}`);
+    }
+  };
+
   const NFTDisplay = () => {
     if (!metadata) return null;
 
@@ -84,7 +94,10 @@ const MintedNFTModal = (props: MintedNFTModalProps) => {
           <h2 className="card-title">{metadata.name}</h2>
           <p>{metadata.description}</p>
           <div className="card-actions justify-end">
-            <button className="relative inline-flex items-center justify-center w-full px-4 py-4 text-primary-focus text-xl font-semibold transition-all duration-200 border-[1px] border-base-200 hover:opacity-80 focus:opacity-80 focus:bg-gradient-to-l from-primary to-secondary hover:text-content focus:text-success-content focus:outline-none">
+            <button
+              onClick={handleBridgeClick}
+              className="relative inline-flex items-center justify-center w-full px-4 py-4 text-primary-focus text-xl font-semibold transition-all duration-200 border-[1px] border-base-200 hover:opacity-80 focus:opacity-80 focus:bg-gradient-to-l from-primary to-secondary hover:text-content focus:text-success-content focus:outline-none"
+            >
               Bridge
             </button>
           </div>

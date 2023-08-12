@@ -1,6 +1,7 @@
 import Image from "next/image";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { networks } from "../../constants/networkConfig";
+import { useNetwork } from "wagmi";
 
 type Network = {
   name: string;
@@ -17,6 +18,20 @@ const SelectMintModal = (props: MintModalProps) => {
     networks.find((net) => net.name === "Goerli") || networks[0];
   const [selectedNetwork, setSelectedNetwork] =
     useState<Network>(defaultNetwork);
+  const { chain } = useNetwork();
+
+  useEffect(() => {
+    let selected = defaultNetwork;
+
+    if (chain?.name && !chain.unsupported) {
+      selected =
+        networks.find((net) => net.name === chain.name) || defaultNetwork;
+    }
+
+    setSelectedNetwork(selected);
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <div>

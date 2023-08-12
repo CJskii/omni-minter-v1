@@ -3,12 +3,27 @@ import Image from "next/image";
 import SelectMintModal from "./SelectMintModal";
 import CustomButtonMint from "../CustomButtonMint";
 import CustomButtonNetwork from "../CustomButtonNetwork";
+import { networks } from "../../constants/networkConfig";
 import CardImage from "./CardImage";
+import { useNetwork } from "wagmi";
 
 const Minting = () => {
   const [lastMintId, setLastMintId] = useState(0);
   const [mintNetwork, setMintNetwork] = useState("Goerli");
   // const [wrongNetwork, setWrongNetwork] = useState(false);
+  const { chain } = useNetwork();
+
+  useEffect(() => {
+    let selected = "Goerli";
+
+    if (chain?.name && !chain.unsupported) {
+      const networkObject = networks.find((net) => net.name === chain.name);
+      selected = networkObject?.name || "Goerli";
+    }
+    setMintNetwork(selected);
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <div className="flex flex-col justify-betweeen items-center min-w-full">
