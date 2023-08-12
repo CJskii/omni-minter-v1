@@ -60,38 +60,24 @@ export const CustomButton = () => {
                 <div style={{ display: "flex", gap: 12, fontSize: "16px" }}>
                   <button
                     onClick={openChainModal}
-                    style={{ display: "flex", alignItems: "center" }}
+                    style={{
+                      display: "flex",
+                      alignItems: "center",
+                      marginRight: 4,
+                    }}
                     type="button"
                   >
-                    {chain.hasIcon && (
-                      <div
-                        style={{
-                          backgroundColor: chain.iconBackground,
-                          width: 25,
-                          height: 25,
-                          borderRadius: 999,
-                          overflow: "hidden",
-                          marginRight: 4,
-                        }}
-                      >
-                        {chain.iconUrl && (
-                          // eslint-disable-next-line @next/next/no-img-element
-                          <img
-                            alt={chain.name ?? "Chain icon"}
-                            src={chain.iconUrl}
-                            style={{ width: 25, height: 25 }}
-                          />
-                        )}
-                      </div>
-                    )}
-                    {chain.name}
+                    {account.displayBalance}
                   </button>
 
                   <button onClick={openAccountModal} type="button">
                     {/* {account.displayName} */}
-                    {account.displayBalance
-                      ? ` (${account.displayBalance})`
-                      : ""}
+
+                    {/* ? ` (${account.displayBalance})`
+                      : ""} */}
+                    {account.address.slice(0, 6) +
+                      "..." +
+                      account.address.slice(account.address.length - 4)}
                   </button>
                 </div>
               );

@@ -8,13 +8,16 @@ type Network = {
   symbol: string;
 };
 
-const SelectMintModal = () => {
+type MintModalProps = {
+  setMintNetwork: (network: string) => void;
+};
+
+const SelectMintModal = (props: MintModalProps) => {
   const defaultNetwork =
     networks.find((net) => net.name === "Goerli") || networks[0];
   const [selectedNetwork, setSelectedNetwork] =
     useState<Network>(defaultNetwork);
 
-  console.log(selectedNetwork.name);
   return (
     <div>
       <button
@@ -22,11 +25,11 @@ const SelectMintModal = () => {
         onClick={() => (window as any).my_modal_2.showModal()}
       >
         <div className="w-full">
-          <a className="flex gap-[15px] py-2 justify-start px-4 items-center border-accent border-[1px]">
+          <a className="flex gap-[15px] py-2 justify-start px-4 items-center border-base-100 border-[1px]">
             <Image
               src={selectedNetwork.logo}
-              width={40}
-              height={40}
+              width={30}
+              height={30}
               alt={selectedNetwork.name}
             />
             <div className="flex flex-col justify-start items-start text-lg">
@@ -42,7 +45,11 @@ const SelectMintModal = () => {
 
           <ul className="menu bg-base-200 w-full bg-transparent rounded-box scrollbar-hide">
             {networks.map((network) => (
-              <li className="w-full" key={network.name}>
+              <li
+                className="w-full"
+                key={network.name}
+                onClick={() => props.setMintNetwork(network.name)}
+              >
                 <a
                   className="flex gap-4"
                   onClick={() => {
