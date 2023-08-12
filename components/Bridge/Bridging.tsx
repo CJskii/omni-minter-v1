@@ -7,8 +7,10 @@ import { getContractAddress } from "../../utils/getConstants";
 import { getRemoteChainId } from "../../utils/getConstants";
 import { useNetwork } from "wagmi";
 import CustomButtonNetwork from "../CustomButtonNetwork";
+import CustomButtonBridge from "./CustomButtonBridge";
 import SelectBridgeFromModal from "./SelectBridgeFromModal";
 import SelectBridgeToModal from "./SelectBridgeToModal";
+import BridgingModal from "./BridgingModal";
 import getProviderOrSigner from "../../utils/getProviderOrSigner";
 
 interface BridgeProps {
@@ -23,8 +25,9 @@ const Bridging = (props: BridgeProps) => {
   const [isLoading, setIsLoading] = useState(false);
 
   const [fromNetwork, setFromNetwork] = useState(mintNetwork || "Goerli");
-  const [toNetwork, setToNetwork] = useState(""); // Assuming you'll have a default value for this as well.
-  const [nftId, setNftId] = useState(passedNftId || ""); // Example: replace "DefaultNFTId" with your default value.
+  const [toNetwork, setToNetwork] = useState("");
+  const [nftId, setNftId] = useState(passedNftId || "");
+  const [showBridgingModal, setShowBridgingModal] = useState(false);
 
   const wrongNetwork = chain?.name == fromNetwork;
 
@@ -48,6 +51,7 @@ const Bridging = (props: BridgeProps) => {
 
     try {
       setIsLoading(true);
+      setShowBridgingModal(true);
       const signer = await getProviderOrSigner(true);
       const ownerAddress = await (signer as JsonRpcSigner).getAddress();
 
@@ -97,6 +101,7 @@ const Bridging = (props: BridgeProps) => {
     } catch (e) {
       console.error(e);
       setIsLoading(false);
+      setShowBridgingModal(false);
     }
   };
 
@@ -111,6 +116,11 @@ const Bridging = (props: BridgeProps) => {
 
             <div className="space-y-5">
               {/* Select From Network */}
+              <BridgingModal
+                showBridgingModal={showBridgingModal}
+                isLoading={isLoading}
+                setShowBridgingModal={setShowBridgingModal}
+              />
               <div className="my-8">
                 <CustomButtonNetwork mintNetwork={fromNetwork} />
               </div>
@@ -139,7 +149,6 @@ const Bridging = (props: BridgeProps) => {
                   Bridge To
                 </label>
                 <div className="mt-2.5 relative text-gray-400 focus-within:text-gray-600">
-                  {/* <SelectBridgeModal /> */}
                   <SelectBridgeToModal
                     setToNetwork={setToNetwork}
                     fromNetwork={fromNetwork}
@@ -166,23 +175,12 @@ const Bridging = (props: BridgeProps) => {
             </div>
 
             <div className="mt-3 space-y-3">
-              <button
-                onClick={isLoading ? () => {} : handleBridge}
-                disabled={!wrongNetwork}
-                type="button"
-                className={`relative inline-flex items-center justify-center w-full px-4 py-4 text-primary-focus text-xl font-semibold transition-all duration-200 border-[1px] border-base-100 hover:opacity-80 focus:opacity-80 focus:bg-gradient-to-l from-primary to-secondary hover:text-content focus:text-success-content focus:outline-none 
-        ${
-          !wrongNetwork || nftId == ""
-            ? " cursor-not-allowed text-gray-600"
-            : ""
-        }`}
-              >
-                {isLoading ? (
-                  <span className="loading loading-infinity loading-md"></span>
-                ) : (
-                  "Bridge"
-                )}
-              </button>
+              <CustomButtonBridge
+                isLoading={isLoading}
+                wrongNetwork={wrongNetwork}
+                nftId={nftId}
+                handleBridge={handleBridge}
+              />
             </div>
           </div>
         </div>
