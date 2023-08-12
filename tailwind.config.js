@@ -9,7 +9,11 @@ module.exports = {
     "./src/**/*.{js,ts,jsx,tsx,mdx}",
   ],
   theme: {
-    extend: {},
+    extend: {
+      fontFamily: {
+        "plex-mono": ["IBM Plex Mono", "monospace"],
+      },
+    },
   },
   plugins: [require("daisyui")],
   daisyui: {

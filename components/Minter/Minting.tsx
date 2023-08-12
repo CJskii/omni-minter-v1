@@ -7,7 +7,7 @@ import CardImage from "./CardImage";
 
 const Minting = () => {
   const [lastMintId, setLastMintId] = useState(0);
-  const [mintNetwork, setMintNetwork] = useState("");
+  const [mintNetwork, setMintNetwork] = useState("Goerli");
   // const [wrongNetwork, setWrongNetwork] = useState(false);
 
   return (

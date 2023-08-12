@@ -88,14 +88,14 @@ export const CustomButtonNetwork = (props: SwitchNetworkProps) => {
                         <div className="flex flex-col justify-start items-start text-lg">
                           {changeChain ? (
                             <>
-                              <span className="text-error"> SWITCH</span>
+                              <span className="text-error">WRONG NETWORK</span>
                               <span className="font-bold text-error">
                                 {chain.name}
                               </span>
                             </>
                           ) : (
                             <>
-                              <span className="text-neutral">Connected to</span>
+                              <span className="text-neutral">CONNECTED TO</span>
                               <span className="font-bold">{chain.name}</span>
                             </>
                           )}
