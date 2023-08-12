@@ -20,7 +20,9 @@ export const getContractAddress = (fromNetwork: string) => {
 };
 
 export const getRemoteChainId = (targetNetwork: string) => {
+  console.log(targetNetwork);
   targetNetwork = transformNetworkName(targetNetwork);
+  console.log(targetNetwork);
   const remoteChainId = CHAIN_ID[targetNetwork.toLowerCase()];
   return remoteChainId;
 };
@@ -54,6 +56,16 @@ const transformNetworkName = (networkName: string) => {
     case "metis goerli":
       networkName = "metis-testnet";
       break;
+    case "sepolia":
+      networkName = "sepolia";
+      break;
+    case "coredao testnet":
+      networkName = "coreDao-testnet";
+      break;
+    case "goerli":
+      networkName = "goerli";
+      break;
+
     default:
       break;
   }

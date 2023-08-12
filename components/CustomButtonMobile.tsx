@@ -1,6 +1,6 @@
 import { ConnectButton } from "@rainbow-me/rainbowkit";
 
-export const CustomButton = () => {
+export const CustomButtonMobile = () => {
   return (
     <ConnectButton.Custom>
       {({
@@ -23,7 +23,7 @@ export const CustomButton = () => {
 
         return (
           <div
-            className="play-btn px-4 py-3 animate-text text-2xl"
+            className="play-btn px-4 py-3 animate-text text-md tracking-wide"
             {...(!ready && {
               "aria-hidden": true,
               style: {
@@ -36,10 +36,7 @@ export const CustomButton = () => {
             {(() => {
               if (!connected) {
                 return (
-                  <span
-                    onClick={openConnectModal}
-                    className="text-lg play-btn px-[1.42rem] py-3 cursor-pointer font-normal animate-text bg-gradient-to-l from-primary to-secondary rounded text-secondary-content"
-                  >
+                  <span onClick={openConnectModal} className="">
                     Connect Wallet
                   </span>
                 );
@@ -60,24 +57,38 @@ export const CustomButton = () => {
                 <div style={{ display: "flex", gap: 12, fontSize: "16px" }}>
                   <button
                     onClick={openChainModal}
-                    style={{
-                      display: "flex",
-                      alignItems: "center",
-                      marginRight: 4,
-                    }}
+                    style={{ display: "flex", alignItems: "center" }}
                     type="button"
                   >
-                    {account.displayBalance}
+                    {chain.hasIcon && (
+                      <div
+                        style={{
+                          backgroundColor: chain.iconBackground,
+                          width: 25,
+                          height: 25,
+                          borderRadius: 999,
+                          overflow: "hidden",
+                          marginRight: 4,
+                        }}
+                      >
+                        {chain.iconUrl && (
+                          // eslint-disable-next-line @next/next/no-img-element
+                          <img
+                            alt={chain.name ?? "Chain icon"}
+                            src={chain.iconUrl}
+                            style={{ width: 25, height: 25 }}
+                          />
+                        )}
+                      </div>
+                    )}
+                    {chain.name}
                   </button>
 
                   <button onClick={openAccountModal} type="button">
                     {/* {account.displayName} */}
-
-                    {/* ? ` (${account.displayBalance})`
-                      : ""} */}
-                    {account.address.slice(0, 6) +
-                      "..." +
-                      account.address.slice(account.address.length - 4)}
+                    {account.displayBalance
+                      ? ` (${account.displayBalance})`
+                      : ""}
                   </button>
                 </div>
               );
@@ -88,4 +99,4 @@ export const CustomButton = () => {
     </ConnectButton.Custom>
   );
 };
-export default CustomButton;
+export default CustomButtonMobile;

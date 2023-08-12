@@ -18,6 +18,8 @@ import {
   polygonZkEvmTestnet,
 } from "wagmi/chains";
 import { publicProvider } from "wagmi/providers/public";
+import Navbar from "../components/Navbar";
+import "@fontsource/ibm-plex-mono";
 
 // TODO: Add coreDAO chain
 
@@ -58,7 +60,21 @@ function MyApp({ Component, pageProps }: AppProps) {
   return (
     <WagmiConfig config={wagmiConfig}>
       <RainbowKitProvider chains={chains}>
-        <Component {...pageProps} />
+        <div className="flex flex-col justify-between items-center min-h-screen font-plex-mono">
+          <Navbar />
+          <main className="flex flex-col justify-center items-center gap-4 py-8 px-4 rounded-lg my-4 w-full min-h-full">
+            <Component {...pageProps} />
+          </main>
+          <footer className="bg-base-200 min-w-full p-4 flex justify-center items-center">
+            <a
+              href="https://twitter.com/cjski_web3"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              Made with ❤️ by CJski
+            </a>
+          </footer>
+        </div>
       </RainbowKitProvider>
     </WagmiConfig>
   );
