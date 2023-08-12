@@ -14,7 +14,9 @@ const Navbar = () => {
     <div className="navbar bg-base-200 border-orange-700 justify-between">
       <div className="navbar-start">
         <div className="dropdown">
-          <a className="btn normal-case text-3xl">Mintly</a>
+          <Link className="btn normal-case text-3xl" href="/">
+            Mintly
+          </Link>
         </div>
       </div>
       <div className="navbar-center flex gap-8 text-xl max-sm:hidden">
@@ -23,6 +25,14 @@ const Navbar = () => {
             href="/"
             className={`btn ${router.pathname === "/" ? "btn-active" : ""}`}
           >
+            Mint
+          </Link>
+          <Link
+            href="/onft-bridge"
+            className={`btn ${
+              router.pathname === "/onft-bridge" ? "btn-active" : ""
+            }`}
+          >
             ONFT Bridge
           </Link>
           <Link
@@ -30,14 +40,6 @@ const Navbar = () => {
             className={`btn ${router.pathname === "/faq" ? "btn-active" : ""}`}
           >
             FAQ
-          </Link>
-          <Link
-            href="/about"
-            className={`btn ${
-              router.pathname === "/about" ? "btn-active" : ""
-            }`}
-          >
-            About
           </Link>
         </div>
       </div>
@@ -79,13 +81,13 @@ const Navbar = () => {
             className="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-64"
           >
             <li onClick={() => setExpanded(false)}>
-              <Link href="/">ONFT Bridge</Link>
+              <Link href="/">Mint</Link>
+            </li>
+            <li onClick={() => setExpanded(false)}>
+              <Link href="/onft-bridge">Bridge</Link>
             </li>
             <li onClick={() => setExpanded(false)}>
               <Link href="/faq">FAQ</Link>
-            </li>
-            <li onClick={() => setExpanded(false)}>
-              <Link href="/gallery">Gallery</Link>
             </li>
             <li onClick={() => setExpanded(false)}>
               <CustomButtonMobile />

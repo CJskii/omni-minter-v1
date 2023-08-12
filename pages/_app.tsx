@@ -61,7 +61,7 @@ function MyApp({ Component, pageProps }: AppProps) {
       <RainbowKitProvider chains={chains}>
         <div className="flex flex-col justify-between items-center min-h-screen">
           <Navbar />
-          <main className="flex flex-col justify-center items-center gap-4 py-8 px-4 rounded-lg my-4">
+          <main className="flex flex-col justify-center items-center gap-4 py-8 px-4 rounded-lg my-4 w-full min-h-full">
             <Component {...pageProps} />
           </main>
           <footer className="bg-base-200 min-w-full p-4 flex justify-center items-center">
