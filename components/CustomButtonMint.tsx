@@ -6,6 +6,7 @@ import { CONTRACT_ABI } from "../constants/contractABI";
 import { useAccount, useNetwork } from "wagmi";
 import { getContractAddress } from "../utils/getConstants";
 import getProviderOrSigner from "../utils/getProviderOrSigner";
+import MintedNFTModal from "./Minter/MintedNFTModal";
 
 interface MintButtonProps {
   setLastMintId: (id: number) => void;
@@ -16,6 +17,10 @@ export const CustomButtonMint = (props: MintButtonProps) => {
   const [isLoading, setIsLoading] = useState(false);
   const [selectedNetwork, setSelectedNetwork] = useState("");
   const [wrongNetwork, setWrongNetwork] = useState(false);
+  const [showMintModal, setShowMintModal] = useState(false);
+  const [minting, setMinting] = useState(false);
+  const [mintedNFT, setMintedNFT] = useState("");
+
   const { chain } = useNetwork();
   const { setLastMintId, mintNetwork } = props;
 
@@ -56,8 +61,12 @@ export const CustomButtonMint = (props: MintButtonProps) => {
       console.log(`Fee: ${feeInEther} ETH`);
 
       // Mint NFT
+
       const nextMintId = await contract.nextMintId();
       console.log(`Next mint ID: ${nextMintId.toString()}`);
+      setShowMintModal(true);
+      setMinting(true);
+      console.log("Show modal now");
       let tx = await (
         await contract.mint({ value: ethers.utils.parseEther(feeInEther) })
       ).wait();
@@ -68,12 +77,16 @@ export const CustomButtonMint = (props: MintButtonProps) => {
       console.log(transactionReceipt);
       const mintedID = parseInt(transactionReceipt.logs[0].topics[3], 16);
       setLastMintId(mintedID);
+      setMintedNFT(mintedID.toString());
+      setMinting(false);
       setIsLoading(false);
       console.log(`ONFT nftId: ${mintedID.toString()}`);
       console.log(tx.transactionHash);
     } catch (e) {
       console.error(e);
       setIsLoading(false);
+      setMinting(false);
+      setShowMintModal(false);
     }
   };
 
@@ -134,6 +147,12 @@ export const CustomButtonMint = (props: MintButtonProps) => {
               }
               return (
                 <div style={{ display: "flex", gap: 12, fontSize: "16px" }}>
+                  <MintedNFTModal
+                    mintedNFT={mintedNFT}
+                    showMintModal={showMintModal}
+                    setShowMintModal={setShowMintModal}
+                    minting={minting}
+                  />
                   <button
                     onClick={isLoading ? () => {} : handleMint}
                     disabled={wrongNetwork}
