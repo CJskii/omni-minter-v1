@@ -20,6 +20,7 @@ import {
 import { publicProvider } from "wagmi/providers/public";
 import Navbar from "../components/Navbar";
 import "@fontsource/ibm-plex-mono";
+import Image from "next/image";
 
 // TODO: Add coreDAO chain
 
@@ -66,13 +67,20 @@ function MyApp({ Component, pageProps }: AppProps) {
             <Component {...pageProps} />
           </main>
           <footer className="bg-base-200 min-w-full p-4 flex justify-center items-center">
-            <a
+            {/* <a
               href="https://twitter.com/cjski_web3"
               rel="noopener noreferrer"
               target="_blank"
             >
               Made with ❤️ by CJski
-            </a>
+            </a> */}
+            <Image
+              src="/layerzero.svg"
+              width={200}
+              height={200}
+              alt="layerZero"
+              className="py-2"
+            />
           </footer>
         </div>
       </RainbowKitProvider>

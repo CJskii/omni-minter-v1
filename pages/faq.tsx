@@ -18,11 +18,13 @@ const FAQ = () => {
             </div>
             <div className="ml-4">
               <p className="text-xl font-semibold text-white">
-                How to create an account?
+                Why are&rsquo;t my transactions appearing?
               </p>
               <p className="mt-4 text-base text-gray-400">
-                Amet minim mollit non deserunt ullamco est sit aliqua dolor do
-                amet sint. Velit officia consequat duis enim velit mollit.
+                Processing transactions might take some time. If your
+                transaction is on one of our supported chains, it should appear
+                soon. In the meantime, you can use your TX hash to track the
+                status on the LayerZero explorer.
               </p>
             </div>
           </div>
@@ -33,11 +35,13 @@ const FAQ = () => {
             </div>
             <div className="ml-4">
               <p className="text-xl font-semibold text-white">
-                How can I make payment?
+                Which chains are currently supported?
               </p>
               <p className="mt-4 text-base text-gray-400">
-                Amet minim mollit non deserunt ullamco est sit aliqua dolor do
-                amet sint. Velit officia consequat duis enim velit mollit.
+                We support various networks such as Base, Linea, Optimism, and
+                more. Note that not every network can bridge to another. All
+                available networks are listed in the app, and we&apos;re always
+                working to integrate more.
               </p>
             </div>
           </div>
@@ -48,11 +52,12 @@ const FAQ = () => {
             </div>
             <div className="ml-4">
               <p className="text-xl font-semibold text-white">
-                Do you provide discounts?
+                How does activity calculation work?
               </p>
               <p className="mt-4 text-base text-gray-400">
-                Amet minim mollit non deserunt ullamco est sit aliqua dolor do
-                amet sint. Velit officia consequat duis enim velit mollit.
+                Volume is determined by the number of transactions on specific
+                chains and the number of messages relayed through the LayerZero
+                message relayers.
               </p>
             </div>
           </div>
@@ -63,11 +68,12 @@ const FAQ = () => {
             </div>
             <div className="ml-4">
               <p className="text-xl font-semibold text-white">
-                How do you provide support?
+                What&rsquo;s a &rsquo;sybil&rsquo; ? Am I one for using multiple
+                addresses?
               </p>
               <p className="mt-4 text-base text-gray-400">
-                Amet minim mollit non deserunt ullamco est sit aliqua dolor do
-                amet sint. Velit officia consequat duis enim velit mollit.
+                Being a sybil means using lots of fake wallets to unfairly gain
+                power. Just signing up doesn&rsquo;t make you one.
               </p>
             </div>
           </div>
@@ -78,8 +84,9 @@ const FAQ = () => {
             <p className="text-gray-50">
               Didn’t find the answer you are looking for?{" "}
               <a
-                href="#"
+                href="https://discord.gg/VWbgEbF2Nf"
                 title=""
+                target="_blank"
                 className="text-yellow-300 transition-all duration-200 hover:text-yellow-400 focus:text-yellow-400 hover:underline"
               >
                 Ask on Discord

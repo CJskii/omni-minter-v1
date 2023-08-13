@@ -40,7 +40,7 @@ const CardImage = () => {
               </div>
               <span className="text-lg font-medium text-white">
                 {" "}
-                12 Chains{" "}
+                Multi-Network Support{" "}
               </span>
             </li>
             <li className="flex items-center space-x-3">
@@ -60,7 +60,7 @@ const CardImage = () => {
               </div>
               <span className="text-lg font-medium text-white">
                 {" "}
-                Quick Bridging{" "}
+                Instant Transfers{" "}
               </span>
             </li>
             <li className="flex items-center space-x-3">
@@ -80,7 +80,7 @@ const CardImage = () => {
               </div>
               <span className="text-lg font-medium text-white">
                 {" "}
-                Unique images{" "}
+                Distinct Visuals{" "}
               </span>
             </li>
             <li className="flex items-center space-x-3">
@@ -100,7 +100,7 @@ const CardImage = () => {
               </div>
               <span className="text-lg font-medium text-white">
                 {" "}
-                Powered by LayerZero{" "}
+                LayerZero Driven{" "}
               </span>
             </li>
           </ul>
