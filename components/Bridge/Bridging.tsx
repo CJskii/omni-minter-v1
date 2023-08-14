@@ -28,8 +28,8 @@ const Bridging = (props: BridgeProps) => {
   const [toNetwork, setToNetwork] = useState("");
   const [nftId, setNftId] = useState(passedNftId || "");
   const [showBridgingModal, setShowBridgingModal] = useState(false);
-
-  const wrongNetwork = chain?.name == fromNetwork;
+  const [wrongNetwork, setWrongNetwork] = useState(false);
+  const [txHash, setTxHash] = useState("");
 
   useEffect(() => {
     if (passedNftId) setNftId(passedNftId);
@@ -37,13 +37,25 @@ const Bridging = (props: BridgeProps) => {
     if (!mintNetwork || (chain?.name && !chain.unsupported)) {
       setFromNetwork(chain?.name || "Goerli");
     }
+    checkNetwork();
   }, [passedNftId, mintNetwork, chain?.name, chain?.unsupported]);
+
+  useEffect(() => {
+    checkNetwork();
+  }, [fromNetwork, toNetwork, chain?.name, chain?.unsupported]);
+
+  const checkNetwork = () => {
+    if (chain?.name == fromNetwork) {
+      setWrongNetwork(false);
+    } else {
+      setWrongNetwork(true);
+    }
+  };
 
   const handleBridge = async () => {
     const TOKEN_ID = nftId;
     const CONTRACT_ADDRESS = getContractAddress(fromNetwork);
     let targetNetwork = toNetwork.toLowerCase();
-    console.log(toNetwork);
     if (!nftId || nftId === "") {
       alert("Please enter a valid NFT Id");
       return;
@@ -70,7 +82,6 @@ const Bridging = (props: BridgeProps) => {
         ["uint16", "uint256"],
         [1, 200000]
       );
-
       const fees = await contract.estimateSendFee(
         remoteChainId,
         ownerAddress,
@@ -97,6 +108,7 @@ const Bridging = (props: BridgeProps) => {
       console.log("NFT sent!");
       setNftId("");
       setIsLoading(false);
+      setTxHash(tx.hash);
       onBridgeComplete();
     } catch (e) {
       console.error(e);
@@ -120,6 +132,8 @@ const Bridging = (props: BridgeProps) => {
                 showBridgingModal={showBridgingModal}
                 isLoading={isLoading}
                 setShowBridgingModal={setShowBridgingModal}
+                txHash={txHash}
+                setTxHash={setTxHash}
               />
               <div className="my-8">
                 <CustomButtonNetwork mintNetwork={fromNetwork} />

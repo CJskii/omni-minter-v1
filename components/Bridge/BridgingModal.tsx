@@ -2,12 +2,20 @@ interface BridgingModalProps {
   showBridgingModal: boolean;
   setShowBridgingModal: (showBridgingModal: boolean) => void;
   isLoading: boolean;
+  txHash: string;
+  setTxHash: (txHash: string) => void;
 }
 
 import { useEffect, useRef } from "react";
 
 const BridgingModal = (props: BridgingModalProps) => {
-  const { showBridgingModal, setShowBridgingModal, isLoading } = props;
+  const {
+    showBridgingModal,
+    setShowBridgingModal,
+    isLoading,
+    txHash,
+    setTxHash,
+  } = props;
   const dialogRef = useRef<null | HTMLDialogElement>(null);
 
   useEffect(() => {
@@ -25,6 +33,7 @@ const BridgingModal = (props: BridgingModalProps) => {
         <div className="card-body">
           <h2 className="card-title">Successful Bridging</h2>
           <p className="text-xl">Your ONFT has been successfully bridged!</p>
+          <p className="text-clip break-words text-[10px]">TX: {txHash}</p>
           <div className="card-actions justify-end">
             <button
               onClick={() => {
@@ -32,6 +41,7 @@ const BridgingModal = (props: BridgingModalProps) => {
                   dialogRef.current.close();
                 }
                 setShowBridgingModal(false);
+                setTxHash("");
               }}
               className="relative inline-flex items-center justify-center w-full px-4 py-4 text-primary-focus text-xl font-semibold transition-all duration-200 border-[1px] border-base-200 hover:opacity-80 focus:opacity-80 focus:bg-gradient-to-l from-primary to-secondary hover:text-content focus:text-success-content focus:outline-none"
             >

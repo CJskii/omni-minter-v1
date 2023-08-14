@@ -1,12 +1,20 @@
 import Image from "next/image";
 import { useEffect, useState } from "react";
-import { networks } from "../../constants/networkConfig";
+import { activeChains } from "../../constants/chainsConfig";
 import { useNetwork } from "wagmi";
 
 type Network = {
+  id: number;
   name: string;
-  logo: string;
-  symbol: string;
+  network: string;
+  iconUrl?: string;
+  iconBackground?: string;
+  nativeCurrency: {
+    decimals: number;
+    name: string;
+    symbol: string;
+  };
+  [key: string]: any;
 };
 
 type MintModalProps = {
@@ -14,8 +22,7 @@ type MintModalProps = {
 };
 
 const SelectMintModal = (props: MintModalProps) => {
-  const defaultNetwork =
-    networks.find((net) => net.name === "Goerli") || networks[0];
+  const defaultNetwork = activeChains[0];
   const [selectedNetwork, setSelectedNetwork] =
     useState<Network>(defaultNetwork);
   const { chain } = useNetwork();
@@ -25,13 +32,11 @@ const SelectMintModal = (props: MintModalProps) => {
 
     if (chain?.name && !chain.unsupported) {
       selected =
-        networks.find((net) => net.name === chain.name) || defaultNetwork;
+        activeChains.find((net) => net.name === chain.name) || defaultNetwork;
     }
 
     setSelectedNetwork(selected);
-
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [chain]);
 
   return (
     <div>
@@ -42,7 +47,7 @@ const SelectMintModal = (props: MintModalProps) => {
         <div className="w-full">
           <a className="flex gap-[15px] py-2 justify-start px-4 items-center border-base-100 border-[1px]">
             <Image
-              src={selectedNetwork.logo}
+              src={selectedNetwork.iconUrl ? selectedNetwork.iconUrl : ""}
               width={30}
               height={30}
               alt={selectedNetwork.name}
@@ -59,7 +64,7 @@ const SelectMintModal = (props: MintModalProps) => {
           <h3 className="font-bold text-lg py-2 px-4">Select Mint Network</h3>
 
           <ul className="menu bg-base-200 w-full bg-transparent rounded-box scrollbar-hide">
-            {networks.map((network) => (
+            {activeChains.map((network) => (
               <li
                 className="w-full"
                 key={network.name}
@@ -73,14 +78,16 @@ const SelectMintModal = (props: MintModalProps) => {
                   }}
                 >
                   <Image
-                    src={network.logo}
+                    src={network.iconUrl ? network.iconUrl : ""}
                     width={30}
                     height={30}
                     alt={network.name}
                   />
                   <div className="flex flex-col text-lg">
                     <span className="text-neutral-content">{network.name}</span>
-                    <span className="text-neutral">{network.symbol}</span>
+                    <span className="text-neutral">
+                      {network.nativeCurrency.symbol}
+                    </span>{" "}
                   </div>
                 </a>
               </li>

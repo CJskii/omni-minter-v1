@@ -1,23 +1,21 @@
 import { useEffect, useState } from "react";
-import Image from "next/image";
 import SelectMintModal from "./SelectMintModal";
 import CustomButtonMint from "../CustomButtonMint";
 import CustomButtonNetwork from "../CustomButtonNetwork";
-import { networks } from "../../constants/networkConfig";
+import { activeChains } from "../../constants/chainsConfig";
 import CardImage from "./CardImage";
 import { useNetwork } from "wagmi";
 
 const Minting = () => {
   const [lastMintId, setLastMintId] = useState(0);
   const [mintNetwork, setMintNetwork] = useState("Goerli");
-  // const [wrongNetwork, setWrongNetwork] = useState(false);
   const { chain } = useNetwork();
 
   useEffect(() => {
     let selected = "Goerli";
 
     if (chain?.name && !chain.unsupported) {
-      const networkObject = networks.find((net) => net.name === chain.name);
+      const networkObject = activeChains.find((net) => net.name === chain.name);
       selected = networkObject?.name || "Goerli";
     }
     setMintNetwork(selected);
@@ -52,10 +50,7 @@ const Minting = () => {
                 </div>
 
                 <div>
-                  <CustomButtonNetwork
-                    mintNetwork={mintNetwork}
-                    // setWrongNetwork={setWrongNetwork}
-                  />
+                  <CustomButtonNetwork mintNetwork={mintNetwork} />
                 </div>
               </div>
 

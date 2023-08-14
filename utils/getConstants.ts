@@ -20,9 +20,7 @@ export const getContractAddress = (fromNetwork: string) => {
 };
 
 export const getRemoteChainId = (targetNetwork: string) => {
-  console.log(targetNetwork);
   targetNetwork = transformNetworkName(targetNetwork);
-  console.log(targetNetwork);
   const remoteChainId = CHAIN_ID[targetNetwork.toLowerCase()];
   return remoteChainId;
 };
