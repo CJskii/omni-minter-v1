@@ -21,6 +21,7 @@ import { publicProvider } from "wagmi/providers/public";
 import Navbar from "../components/Navbar";
 import "@fontsource/ibm-plex-mono";
 import Image from "next/image";
+import Head from "next/head";
 
 // TODO: Add coreDAO chain
 
@@ -61,6 +62,11 @@ function MyApp({ Component, pageProps }: AppProps) {
   return (
     <WagmiConfig config={wagmiConfig}>
       <RainbowKitProvider chains={chains}>
+        <Head>
+          <title>Mintly</title>
+          <meta name="description" content="Mintly" />
+          <link rel="icon" href="/favicon.ico" />
+        </Head>
         <div className="flex flex-col justify-between items-center min-h-screen font-plex-mono">
           <Navbar />
           <main className="flex flex-col justify-center items-center gap-4 py-8 px-4 rounded-lg my-4 w-full min-h-full">

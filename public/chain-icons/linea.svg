@@ -1,0 +1,10 @@
+<svg width="273" height="273" viewBox="0 0 273 273" fill="none" xmlns="http://www.w3.org/2000/svg">
+<rect width="273" height="273" rx="136.5" fill="black"/>
+<mask id="mask0_8_31" style="mask-type:luminance" maskUnits="userSpaceOnUse" x="57" y="53" width="159" height="167">
+<path d="M215.751 53.7407H57.5859V219.291H215.751V53.7407Z" fill="white"/>
+</mask>
+<g mask="url(#mask0_8_31)">
+<path d="M188.942 219.291H57.5859V80.6039H87.6405V192.414H188.942V219.277V219.291Z" fill="white"/>
+<path d="M188.942 107.467C203.749 107.467 215.751 95.4403 215.751 80.6041C215.751 65.7678 203.749 53.7407 188.942 53.7407C174.136 53.7407 162.133 65.7678 162.133 80.6041C162.133 95.4403 174.136 107.467 188.942 107.467Z" fill="white"/>
+</g>
+</svg>

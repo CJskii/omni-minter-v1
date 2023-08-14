@@ -1,25 +1,45 @@
 export const networks = [
-  { name: "Goerli", logo: "/eth-logo.svg", symbol: "GöETH" },
-  { name: "Sepolia", logo: "/eth-logo.svg", symbol: "SepETH" },
+  { name: "Goerli", logo: "/chain-icons/eth-logo.svg", symbol: "GöETH" },
+  { name: "Sepolia", logo: "/chain-icons/eth-logo.svg", symbol: "SepETH" },
   {
     name: "Optimism Goerli",
-    logo: "/optimism-ethereum-op-logo.svg",
+    logo: "/chain-icons/optimism-ethereum-op-logo.svg",
     symbol: "GöETH",
   },
-  { name: "Arbitrum Goerli", logo: "/arbitrum-arb-logo.svg", symbol: "GöETH" },
-  { name: "Base Goerli", logo: "/eth-logo.svg", symbol: "GöETH" },
-  { name: "Linea Goerli Testnet", logo: "/eth-logo.svg", symbol: "GöETH" },
-  { name: "Polygon Mumbai", logo: "/polygon-matic-logo.svg", symbol: "MATIC" },
+  {
+    name: "Arbitrum Goerli",
+    logo: "/chain-icons/arbitrum-arb-logo.svg",
+    symbol: "GöETH",
+  },
+  { name: "Base Goerli", logo: "/chain-icons/base.svg", symbol: "GöETH" },
+  {
+    name: "Linea Goerli Testnet",
+    logo: "/chain-icons/linea.svg",
+    symbol: "GöETH",
+  },
+  {
+    name: "Polygon Mumbai",
+    logo: "/chain-icons/polygon-matic-logo.svg",
+    symbol: "MATIC",
+  },
   {
     name: "Binance Smart Chain Testnet",
-    logo: "/bnb-bnb-logo.svg",
+    logo: "/chain-icons/bsc.svg",
     symbol: "tBNB",
   },
   {
     name: "Polygon zkEVM Testnet",
-    logo: "/polygon-matic-logo.svg",
-    symbol: "MATIC",
+    logo: "/chain-icons/polygon-zkevm.svg",
+    symbol: "GöETH",
   },
-  { name: "Mantle Testnet", logo: "/mantle-mnt-logo.svg", symbol: "MANTLE" },
-  { name: "Metis Goerli", logo: "/metisdao-metis-logo.svg", symbol: "METIS" },
+  {
+    name: "Mantle Testnet",
+    logo: "/chain-icons/mantle-mnt-logo.svg",
+    symbol: "MANTLE",
+  },
+  {
+    name: "Metis Goerli",
+    logo: "/chain-icons/metisdao-metis-logo.svg",
+    symbol: "METIS",
+  },
 ];

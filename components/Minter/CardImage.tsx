@@ -1,15 +1,45 @@
 import Image from "next/image";
+import { useEffect, useState } from "react";
 
 const CardImage = () => {
+  const imageNumbers = [1, 3, 4, 10];
+  const [currentImage, setCurrentImage] = useState(imageNumbers[0]);
+  const [isLoading, setIsLoading] = useState(true);
+
+  const getRandomImage = (exclude: any) => {
+    let newImage;
+    do {
+      newImage = imageNumbers[Math.floor(Math.random() * imageNumbers.length)];
+    } while (newImage === exclude);
+    return newImage;
+  };
+
+  useEffect(() => {
+    setIsLoading(true);
+    const interval = setInterval(() => {
+      setCurrentImage((prevImage) => getRandomImage(prevImage));
+    }, 30000);
+
+    return () => {
+      clearInterval(interval);
+    };
+  }, []);
+
   return (
-    <div className="relative flex items-end px-4 pb-10 pt-60 sm:pb-16 md:justify-center lg:pb-24 bg-base sm:px-6 lg:px-8">
+    <div
+      className={`relative flex items-end px-4 pb-10 pt-60 sm:pb-16 md:justify-center lg:pb-24 bg-base sm:px-6 lg:px-8 ${
+        isLoading ? "opacity-0" : "opacity-100"
+      }`}
+      style={{ transition: "opacity 1s ease" }}
+    >
       <div className="absolute inset-0">
         <Image
-          src="/1.png"
-          alt="1"
+          src={`/img/${currentImage}.png`}
+          alt={currentImage.toString()}
           width={400}
           height={400}
           className="object-cover w-full h-full"
+          onLoad={() => setIsLoading(false)}
         />
       </div>
       <div className="absolute inset-0 bg-gradient-to-t from-black to-transparent"></div>
