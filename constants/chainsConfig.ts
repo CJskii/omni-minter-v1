@@ -1,6 +1,5 @@
 import {
   goerli,
-  mainnet,
   polygonMumbai,
   optimismGoerli,
   arbitrumGoerli,
@@ -13,6 +12,12 @@ import {
   polygonZkEvmTestnet,
   base,
   polygonZkEvm,
+  bsc,
+  mantle,
+  metis,
+  optimism,
+  arbitrum,
+  polygon,
 } from "wagmi/chains";
 
 type RpcUrls = {
@@ -43,17 +48,40 @@ type ChainConfig = {
 };
 
 export const mainnetChains: ChainConfig[] = [
-  {
-    ...mainnet,
-    iconUrl: "/chain-icons/eth-logo.svg",
-  },
+  // TODO: add mainnet chains
+  // linea
+  // coreDao
   {
     ...base,
     iconUrl: "/chain-icons/base.svg",
   },
   {
+    ...optimism,
+    iconUrl: "/chain-icons/optimism.svg",
+  },
+  {
+    ...arbitrum,
+    iconUrl: "/chain-icons/arbitrum.svg",
+  },
+  {
+    ...bsc,
+    iconUrl: "/chain-icons/bsc.svg",
+  },
+  {
+    ...polygon,
+    iconUrl: "/chain-icons/polygon.svg",
+  },
+  {
     ...polygonZkEvm,
     iconUrl: "/chain-icons/polygon-zkevm.svg",
+  },
+  {
+    ...mantle,
+    iconUrl: "/chain-icons/mantle.svg",
+  },
+  {
+    ...metis,
+    iconUrl: "/chain-icons/metis.svg",
   },
 ];
 
@@ -87,6 +115,7 @@ export const testnetChains: ChainConfig[] = [
     ...bscTestnet,
     iconUrl: "/chain-icons/bsc.svg",
   },
+
   {
     ...polygonZkEvmTestnet,
     iconUrl: "/chain-icons/polygon-zkevm.svg",

@@ -82,7 +82,6 @@ const Bridging = (props: BridgeProps) => {
         ["uint16", "uint256"],
         [1, 200000]
       );
-
       const fees = await contract.estimateSendFee(
         remoteChainId,
         ownerAddress,
