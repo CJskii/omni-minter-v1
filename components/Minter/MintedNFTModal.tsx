@@ -8,11 +8,20 @@ interface MintedNFTModalProps {
   minting: boolean;
   mintedNFT: any;
   mintNetwork: string;
+  txHash: string;
+  setTxHash: (txHash: string) => void;
 }
 
 const MintedNFTModal = (props: MintedNFTModalProps) => {
-  const { showMintModal, setShowMintModal, minting, mintedNFT, mintNetwork } =
-    props;
+  const {
+    showMintModal,
+    setShowMintModal,
+    minting,
+    mintedNFT,
+    mintNetwork,
+    txHash,
+    setTxHash,
+  } = props;
   const [metadata, setMetadata] = useState<{
     name?: string;
     description?: string;
@@ -92,6 +101,7 @@ const MintedNFTModal = (props: MintedNFTModalProps) => {
         </figure>
         <div className="card-body">
           <h2 className="card-title">{metadata.name}</h2>
+          <p className="text-clip break-words text-[10px]">TX: {txHash}</p>
           <p>{metadata.description}</p>
           <div className="card-actions justify-end">
             <button
@@ -123,7 +133,10 @@ const MintedNFTModal = (props: MintedNFTModalProps) => {
           <form
             method="dialog"
             className="modal-backdrop"
-            onClick={() => setShowMintModal(false)}
+            onClick={() => {
+              setShowMintModal(false);
+              setTxHash("");
+            }}
           />
         </dialog>
       )}

@@ -24,9 +24,12 @@ interface BridgeProps {
 
 const SelectBridgeFromModal = (props: BridgeProps) => {
   const { mintNetwork, setFromNetwork } = props;
+
   const { chain } = useNetwork();
-  const defaultNetwork =
-    activeChains.find((net) => net.name === "Goerli") || activeChains[0];
+  const defaultNetwork = mintNetwork
+    ? activeChains.find((net) => net.name === mintNetwork) || activeChains[0]
+    : activeChains[0];
+
   const [selectedNetwork, setSelectedNetwork] =
     useState<Network>(defaultNetwork);
 

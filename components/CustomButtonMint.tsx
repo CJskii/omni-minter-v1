@@ -20,6 +20,7 @@ export const CustomButtonMint = (props: MintButtonProps) => {
   const [showMintModal, setShowMintModal] = useState(false);
   const [minting, setMinting] = useState(false);
   const [mintedNFT, setMintedNFT] = useState("");
+  const [txHash, setTxHash] = useState("");
 
   const { chain } = useNetwork();
   const { setLastMintId, mintNetwork } = props;
@@ -81,6 +82,7 @@ export const CustomButtonMint = (props: MintButtonProps) => {
       setIsLoading(false);
       console.log(`ONFT nftId: ${mintedID.toString()}`);
       console.log(tx.transactionHash);
+      setTxHash(tx.transactionHash);
     } catch (e) {
       console.error(e);
       setIsLoading(false);
@@ -148,7 +150,6 @@ export const CustomButtonMint = (props: MintButtonProps) => {
                 <div
                   style={{
                     display: "flex",
-
                     fontSize: "16px",
                   }}
                 >
@@ -158,6 +159,8 @@ export const CustomButtonMint = (props: MintButtonProps) => {
                     setShowMintModal={setShowMintModal}
                     minting={minting}
                     mintNetwork={mintNetwork}
+                    txHash={txHash}
+                    setTxHash={setTxHash}
                   />
                   <button
                     onClick={isLoading || wrongNetwork ? () => {} : handleMint}

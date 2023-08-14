@@ -29,6 +29,7 @@ const Bridging = (props: BridgeProps) => {
   const [nftId, setNftId] = useState(passedNftId || "");
   const [showBridgingModal, setShowBridgingModal] = useState(false);
   const [wrongNetwork, setWrongNetwork] = useState(false);
+  const [txHash, setTxHash] = useState("");
 
   useEffect(() => {
     if (passedNftId) setNftId(passedNftId);
@@ -108,6 +109,7 @@ const Bridging = (props: BridgeProps) => {
       console.log("NFT sent!");
       setNftId("");
       setIsLoading(false);
+      setTxHash(tx.hash);
       onBridgeComplete();
     } catch (e) {
       console.error(e);
@@ -131,6 +133,8 @@ const Bridging = (props: BridgeProps) => {
                 showBridgingModal={showBridgingModal}
                 isLoading={isLoading}
                 setShowBridgingModal={setShowBridgingModal}
+                txHash={txHash}
+                setTxHash={setTxHash}
               />
               <div className="my-8">
                 <CustomButtonNetwork mintNetwork={fromNetwork} />

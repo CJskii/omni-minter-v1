@@ -1,6 +1,7 @@
 import Image from "next/image";
 import { useState, useEffect } from "react";
 import { activeChains } from "../../constants/chainsConfig";
+import { networkTransferMappings } from "../../constants/networkMappings";
 
 type Network = {
   id: number;
@@ -23,8 +24,12 @@ interface BridgeProps {
 
 const SelectBridgeToModal = (props: BridgeProps) => {
   const { fromNetwork, setToNetwork } = props;
+
+  const validNetworks = networkTransferMappings[fromNetwork];
   const defaultNetwork =
-    activeChains.find((net) => net.name === "Sepolia") || activeChains[0];
+    activeChains.find(
+      (net) => validNetworks.includes(net.name) && net.name !== fromNetwork
+    ) || activeChains[0];
   const [selectedNetwork, setSelectedNetwork] =
     useState<Network>(defaultNetwork);
 
@@ -59,7 +64,7 @@ const SelectBridgeToModal = (props: BridgeProps) => {
           <h3 className="font-bold text-lg py-2 px-4">Select To Network</h3>{" "}
           <ul className="menu bg-base-200 w-full bg-transparent rounded-box scrollbar-hide">
             {activeChains
-              .filter((net) => net.name !== fromNetwork)
+              .filter((net) => validNetworks.includes(net.name))
               .map((network) => (
                 <li
                   className="w-full"

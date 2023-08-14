@@ -22,8 +22,7 @@ type MintModalProps = {
 };
 
 const SelectMintModal = (props: MintModalProps) => {
-  const defaultNetwork =
-    activeChains.find((net) => net.name === "Goerli") || activeChains[0];
+  const defaultNetwork = activeChains[0];
   const [selectedNetwork, setSelectedNetwork] =
     useState<Network>(defaultNetwork);
   const { chain } = useNetwork();
