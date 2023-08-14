@@ -28,8 +28,7 @@ const Bridging = (props: BridgeProps) => {
   const [toNetwork, setToNetwork] = useState("");
   const [nftId, setNftId] = useState(passedNftId || "");
   const [showBridgingModal, setShowBridgingModal] = useState(false);
-
-  const wrongNetwork = chain?.name == fromNetwork;
+  const [wrongNetwork, setWrongNetwork] = useState(false);
 
   useEffect(() => {
     if (passedNftId) setNftId(passedNftId);
@@ -37,7 +36,21 @@ const Bridging = (props: BridgeProps) => {
     if (!mintNetwork || (chain?.name && !chain.unsupported)) {
       setFromNetwork(chain?.name || "Goerli");
     }
+    checkNetwork();
   }, [passedNftId, mintNetwork, chain?.name, chain?.unsupported]);
+
+  useEffect(() => {
+    checkNetwork();
+  }, [fromNetwork, toNetwork, chain?.name, chain?.unsupported]);
+
+  const checkNetwork = () => {
+    if (chain?.name == fromNetwork) {
+      console.log(chain?.name, fromNetwork);
+      setWrongNetwork(false);
+    } else {
+      setWrongNetwork(true);
+    }
+  };
 
   const handleBridge = async () => {
     const TOKEN_ID = nftId;
