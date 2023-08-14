@@ -65,7 +65,7 @@ export const CustomButtonMint = (props: MintButtonProps) => {
       console.log(`Next mint ID: ${nextMintId.toString()}`);
       setShowMintModal(true);
       setMinting(true);
-      console.log("Show modal now");
+
       let tx = await (
         await contract.mint({ value: ethers.utils.parseEther(feeInEther) })
       ).wait();

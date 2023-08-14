@@ -45,7 +45,6 @@ const Bridging = (props: BridgeProps) => {
 
   const checkNetwork = () => {
     if (chain?.name == fromNetwork) {
-      console.log(chain?.name, fromNetwork);
       setWrongNetwork(false);
     } else {
       setWrongNetwork(true);
@@ -56,7 +55,6 @@ const Bridging = (props: BridgeProps) => {
     const TOKEN_ID = nftId;
     const CONTRACT_ADDRESS = getContractAddress(fromNetwork);
     let targetNetwork = toNetwork.toLowerCase();
-    console.log(toNetwork);
     if (!nftId || nftId === "") {
       alert("Please enter a valid NFT Id");
       return;

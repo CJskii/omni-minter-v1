@@ -7,7 +7,6 @@ interface CustomButtonProps {
 
 const CustomButtonBridge = (props: CustomButtonProps) => {
   const { isLoading, wrongNetwork, nftId, handleBridge } = props;
-  console.log(wrongNetwork);
   return (
     <button
       // TODO: Add conditional logic to disable button if wrong network
