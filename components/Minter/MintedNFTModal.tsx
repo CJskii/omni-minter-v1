@@ -10,6 +10,8 @@ interface MintedNFTModalProps {
   mintNetwork: string;
   txHash: string;
   setTxHash: (txHash: string) => void;
+  errorMessage: string;
+  setErrorMessage: (errorMessage: string) => void;
 }
 
 const MintedNFTModal = (props: MintedNFTModalProps) => {
@@ -21,6 +23,8 @@ const MintedNFTModal = (props: MintedNFTModalProps) => {
     mintNetwork,
     txHash,
     setTxHash,
+    errorMessage,
+    setErrorMessage,
   } = props;
   const [metadata, setMetadata] = useState<{
     name?: string;
@@ -116,6 +120,16 @@ const MintedNFTModal = (props: MintedNFTModalProps) => {
     );
   };
 
+  const displayContent = () => {
+    if (minting)
+      return (
+        <span className="loading loading-infinity w-[4rem] h-[4rem]"></span>
+      );
+    if (errorMessage) return <p className="text-red-600 p-4">{errorMessage}</p>;
+    if (mintedNFT && imageLoaded) return <NFTDisplay />;
+    return null;
+  };
+
   return (
     <div>
       {showMintModal && (
@@ -124,11 +138,7 @@ const MintedNFTModal = (props: MintedNFTModalProps) => {
             method="dialog"
             className="modal-box p-0 flex justify-center items-center"
           >
-            {minting || (!mintedNFT && !imageLoaded) ? (
-              <span className="loading loading-infinity w-[4rem] h-[4rem]"></span>
-            ) : (
-              <NFTDisplay />
-            )}
+            {displayContent()}
           </form>
           <form
             method="dialog"
@@ -136,6 +146,7 @@ const MintedNFTModal = (props: MintedNFTModalProps) => {
             onClick={() => {
               setShowMintModal(false);
               setTxHash("");
+              setErrorMessage("");
             }}
           />
         </dialog>
