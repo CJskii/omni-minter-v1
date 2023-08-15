@@ -21,6 +21,7 @@ export const CustomButtonMint = (props: MintButtonProps) => {
   const [minting, setMinting] = useState(false);
   const [mintedNFT, setMintedNFT] = useState("");
   const [txHash, setTxHash] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
 
   const { chain } = useNetwork();
   const { setLastMintId, mintNetwork } = props;
@@ -58,7 +59,7 @@ export const CustomButtonMint = (props: MintButtonProps) => {
       const contract = new Contract(CONTRACT_ADDRESS, CONTRACT_ABI, signer);
       const contractFeeInWei = await contract.fee();
       const feeInEther = ethers.utils.formatEther(contractFeeInWei);
-      console.log(`Fee: ${feeInEther} ETH`);
+      console.log(`Fee: ${feeInEther}`);
 
       // Mint NFT
 
@@ -87,7 +88,39 @@ export const CustomButtonMint = (props: MintButtonProps) => {
       console.error(e);
       setIsLoading(false);
       setMinting(false);
-      setShowMintModal(false);
+      const dataMessage = (e as any).data?.message;
+      const genericMessage = (e as any)?.message;
+      if (dataMessage) {
+        if (dataMessage.includes("insufficient funds")) {
+          return setErrorMessage(
+            "You have insufficient funds to complete this transaction."
+          );
+        } else if (dataMessage.includes("execution reverted")) {
+          return setErrorMessage(
+            "Transaction execution was reverted. Please check the transaction details."
+          );
+        } else {
+          return setErrorMessage(dataMessage);
+        }
+      } else if (genericMessage) {
+        if (genericMessage.includes("insufficient funds")) {
+          return setErrorMessage(
+            "You have insufficient funds to complete this transaction."
+          );
+        } else if (genericMessage.includes("ERC721: invalid token ID")) {
+          return setErrorMessage(
+            "Invalid ERC721 token ID provided. Please check and try again."
+          );
+        } else if (genericMessage.includes("execution reverted")) {
+          return setErrorMessage(
+            "Transaction execution was reverted. Please check the transaction details."
+          );
+        } else {
+          return setErrorMessage("An error occurred");
+        }
+      } else {
+        return setErrorMessage("An unknown error occurred.");
+      }
     }
   };
 
@@ -161,6 +194,8 @@ export const CustomButtonMint = (props: MintButtonProps) => {
                     mintNetwork={mintNetwork}
                     txHash={txHash}
                     setTxHash={setTxHash}
+                    errorMessage={errorMessage}
+                    setErrorMessage={setErrorMessage}
                   />
                   <button
                     onClick={isLoading || wrongNetwork ? () => {} : handleMint}

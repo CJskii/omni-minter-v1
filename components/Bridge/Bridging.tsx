@@ -30,7 +30,9 @@ const Bridging = (props: BridgeProps) => {
   const [showBridgingModal, setShowBridgingModal] = useState(false);
   const [wrongNetwork, setWrongNetwork] = useState(false);
   const [txHash, setTxHash] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
 
+  console.log(fromNetwork);
   useEffect(() => {
     if (passedNftId) setNftId(passedNftId);
     if (mintNetwork) setFromNetwork(mintNetwork);
@@ -82,6 +84,11 @@ const Bridging = (props: BridgeProps) => {
         ["uint16", "uint256"],
         [1, 200000]
       );
+      console.log(`adapterParams: ${adapterParams}`);
+      console.log(`remoteChainId: ${remoteChainId}`);
+      console.log(`ownerAddress: ${ownerAddress}`);
+      console.log(`TOKEN_ID: ${TOKEN_ID}`);
+      console.log(`remoteChainId: ${remoteChainId}`);
       const fees = await contract.estimateSendFee(
         remoteChainId,
         ownerAddress,
@@ -89,6 +96,8 @@ const Bridging = (props: BridgeProps) => {
         false,
         adapterParams
       );
+
+      console.log(`fees: ${fees}`);
 
       const nativeFee = fees[0];
       console.log(`native fees (wei): ${nativeFee}`);
@@ -113,7 +122,45 @@ const Bridging = (props: BridgeProps) => {
     } catch (e) {
       console.error(e);
       setIsLoading(false);
-      setShowBridgingModal(false);
+
+      const dataMessage = (e as any).data?.message;
+      const genericMessage = (e as any)?.message;
+
+      if (dataMessage) {
+        if (dataMessage.includes("insufficient funds")) {
+          return setErrorMessage(
+            "You have insufficient funds to complete this transaction."
+          );
+        } else if (dataMessage.includes("ERC721: invalid token ID")) {
+          return setErrorMessage(
+            "Invalid ERC721 token ID provided. Please check and try again."
+          );
+        } else if (dataMessage.includes("execution reverted")) {
+          return setErrorMessage(
+            "Transaction execution was reverted. Please check the transaction details."
+          );
+        } else {
+          return setErrorMessage(dataMessage);
+        }
+      } else if (genericMessage) {
+        if (genericMessage.includes("insufficient funds")) {
+          return setErrorMessage(
+            "You have insufficient funds to complete this transaction."
+          );
+        } else if (genericMessage.includes("ERC721: invalid token ID")) {
+          return setErrorMessage(
+            "Invalid ERC721 token ID provided. Please check and try again."
+          );
+        } else if (genericMessage.includes("execution reverted")) {
+          return setErrorMessage(
+            "Transaction execution was reverted. Please check the transaction details."
+          );
+        } else {
+          return setErrorMessage("An error occurred");
+        }
+      } else {
+        return setErrorMessage("An unknown error occurred.");
+      }
     }
   };
 
@@ -134,6 +181,8 @@ const Bridging = (props: BridgeProps) => {
                 setShowBridgingModal={setShowBridgingModal}
                 txHash={txHash}
                 setTxHash={setTxHash}
+                errorMessage={errorMessage}
+                setErrorMessage={setErrorMessage}
               />
               <div className="my-8">
                 <CustomButtonNetwork mintNetwork={fromNetwork} />

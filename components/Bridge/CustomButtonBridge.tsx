@@ -9,7 +9,6 @@ const CustomButtonBridge = (props: CustomButtonProps) => {
   const { isLoading, wrongNetwork, nftId, handleBridge } = props;
   return (
     <button
-      // TODO: Add conditional logic to disable button if wrong network
       onClick={isLoading || nftId == "" ? () => {} : handleBridge}
       disabled={wrongNetwork}
       type="button"

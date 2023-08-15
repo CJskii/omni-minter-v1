@@ -4,6 +4,8 @@ interface BridgingModalProps {
   isLoading: boolean;
   txHash: string;
   setTxHash: (txHash: string) => void;
+  errorMessage: string;
+  setErrorMessage: (errorMessage: string) => void;
 }
 
 import { useEffect, useRef } from "react";
@@ -15,6 +17,8 @@ const BridgingModal = (props: BridgingModalProps) => {
     isLoading,
     txHash,
     setTxHash,
+    errorMessage,
+    setErrorMessage,
   } = props;
   const dialogRef = useRef<null | HTMLDialogElement>(null);
 
@@ -62,6 +66,8 @@ const BridgingModal = (props: BridgingModalProps) => {
         >
           {isLoading && showBridgingModal ? (
             <span className="loading loading-infinity w-[4rem] h-[4rem]"></span>
+          ) : errorMessage ? (
+            <p className="text-red-600 p-4">{errorMessage}</p>
           ) : (
             <SuccessDisplay />
           )}
@@ -74,6 +80,8 @@ const BridgingModal = (props: BridgingModalProps) => {
               dialogRef.current.close();
             }
             setShowBridgingModal(false);
+            setTxHash("");
+            setErrorMessage("");
           }}
         />
       </dialog>
