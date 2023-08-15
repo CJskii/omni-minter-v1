@@ -126,7 +126,7 @@ const MintedNFTModal = (props: MintedNFTModalProps) => {
         <span className="loading loading-infinity w-[4rem] h-[4rem]"></span>
       );
     if (errorMessage) return <p className="text-red-600 p-4">{errorMessage}</p>;
-    if (mintedNFT && imageLoaded) return <NFTDisplay />;
+    if (mintedNFT) return <NFTDisplay />;
     return null;
   };
 

@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { ethers } from "ethers";
 import { Contract } from "@ethersproject/contracts";
 import { CONTRACT_ABI } from "../constants/contractABI";
-import { useAccount, useNetwork } from "wagmi";
+import { useNetwork } from "wagmi";
 import { getContractAddress } from "../utils/getConstants";
 import getProviderOrSigner from "../utils/getProviderOrSigner";
 import MintedNFTModal from "./Minter/MintedNFTModal";
@@ -75,14 +75,24 @@ export const CustomButtonMint = (props: MintButtonProps) => {
       let transactionReceipt = await provider.getTransactionReceipt(
         tx.transactionHash
       );
-      console.log(transactionReceipt);
-      const mintedID = parseInt(transactionReceipt.logs[0].topics[3], 16);
+      // console.log(transactionReceipt);
+
+      let mintedID;
+
+      if (
+        chain.name.toLowerCase() != "polygon" &&
+        chain.name.toLowerCase() != "polygon mumbai"
+      ) {
+        mintedID = parseInt(transactionReceipt.logs[0].topics[3], 16);
+      } else {
+        mintedID = parseInt(transactionReceipt.logs[1].topics[3], 16);
+      }
+
       setLastMintId(mintedID);
       setMintedNFT(mintedID.toString());
       setMinting(false);
       setIsLoading(false);
       console.log(`ONFT nftId: ${mintedID.toString()}`);
-      console.log(tx.transactionHash);
       setTxHash(tx.transactionHash);
     } catch (e) {
       console.error(e);

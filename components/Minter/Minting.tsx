@@ -23,7 +23,6 @@ const Minting = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [chain]);
 
-  console.log(mintNetwork);
   return (
     <div className="flex flex-col justify-betweeen items-center min-w-full">
       <section className="bg-base card card-side bg-base-200 shadow-xl rounded-none bg">

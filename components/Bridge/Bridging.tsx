@@ -32,7 +32,6 @@ const Bridging = (props: BridgeProps) => {
   const [txHash, setTxHash] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
 
-  console.log(fromNetwork);
   useEffect(() => {
     if (passedNftId) setNftId(passedNftId);
     if (mintNetwork) setFromNetwork(mintNetwork);
@@ -84,11 +83,11 @@ const Bridging = (props: BridgeProps) => {
         ["uint16", "uint256"],
         [1, 200000]
       );
-      console.log(`adapterParams: ${adapterParams}`);
-      console.log(`remoteChainId: ${remoteChainId}`);
-      console.log(`ownerAddress: ${ownerAddress}`);
-      console.log(`TOKEN_ID: ${TOKEN_ID}`);
-      console.log(`remoteChainId: ${remoteChainId}`);
+      // console.log(`adapterParams: ${adapterParams}`);
+      // console.log(`remoteChainId: ${remoteChainId}`);
+      // console.log(`ownerAddress: ${ownerAddress}`);
+      // console.log(`TOKEN_ID: ${TOKEN_ID}`);
+      // console.log(`remoteChainId: ${remoteChainId}`);
       const fees = await contract.estimateSendFee(
         remoteChainId,
         ownerAddress,
