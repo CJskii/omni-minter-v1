@@ -20,6 +20,9 @@ import {
   polygon,
 } from "wagmi/chains";
 
+import { linea } from "./customChains/linea";
+import { coreDao } from "./customChains/coreDao";
+
 type RpcUrls = {
   http: readonly string[];
   webSocket?: readonly string[];
@@ -48,20 +51,21 @@ type ChainConfig = {
 };
 
 export const mainnetChains: ChainConfig[] = [
-  // TODO: add mainnet chains
-  // linea
-  // coreDao
   {
     ...base,
     iconUrl: "/chain-icons/base.svg",
   },
   {
-    ...optimism,
-    iconUrl: "/chain-icons/optimism.svg",
+    ...linea,
+    iconUrl: "/chain-icons/linea.svg",
   },
   {
     ...arbitrum,
     iconUrl: "/chain-icons/arbitrum.svg",
+  },
+  {
+    ...optimism,
+    iconUrl: "/chain-icons/optimism.svg",
   },
   {
     ...bsc,
@@ -75,13 +79,17 @@ export const mainnetChains: ChainConfig[] = [
     ...polygonZkEvm,
     iconUrl: "/chain-icons/polygon-zkevm.svg",
   },
+  // {
+  //   ...mantle,
+  //   iconUrl: "/chain-icons/mantle.svg",
+  // },
+  // {
+  //   ...metis,
+  //   iconUrl: "/chain-icons/metis.svg",
+  // },
   {
-    ...mantle,
-    iconUrl: "/chain-icons/mantle.svg",
-  },
-  {
-    ...metis,
-    iconUrl: "/chain-icons/metis.svg",
+    ...coreDao,
+    iconUrl: "/chain-icons/coredao.svg",
   },
 ];
 
