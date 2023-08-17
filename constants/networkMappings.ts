@@ -143,7 +143,7 @@ export const networkTransferMappings: { [key: string]: string[] } = {
     "Polygon zkEVM",
     "Mantle",
     "Metis",
-    "Core Dao",
+    // "Core Dao",
   ],
   "OP Mainnet": [
     "Base",
@@ -198,7 +198,7 @@ export const networkTransferMappings: { [key: string]: string[] } = {
     "Polygon",
     "Mantle",
     "Metis",
-    "Core Dao",
+    // "Core Dao",
   ],
   Mantle: [
     "Base",

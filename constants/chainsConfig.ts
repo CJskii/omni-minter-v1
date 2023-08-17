@@ -87,10 +87,10 @@ export const mainnetChains: ChainConfig[] = [
   //   ...metis,
   //   iconUrl: "/chain-icons/metis.svg",
   // },
-  {
-    ...coreDao,
-    iconUrl: "/chain-icons/coredao.svg",
-  },
+  // {
+  //   ...coreDao,
+  //   iconUrl: "/chain-icons/coredao.svg",
+  // },
 ];
 
 export const testnetChains: ChainConfig[] = [
