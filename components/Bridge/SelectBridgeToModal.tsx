@@ -2,7 +2,7 @@ import Image from "next/image";
 import { useState, useEffect } from "react";
 import { activeChains } from "../../constants/chainsConfig";
 import { networkTransferMappings } from "../../constants/networkMappings";
-
+import { useNetwork } from "wagmi";
 type Network = {
   id: number;
   name: string;
@@ -24,19 +24,32 @@ interface BridgeProps {
 
 const SelectBridgeToModal = (props: BridgeProps) => {
   const { fromNetwork, setToNetwork } = props;
+  const { chain } = useNetwork();
 
   const validNetworks = networkTransferMappings[fromNetwork];
-  const defaultNetwork =
-    activeChains.find(
-      (net) => validNetworks.includes(net.name) && net.name !== fromNetwork
-    ) || activeChains[0];
+  console.log(validNetworks);
+  const defaultNetwork = validNetworks
+    ? activeChains.find(
+        (net) =>
+          validNetworks.includes(net.name) &&
+          net.name !== fromNetwork &&
+          net.name
+      ) || activeChains[0]
+    : activeChains[0];
+
   const [selectedNetwork, setSelectedNetwork] =
     useState<Network>(defaultNetwork);
 
   useEffect(() => {
     setToNetwork(selectedNetwork.name);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [selectedNetwork]);
+
+  useEffect(() => {
+    setSelectedNetwork(defaultNetwork);
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [chain?.name, defaultNetwork, chain?.unsupported]);
 
   return (
     <div>
@@ -60,41 +73,46 @@ const SelectBridgeToModal = (props: BridgeProps) => {
         </div>
       </button>
       <dialog id="toNetworkModal" className="modal">
-        <form method="dialog" className="modal-box p-0">
+        {validNetworks && validNetworks.length === 0 ? <></> : <></>}
+        <form method="dialog" className="modal-box p-0 max-h-[75vh]">
           <h3 className="font-bold text-lg py-2 px-4">Select To Network</h3>{" "}
           <ul className="menu bg-base-200 w-full bg-transparent rounded-box scrollbar-hide">
-            {activeChains
-              .filter((net) => validNetworks.includes(net.name))
-              .map((network) => (
-                <li
-                  className="w-full"
-                  key={network.name}
-                  onClick={() => setToNetwork(network.name)}
-                >
-                  <a
-                    className="flex gap-4"
-                    onClick={() => {
-                      setSelectedNetwork(network);
-                      (window as any).toNetworkModal.close();
-                    }}
+            {validNetworks ? (
+              activeChains
+                .filter((net) => validNetworks.includes(net.name))
+                .map((network) => (
+                  <li
+                    className="w-full"
+                    key={network.name}
+                    onClick={() => setToNetwork(network.name)}
                   >
-                    <Image
-                      src={network.iconUrl ? network.iconUrl : ""}
-                      width={30}
-                      height={30}
-                      alt={network.name}
-                    />
-                    <div className="flex flex-col text-lg">
-                      <span className="text-neutral-content">
-                        {network.name}
-                      </span>
-                      <span className="text-neutral">
-                        {network.nativeCurrency.symbol}
-                      </span>
-                    </div>
-                  </a>
-                </li>
-              ))}
+                    <a
+                      className="flex gap-4"
+                      onClick={() => {
+                        setSelectedNetwork(network);
+                        (window as any).toNetworkModal.close();
+                      }}
+                    >
+                      <Image
+                        src={network.iconUrl ? network.iconUrl : ""}
+                        width={30}
+                        height={30}
+                        alt={network.name}
+                      />
+                      <div className="flex flex-col text-lg">
+                        <span className="text-neutral-content">
+                          {network.name}
+                        </span>
+                        <span className="text-neutral">
+                          {network.nativeCurrency.symbol}
+                        </span>
+                      </div>
+                    </a>
+                  </li>
+                ))
+            ) : (
+              <></>
+            )}
           </ul>
         </form>
         <form method="dialog" className="modal-backdrop">

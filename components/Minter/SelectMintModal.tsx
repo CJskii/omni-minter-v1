@@ -60,7 +60,7 @@ const SelectMintModal = (props: MintModalProps) => {
         </div>
       </button>
       <dialog id="my_modal_2" className="modal">
-        <form method="dialog" className="modal-box p-0">
+        <form method="dialog" className="modal-box p-0 max-h-[75vh]">
           <h3 className="font-bold text-lg py-2 px-4">Select Mint Network</h3>
 
           <ul className="menu bg-base-200 w-full bg-transparent rounded-box scrollbar-hide">

@@ -203,20 +203,24 @@ const Bridging = (props: BridgeProps) => {
               </div>
 
               {/* Select To Network */}
-              <div>
-                <label
-                  htmlFor=""
-                  className="text-base font-medium text-natural-content"
-                >
-                  Bridge To
-                </label>
-                <div className="mt-2.5 relative text-gray-400 focus-within:text-gray-600">
-                  <SelectBridgeToModal
-                    setToNetwork={setToNetwork}
-                    fromNetwork={fromNetwork}
-                  />
+              {chain?.name && !chain.unsupported ? (
+                <div>
+                  <label
+                    htmlFor=""
+                    className="text-base font-medium text-natural-content"
+                  >
+                    Bridge To
+                  </label>
+                  <div className="mt-2.5 relative text-gray-400 focus-within:text-gray-600">
+                    <SelectBridgeToModal
+                      setToNetwork={setToNetwork}
+                      fromNetwork={fromNetwork}
+                    />
+                  </div>
                 </div>
-              </div>
+              ) : (
+                <></>
+              )}
 
               {/* Input NFT ID */}
               <div className="mt-2.5">

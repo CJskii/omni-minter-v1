@@ -47,7 +47,7 @@ const SelectBridgeFromModal = (props: BridgeProps) => {
     setSelectedNetwork(selected);
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [chain]);
 
   return (
     <div>
@@ -71,7 +71,7 @@ const SelectBridgeFromModal = (props: BridgeProps) => {
         </div>
       </button>
       <dialog id="fromNetworkModal" className="modal">
-        <form method="dialog" className="modal-box p-0">
+        <form method="dialog" className="modal-box p-0 max-h-[75vh]">
           <h3 className="font-bold text-lg py-2 px-4">Select From Network</h3>{" "}
           <ul className="menu bg-base-200 w-full bg-transparent rounded-box scrollbar-hide">
             {activeChains.map((network) => (
