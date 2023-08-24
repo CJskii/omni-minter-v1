@@ -27,7 +27,6 @@ const SelectBridgeToModal = (props: BridgeProps) => {
   const { chain } = useNetwork();
 
   const validNetworks = networkTransferMappings[fromNetwork];
-  console.log(validNetworks);
   const defaultNetwork = validNetworks
     ? activeChains.find(
         (net) =>
@@ -39,6 +38,12 @@ const SelectBridgeToModal = (props: BridgeProps) => {
 
   const [selectedNetwork, setSelectedNetwork] =
     useState<Network>(defaultNetwork);
+
+  const [searchTerm, setSearchTerm] = useState<string>("");
+
+  const filteredChains = activeChains.filter((network) =>
+    network.name.toLowerCase().includes(searchTerm.toLowerCase())
+  );
 
   useEffect(() => {
     setToNetwork(selectedNetwork.name);
@@ -74,11 +79,27 @@ const SelectBridgeToModal = (props: BridgeProps) => {
       </button>
       <dialog id="toNetworkModal" className="modal">
         {validNetworks && validNetworks.length === 0 ? <></> : <></>}
-        <form method="dialog" className="modal-box p-0 max-h-[75vh]">
+        <form method="dialog" className="modal-box p-0 h-[75vh] scrollbar-hide">
           <h3 className="font-bold text-lg py-2 px-4">Select To Network</h3>{" "}
+          <input
+            type="text"
+            className="input input-bordered w-full mb-2 text-sm"
+            placeholder="Search for a network..."
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+          />
           <ul className="menu bg-base-200 w-full bg-transparent rounded-box scrollbar-hide">
-            {validNetworks ? (
+            {validNetworks.length === 0 || filteredChains.length === 0 ? (
+              <></>
+            ) : (
               activeChains
+                .filter(
+                  (network) =>
+                    !searchTerm ||
+                    network.name
+                      .toLowerCase()
+                      .includes(searchTerm.toLowerCase())
+                )
                 .filter((net) => validNetworks.includes(net.name))
                 .map((network) => (
                   <li
@@ -110,8 +131,6 @@ const SelectBridgeToModal = (props: BridgeProps) => {
                     </a>
                   </li>
                 ))
-            ) : (
-              <></>
             )}
           </ul>
         </form>

@@ -32,6 +32,11 @@ const SelectBridgeFromModal = (props: BridgeProps) => {
 
   const [selectedNetwork, setSelectedNetwork] =
     useState<Network>(defaultNetwork);
+  const [searchTerm, setSearchTerm] = useState<string>("");
+
+  const filteredChains = activeChains.filter((network) =>
+    network.name.toLowerCase().includes(searchTerm.toLowerCase())
+  );
 
   useEffect(() => {
     let selected = defaultNetwork;
@@ -71,37 +76,60 @@ const SelectBridgeFromModal = (props: BridgeProps) => {
         </div>
       </button>
       <dialog id="fromNetworkModal" className="modal">
-        <form method="dialog" className="modal-box p-0 max-h-[75vh]">
+        <form method="dialog" className="modal-box p-0 h-[75vh] scrollbar-hide">
           <h3 className="font-bold text-lg py-2 px-4">Select From Network</h3>{" "}
+          <input
+            type="text"
+            className="input input-bordered w-full mb-2 text-sm"
+            placeholder="Search for a network..."
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+          />
           <ul className="menu bg-base-200 w-full bg-transparent rounded-box scrollbar-hide">
-            {activeChains.map((network) => (
-              <li
-                className="w-full"
-                key={network.name}
-                onClick={() => setFromNetwork(network.name)}
-              >
-                <a
-                  className="flex gap-4"
-                  onClick={() => {
-                    setSelectedNetwork(network);
-                    (window as any).fromNetworkModal.close();
-                  }}
-                >
-                  <Image
-                    src={network.iconUrl ? network.iconUrl : ""}
-                    width={30}
-                    height={30}
-                    alt={network.name}
-                  />
-                  <div className="flex flex-col text-lg">
-                    <span className="text-neutral-content">{network.name}</span>
-                    <span className="text-neutral">
-                      {network.nativeCurrency.symbol}
-                    </span>
-                  </div>
-                </a>
-              </li>
-            ))}
+            {filteredChains.length === 0 ? (
+              <div className="p-2 text-md">No valid networks</div>
+            ) : (
+              <>
+                {activeChains
+                  .filter(
+                    (network) =>
+                      !searchTerm ||
+                      network.name
+                        .toLowerCase()
+                        .includes(searchTerm.toLowerCase())
+                  )
+                  .map((network) => (
+                    <li
+                      className="w-full"
+                      key={network.name}
+                      onClick={() => setFromNetwork(network.name)}
+                    >
+                      <a
+                        className="flex gap-4"
+                        onClick={() => {
+                          setSelectedNetwork(network);
+                          (window as any).fromNetworkModal.close();
+                        }}
+                      >
+                        <Image
+                          src={network.iconUrl ? network.iconUrl : ""}
+                          width={30}
+                          height={30}
+                          alt={network.name}
+                        />
+                        <div className="flex flex-col text-lg">
+                          <span className="text-neutral-content">
+                            {network.name}
+                          </span>
+                          <span className="text-neutral">
+                            {network.nativeCurrency.symbol}
+                          </span>
+                        </div>
+                      </a>
+                    </li>
+                  ))}
+              </>
+            )}
           </ul>
         </form>
         <form method="dialog" className="modal-backdrop">
