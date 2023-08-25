@@ -7,6 +7,8 @@ import { useNetwork } from "wagmi";
 import { getContractAddress } from "../utils/getConstants";
 import getProviderOrSigner from "../utils/getProviderOrSigner";
 import MintedNFTModal from "./Minter/MintedNFTModal";
+import { updateMintData } from "../utils/api/mintAPI";
+import { useAccount } from "wagmi";
 
 interface MintButtonProps {
   setLastMintId: (id: number) => void;
@@ -24,6 +26,7 @@ export const CustomButtonMint = (props: MintButtonProps) => {
   const [errorMessage, setErrorMessage] = useState("");
 
   const { chain } = useNetwork();
+  const { address } = useAccount();
   const { setLastMintId, mintNetwork } = props;
 
   useEffect(() => {
@@ -93,6 +96,16 @@ export const CustomButtonMint = (props: MintButtonProps) => {
       setMinting(false);
       setIsLoading(false);
       console.log(`ONFT nftId: ${mintedID.toString()}`);
+      if (address)
+        updateMintData(address).then((response) => {
+          if (response.status === 200) {
+            console.log("Mint data updated");
+          } else {
+            console.log("Mint data update failed");
+            console.log(response);
+          }
+        });
+
       setTxHash(tx.transactionHash);
     } catch (e) {
       console.error(e);
