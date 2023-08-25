@@ -110,6 +110,21 @@ const transformNetworkName = (networkName: string) => {
     case "core dao":
       networkName = "coredao";
       break;
+    case "avalanche":
+      networkName = "avalanche";
+      break;
+    case "fantom":
+      networkName = "fantom";
+      break;
+    case "celo":
+      networkName = "celo";
+      break;
+    case "moonbeam":
+      networkName = "moonbeam";
+      break;
+    case "moonriver":
+      networkName = "moonriver";
+      break;
     default:
       break;
   }
@@ -138,6 +153,16 @@ const getEnvVarName = (key: string): string | undefined => {
       return process.env.NEXT_PUBLIC_COREDAO_CONTRACT_ADDRESS;
     case "MANTLE":
       return process.env.NEXT_PUBLIC_MANTLE_CONTRACT_ADDRESS;
+    case "AVALANCHE":
+      return process.env.NEXT_PUBLIC_AVALANCHE_CONTRACT_ADDRESS;
+    case "FANTOM":
+      return process.env.NEXT_PUBLIC_FANTOM_CONTRACT_ADDRESS;
+    case "CELO":
+      return process.env.NEXT_PUBLIC_CELO_CONTRACT_ADDRESS;
+    case "MOONBEAM":
+      return process.env.NEXT_PUBLIC_MOONBEAM_CONTRACT_ADDRESS;
+    case "MOONRIVER":
+      return process.env.NEXT_PUBLIC_MOONRIVER_CONTRACT_ADDRESS;
     default:
       return undefined;
   }

@@ -10,6 +10,9 @@
   "linea": 183,
   "zkevm": 158,
   "coredao": 153,
+  "moonbeam": 126,
+  "moonriver": 167,
+  "celo": 125,
 
   "goerli": 10121,
   "bsc-testnet": 10102,

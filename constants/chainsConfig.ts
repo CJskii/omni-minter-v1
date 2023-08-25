@@ -18,6 +18,11 @@ import {
   optimism,
   arbitrum,
   polygon,
+  celo,
+  fantom,
+  moonbeam,
+  avalanche,
+  moonriver,
 } from "wagmi/chains";
 
 import { linea } from "./customChains/linea";
@@ -87,10 +92,18 @@ export const mainnetChains: ChainConfig[] = [
   //   ...metis,
   //   iconUrl: "/chain-icons/metis.svg",
   // },
-  // {
-  //   ...coreDao,
-  //   iconUrl: "/chain-icons/coredao.svg",
-  // },
+  {
+    ...coreDao,
+    iconUrl: "/chain-icons/coredao.svg",
+  },
+  {
+    ...avalanche,
+    iconUrl: "/chain-icons/avalanche.svg",
+  },
+  { ...fantom, iconUrl: "/chain-icons/fantom.svg" },
+  { ...celo, iconUrl: "/chain-icons/celo.svg" },
+  { ...moonbeam, iconUrl: "/chain-icons/moonbeam.svg" },
+  { ...moonriver, iconUrl: "/chain-icons/moonriver.svg" },
 ];
 
 export const testnetChains: ChainConfig[] = [
