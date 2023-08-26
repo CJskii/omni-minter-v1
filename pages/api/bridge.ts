@@ -33,10 +33,11 @@ export default async function handler(
 
     const today = new Date().toDateString();
     const lastInteractionDate = user.interactions[0]?.updatedAt.toDateString();
-
+    // console.log("Today:", today);
+    // console.log("Last interaction:", lastInteractionDate);
     // Handle daily interaction
     if (lastInteractionDate !== today) {
-      console.log("Daily interaction!");
+      // console.log("Daily interaction!");
       pointsToAdd += 20; // 20 points for daily interaction
     }
 
