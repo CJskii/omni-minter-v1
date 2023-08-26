@@ -29,17 +29,15 @@ export default async function handler(
       },
     });
 
-    console.log(user);
-
     let pointsToAdd = 50; // 50 points for bridging
 
     const today = new Date().toDateString();
     const lastInteractionDate = user.interactions[0]?.updatedAt.toDateString();
-    console.log("Today:", today);
-    console.log("Last interaction:", lastInteractionDate);
+    // console.log("Today:", today);
+    // console.log("Last interaction:", lastInteractionDate);
     // Handle daily interaction
     if (lastInteractionDate !== today) {
-      console.log("Daily interaction!");
+      // console.log("Daily interaction!");
       pointsToAdd += 20; // 20 points for daily interaction
     }
 
@@ -111,7 +109,6 @@ export default async function handler(
       data: updateData,
     });
 
-    console.log("Bridge recorded and points awarded");
     res.status(200).json({ message: "Bridge recorded and points awarded" });
   } catch (error) {
     console.error("Error in /api/bridge:", error);

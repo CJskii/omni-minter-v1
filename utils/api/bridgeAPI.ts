@@ -1,5 +1,4 @@
 export async function updateBridgeData(address: string) {
-  console.log("Updating bridge data for", address);
   const response = await fetch("/api/bridge", {
     method: "POST",
     headers: {
