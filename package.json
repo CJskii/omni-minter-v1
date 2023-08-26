@@ -7,7 +7,8 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "test": "jest"
+    "test": "jest",
+    "vercel-build": "prisma generate && next build"
   },
   "dependencies": {
     "@fontsource/ibm-plex-mono": "^5.0.8",

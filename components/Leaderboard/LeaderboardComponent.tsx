@@ -1,7 +1,12 @@
 import { useEffect, useState } from "react";
 import { callLeaderboardAPI } from "../../utils/api/callLeaderboardAPI";
 import LoadingSpinner from "./Loading";
-import LeaderboardRow from "./LeaderboardRow";
+import { useAccount } from "wagmi";
+import UserStats from "./Stats/UserStats";
+import DailyReward from "./DailyRewardCollapse";
+import InviteUsersCollapse from "./InviteUsersCollapse";
+import ReferralLink from "./ReferralLink";
+import LeaderboardTable from "./Data/Table";
 
 // create interface for leaderboard data
 
@@ -14,6 +19,7 @@ interface LeaderboardData {
   // write it here
   ethereumAddress: string;
   totalPoints: number;
+  inviteLink: string;
   mints: [
     {
       count: number;
@@ -40,6 +46,7 @@ interface LeaderboardData {
 
 const LeaderboardComponent = () => {
   const [leaderboard, setLeaderboard] = useState<LeaderboardData[]>([]);
+  const { address } = useAccount();
 
   useEffect(() => {
     fetchLeaderboard().then((data) => {
@@ -55,6 +62,13 @@ const LeaderboardComponent = () => {
     return data.data;
   };
 
+  const filteredStats = leaderboard.filter(
+    (user) => user.ethereumAddress === address
+  );
+
+  console.log(leaderboard);
+  console.log(filteredStats[0]);
+
   return (
     <section className="py-10 bg-base-200 sm:py-16 lg:py-24 min-w-[60vw]">
       <div className="max-w-5xl px-4 mx-auto sm:px-6 lg:px-8">
@@ -62,28 +76,31 @@ const LeaderboardComponent = () => {
           <h2 className="text-3xl font-bold leading-tight text-white sm:text-4xl lg:text-5xl">
             Leaderboard
           </h2>
-          <p className="max-w-xl mx-auto mt-4 text-base leading-relaxed text-gray-300">
-            Compete with other users to earn the top spot
+          <p className="max-w-xl mx-auto mt-4 text-base leading-relaxed text-gray-300 flex flex-col my-4">
+            <span className="text-lg">Your stats on Mintly</span>
+            <span className="text-sm">
+              Note: stats are recorded from 26th of August
+            </span>
           </p>
         </div>
-        <div className="flex justify-between pr-4 py-2 mt-8 ">
-          <div className="flex gap-4">
-            <span className="pl-2">Rank</span>
-            <span className="pl-2">Wallet address</span>
-          </div>
-
-          <span className="pr-6">Points</span>
-        </div>
-
-        {leaderboard.length > 0 ? (
-          leaderboard
-            .filter((user) => user.totalPoints > 0)
-            .map((user, index) => (
-              <LeaderboardRow key={index} user={user} index={index} />
-            ))
+        {filteredStats.length > 0 ? (
+          <>
+            <UserStats filteredStats={filteredStats} />
+            <ReferralLink
+              inviteLink={
+                filteredStats[0].inviteLink ? filteredStats[0].inviteLink : ""
+              }
+            />
+          </>
         ) : (
           <LoadingSpinner />
         )}
+        <>
+          <DailyReward />
+          <InviteUsersCollapse />
+        </>
+
+        <LeaderboardTable leaderboard={leaderboard} />
       </div>
     </section>
   );

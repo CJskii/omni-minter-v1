@@ -36,6 +36,14 @@ const Navbar = () => {
             ONFT Bridge
           </Link>
           <Link
+            href="/leaderboard"
+            className={`btn ${
+              router.pathname === "/leaderboard" ? "btn-active" : ""
+            }`}
+          >
+            Leaderboard
+          </Link>
+          <Link
             href="/faq"
             className={`btn ${router.pathname === "/faq" ? "btn-active" : ""}`}
           >

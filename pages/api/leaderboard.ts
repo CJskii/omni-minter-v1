@@ -17,6 +17,7 @@ export default async function handler(
       take: 100,
       select: {
         ethereumAddress: true,
+        inviteLink: true,
         totalPoints: true,
         mints: true,
         bridges: true,
