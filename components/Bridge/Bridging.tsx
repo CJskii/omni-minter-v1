@@ -5,13 +5,14 @@ import { Contract } from "@ethersproject/contracts";
 import { CONTRACT_ABI } from "../../constants/contractABI";
 import { getContractAddress } from "../../utils/getConstants";
 import { getRemoteChainId } from "../../utils/getConstants";
-import { useNetwork } from "wagmi";
+import { useNetwork, useAccount } from "wagmi";
 import CustomButtonNetwork from "../CustomButtonNetwork";
 import CustomButtonBridge from "./CustomButtonBridge";
 import SelectBridgeFromModal from "./SelectBridgeFromModal";
 import SelectBridgeToModal from "./SelectBridgeToModal";
 import BridgingModal from "./BridgingModal";
 import getProviderOrSigner from "../../utils/getProviderOrSigner";
+import { updateBridgeData } from "../../utils/api/bridgeAPI";
 
 interface BridgeProps {
   passedNftId: string;
@@ -22,6 +23,7 @@ interface BridgeProps {
 const Bridging = (props: BridgeProps) => {
   let { passedNftId, mintNetwork, onBridgeComplete } = props;
   const { chain } = useNetwork();
+  const { address } = useAccount();
   const [isLoading, setIsLoading] = useState(false);
 
   const [fromNetwork, setFromNetwork] = useState(mintNetwork || "Goerli");
@@ -39,10 +41,12 @@ const Bridging = (props: BridgeProps) => {
       setFromNetwork(chain?.name || "Goerli");
     }
     checkNetwork();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [passedNftId, mintNetwork, chain?.name, chain?.unsupported]);
 
   useEffect(() => {
     checkNetwork();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [fromNetwork, toNetwork, chain?.name, chain?.unsupported]);
 
   const checkNetwork = () => {
@@ -114,6 +118,15 @@ const Bridging = (props: BridgeProps) => {
 
       await tx.wait();
       console.log("NFT sent!");
+      if (address)
+        updateBridgeData(address).then((response) => {
+          if (response.status === 200) {
+            console.log("Bridge data updated");
+          } else {
+            console.log("Bridge data update failed");
+            console.log(response);
+          }
+        });
       setNftId("");
       setIsLoading(false);
       setTxHash(tx.hash);
