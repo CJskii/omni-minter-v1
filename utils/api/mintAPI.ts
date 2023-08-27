@@ -2,6 +2,7 @@ interface MintDataProps {
   user: {
     address: string;
     isInvited: boolean;
+    referredBy: string;
   };
 }
 
@@ -14,6 +15,7 @@ export async function updateMintData({ user }: MintDataProps) {
     body: JSON.stringify({
       ethereumAddress: user.address,
       isInvited: user.isInvited,
+      referredBy: user.referredBy,
     }),
   });
   return response;

@@ -13,13 +13,15 @@ const handleApiResponse = (response: any, operation: string) => {
 const handleInteraction = async ({
   address,
   isInvited = false,
+  referredBy = "",
   operation,
 }: {
   address: string;
   isInvited?: boolean;
+  referredBy?: string;
   operation: string;
 }) => {
-  const user = { address, isInvited };
+  const user = { address, isInvited, referredBy };
   switch (operation) {
     case "new_mint":
       updateMintData({ user }).then((response) =>

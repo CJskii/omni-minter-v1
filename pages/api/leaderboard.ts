@@ -23,6 +23,7 @@ export default async function handler(
         bridges: true,
         interactions: true,
         streaks: true,
+        inviteCount: true,
       },
       orderBy: {
         totalPoints: "desc",

@@ -1,6 +1,108 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import { prisma } from "../../prisma/client";
 
+const fetchUserData = async (ethereumAddress: string) => {
+  return await prisma.user.findUnique({
+    where: { ethereumAddress },
+    select: {
+      totalPoints: true,
+      mints: {
+        select: { id: true, count: true, updatedAt: true },
+      },
+      interactions: {
+        select: { id: true, updatedAt: true, count: true },
+      },
+      streaks: {
+        select: { id: true, currentStreak: true, updatedAt: true },
+      },
+    },
+  });
+};
+
+const calculatePoints = (user: any) => {
+  let pointsToAdd = 100; // 100 points for minting
+  const today = new Date().toDateString();
+  const lastInteractionDate = user.interactions[0]?.updatedAt.toDateString();
+
+  if (lastInteractionDate !== today) {
+    pointsToAdd += 20; // 20 points for daily interaction
+  }
+
+  return pointsToAdd;
+};
+
+const handleStreaks = (user: any) => {
+  const yesterday = new Date();
+  yesterday.setDate(yesterday.getDate() - 1);
+  let streak = user.streaks[0]?.currentStreak || 0;
+
+  const lastInteractionDate = user.interactions[0]?.updatedAt.toDateString();
+  if (lastInteractionDate === yesterday.toDateString()) {
+    streak += 1;
+  } else if (lastInteractionDate !== new Date().toDateString()) {
+    streak = 1; // Reset streak
+  }
+
+  return streak;
+};
+
+const updateUserData = async (ethereumAddress: string, updateData: any) => {
+  await prisma.user.update({
+    where: { ethereumAddress },
+    data: updateData,
+  });
+};
+
+const handleReferral = async (ethereumAddress: string) => {
+  const user = await prisma.user.findUnique({
+    where: { ethereumAddress },
+  });
+
+  // If the user doesn't exist or wasn't referred by anyone, exit early
+  if (!user || !user.invitedById) {
+    return false;
+  }
+
+  // Check if the user has minted before
+  if (user.mints && user.mints.length > 0) {
+    return false; // User has already minted before, so we shouldn't award referral points again
+  }
+
+  // If the user was referred and is minting for the first time, award the referrer
+  await awardReferralPoints(user.invitedById);
+
+  return true;
+};
+
+const awardReferralPoints = async (referrerAddress: string) => {
+  const referrer = await prisma.user.findUnique({
+    where: { ethereumAddress: referrerAddress },
+    select: { totalPoints: true, inviteCount: true },
+  });
+
+  if (referrer) {
+    const REFERRAL_POINTS = calculateReferralPoints(referrer.inviteCount);
+    await prisma.user.update({
+      where: { ethereumAddress: referrerAddress },
+      data: {
+        totalPoints: referrer.totalPoints + REFERRAL_POINTS,
+        inviteCount: referrer.inviteCount + 1,
+      },
+    });
+    console.log(`${REFERRAL_POINTS} Referral points awarded`);
+  }
+};
+
+const calculateReferralPoints = (inviteCount: number) => {
+  if (inviteCount <= 5) {
+    return 100;
+  } else if (inviteCount <= 10) {
+    return 150;
+  } else {
+    return 200;
+  }
+};
+
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse
@@ -9,54 +111,26 @@ export default async function handler(
     return res.status(405).end();
   }
 
-  const { ethereumAddress } = req.body;
+  const { ethereumAddress, isInvited, referredBy } = req.body;
 
   try {
     // Fetch the user and related data
-    const user = await prisma.user.findUnique({
-      where: { ethereumAddress },
-      select: {
-        totalPoints: true,
-        mints: {
-          select: { id: true, count: true, updatedAt: true },
-        },
-        interactions: {
-          select: { id: true, updatedAt: true, count: true },
-        },
-        streaks: {
-          select: { id: true, currentStreak: true, updatedAt: true },
-        },
-      },
-    });
-
-    let pointsToAdd = 100; // 100 points for minting
-
-    const today = new Date().toDateString();
-    const lastInteractionDate = user.interactions[0]?.updatedAt.toDateString();
-    // console.log("Today:", today);
-    // console.log("Last interaction:", lastInteractionDate);
-    // Handle daily interaction
-    if (lastInteractionDate !== today) {
-      // console.log("Daily interaction!");
-      pointsToAdd += 20; // 20 points for daily interaction
-    }
-
-    // Handle streaks
-    const yesterday = new Date();
-    yesterday.setDate(yesterday.getDate() - 1);
-
-    let streak = user.streaks[0]?.currentStreak || 0;
-
-    if (lastInteractionDate === yesterday.toDateString()) {
-      streak += 1;
-    } else if (lastInteractionDate !== today) {
-      streak = 1; // Reset streak
-    }
+    const user = await fetchUserData(ethereumAddress);
+    const pointsToAdd = calculatePoints(user);
+    const streak = handleStreaks(user);
 
     // Update user points, mint counter, interactions, and streaks
     const updateData: any = {
       totalPoints: user.totalPoints + pointsToAdd,
     };
+    console.log("isInvited", isInvited);
+    console.log("referredBy", referredBy);
+    if (isInvited) {
+      const isValidReferral = await handleReferral(ethereumAddress);
+      if (isValidReferral) {
+        updateData.invitedById = referredBy;
+      }
+    }
 
     if (user.mints.length) {
       updateData.mints = {
@@ -104,12 +178,7 @@ export default async function handler(
       };
     }
 
-    await prisma.user.update({
-      where: { ethereumAddress },
-      data: updateData,
-    });
-
-    // console.log("Mint recorded and points awarded");
+    await updateUserData(ethereumAddress, updateData);
     res.status(200).json({ message: "Mint recorded and points awarded" });
   } catch (error) {
     console.error("Error in /api/mint:", error);
