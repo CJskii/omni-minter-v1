@@ -7,6 +7,7 @@ export const CustomButton = () => {
   const { address, isConnected } = useAccount();
 
   useEffect(() => {
+    // TODO: if user has referal link, create user and update referrer ID
     if (address) {
       const storedAddress = localStorage.getItem("createdUserAddress");
       if (storedAddress !== address) {

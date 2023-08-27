@@ -12,10 +12,9 @@ import Navbar from "../components/Navbar";
 import "@fontsource/ibm-plex-mono";
 import Head from "next/head";
 import Footer from "../components/Footer";
-
 import { getSupportedChains } from "../constants/chainsConfig";
-
-// TODO: Add coreDAO chain
+import { useEffect } from "react";
+import { useRouter } from "next/router";
 
 const customChains = getSupportedChains();
 
@@ -38,6 +37,21 @@ const wagmiConfig = createConfig({
 });
 
 function MyApp({ Component, pageProps }: AppProps) {
+  const router = useRouter();
+
+  useEffect(() => {
+    const referralCode = router.query.invite;
+    localStorage.removeItem("referralCode");
+    if (referralCode) {
+      localStorage.setItem("referralCode", referralCode as string);
+
+      if (router.pathname !== "/") {
+        router.push("/");
+      }
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [router.query]);
+
   return (
     <WagmiConfig config={wagmiConfig}>
       <RainbowKitProvider

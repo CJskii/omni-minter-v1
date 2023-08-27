@@ -13,6 +13,7 @@ interface MintButtonProps {
   setLastMintId: (id: number) => void;
   mintNetwork: string;
   isInvited: boolean;
+  referredBy: string;
 }
 
 export const CustomButtonMint = (props: MintButtonProps) => {
@@ -27,7 +28,7 @@ export const CustomButtonMint = (props: MintButtonProps) => {
 
   const { chain } = useNetwork();
   const { address } = useAccount();
-  const { setLastMintId, mintNetwork, isInvited } = props;
+  const { setLastMintId, mintNetwork, isInvited, referredBy } = props;
 
   useEffect(() => {
     setSelectedNetwork(mintNetwork);
@@ -76,6 +77,7 @@ export const CustomButtonMint = (props: MintButtonProps) => {
         await handleInteraction({
           address,
           isInvited,
+          referredBy,
           operation: "new_mint",
         });
       }
