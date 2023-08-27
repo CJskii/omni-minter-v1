@@ -6,9 +6,9 @@ import CustomButtonBridge from "../Buttons/CustomButtonBridge";
 import SelectBridgeFromModal from "./SelectBridgeFromModal";
 import SelectBridgeToModal from "./SelectBridgeToModal";
 import BridgingModal from "./BridgingModal";
-import { updateBridgeData } from "../../utils/api/bridgeAPI";
 import { handleBridging } from "../../utils/helpers/handleBridging";
 import { handleErrors } from "../../utils/helpers/handleErrors";
+import handleInteraction from "../../utils/helpers/handleInteraction";
 
 interface BridgeProps {
   passedNftId: string;
@@ -77,15 +77,12 @@ const Bridging = (props: BridgeProps) => {
 
       const { txHash } = result;
 
-      if (address)
-        updateBridgeData(address).then((response) => {
-          if (response.status === 200) {
-            console.log("Bridge data updated");
-          } else {
-            console.log("Bridge data update failed");
-            console.log(response);
-          }
+      if (address) {
+        handleInteraction({
+          address,
+          operation: "new_bridge",
         });
+      }
 
       setNftId("");
       setIsLoading(false);

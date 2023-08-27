@@ -7,6 +7,7 @@ import { updateMintData } from "../../utils/api/mintAPI";
 import { useAccount } from "wagmi";
 import { handleErrors } from "../../utils/helpers/handleErrors";
 import { handleMinting } from "../../utils/helpers/handleMinting";
+import handleInteraction from "../../utils/helpers/handleInteraction";
 
 interface MintButtonProps {
   setLastMintId: (id: number) => void;
@@ -71,15 +72,13 @@ export const CustomButtonMint = (props: MintButtonProps) => {
 
       console.log(`ONFT nftId: ${mintedID.toString()}`);
 
-      if (address)
-        updateMintData(address).then((response) => {
-          if (response.status === 200) {
-            console.log("Mint data updated");
-          } else {
-            console.log("Mint data update failed");
-            console.log(response);
-          }
+      if (address) {
+        await handleInteraction({
+          address,
+          isInvited,
+          operation: "new_mint",
         });
+      }
 
       setTxHash(txHash);
     } catch (e) {
