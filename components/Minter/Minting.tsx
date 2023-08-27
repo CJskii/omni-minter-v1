@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import SelectMintModal from "./SelectMintModal";
-import CustomButtonMint from "../CustomButtonMint";
-import CustomButtonNetwork from "../CustomButtonNetwork";
+import CustomButtonMint from "../Buttons/CustomButtonMint";
+import CustomButtonNetwork from "../Buttons/CustomButtonNetwork";
 import { activeChains } from "../../constants/chainsConfig";
 import CardImage from "./CardImage";
 import { useNetwork } from "wagmi";

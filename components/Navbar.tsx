@@ -1,5 +1,5 @@
-import CustomButton from "./CustomButton";
-import CustomButtonMobile from "./CustomButtonMobile";
+import CustomButton from "./Buttons/CustomButton";
+import CustomButtonMobile from "./Buttons/CustomButtonMobile";
 import { ConnectButton } from "@rainbow-me/rainbowkit";
 import { useState } from "react";
 import Image from "next/image";

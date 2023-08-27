@@ -2,12 +2,12 @@ import { ConnectButton } from "@rainbow-me/rainbowkit";
 import { useEffect, useState } from "react";
 import { ethers } from "ethers";
 import { Contract } from "@ethersproject/contracts";
-import { CONTRACT_ABI } from "../constants/contractABI";
+import { CONTRACT_ABI } from "../../constants/contractABI";
 import { useNetwork } from "wagmi";
-import { getContractAddress } from "../utils/getConstants";
-import getProviderOrSigner from "../utils/getProviderOrSigner";
-import MintedNFTModal from "./Minter/MintedNFTModal";
-import { updateMintData } from "../utils/api/mintAPI";
+import { getContractAddress } from "../../utils/getConstants";
+import getProviderOrSigner from "../../utils/getProviderOrSigner";
+import MintedNFTModal from "../Minter/MintedNFTModal";
+import { updateMintData } from "../../utils/api/mintAPI";
 import { useAccount } from "wagmi";
 
 interface MintButtonProps {

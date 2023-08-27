@@ -33,7 +33,6 @@ interface LeaderboardData {
 
 const LeaderboardTable = (props: LeaderboardData) => {
   const { leaderboard } = props;
-  console.log(leaderboard);
   return (
     <>
       {leaderboard.length > 0 ? (

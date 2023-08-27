@@ -1,7 +1,7 @@
 import { ConnectButton } from "@rainbow-me/rainbowkit";
 import { useEffect } from "react";
 import { useAccount } from "wagmi";
-import { createUserAPI } from "../utils/api/createUserAPI";
+import { createUserAPI } from "../../utils/api/createUserAPI";
 
 export const CustomButton = () => {
   const { address, isConnected } = useAccount();
