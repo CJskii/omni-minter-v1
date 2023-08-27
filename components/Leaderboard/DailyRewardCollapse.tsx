@@ -21,7 +21,7 @@ const DailyRewardCollapse = () => {
   return (
     <div
       tabIndex={0}
-      className="collapse collapse-plus border border-base-300 bg-base-200"
+      className="collapse collapse-plus border border-base-300 bg-base-200 w-full"
     >
       <div className="collapse-title text-xl font-medium">Daily rewards</div>
 
@@ -43,7 +43,16 @@ const DailyRewardCollapse = () => {
               </h2>
               <p>+{currentReward?.points ? currentReward?.points : 30} XP</p>
               <div className="card-actions">
-                <button className="btn btn-primary">Claim</button>
+                <button
+                  className="btn btn-primary"
+                  onMouseDown={(e) => e.preventDefault()}
+                  onClick={() => {
+                    // Claim logic here
+                    console.log("Claimed!");
+                  }}
+                >
+                  Claim
+                </button>
               </div>
             </div>
           </div>

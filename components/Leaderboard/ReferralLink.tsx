@@ -1,4 +1,7 @@
 import { useState } from "react";
+import { FaCopy } from "react-icons/fa";
+import ShareButton from "../Buttons/ShareButton";
+import CopyButton from "../Buttons/CopyButton";
 const ReferralLink = (props: { inviteLink: string }) => {
   const { inviteLink } = props;
   const [copied, setCopied] = useState(false);
@@ -27,24 +30,20 @@ const ReferralLink = (props: { inviteLink: string }) => {
   return (
     <div>
       {inviteLink ? (
-        <div className="flex flex-col lg:flex-row items-center space-y-2 md:space-y-0 md:space-x-2">
-          <div></div>
-          <span className="text-base-content">Your invite link: </span>
-          <a className="underline cursor-pointer text-gray-600">
+        <div className="flex flex-col gap-4 items-center space-y-2 md:space-y-0 md:space-x-2">
+          <span className="text-base-content text-xl font-bold">
+            Your invite link:{" "}
+          </span>
+          <a
+            className="underline cursor-pointer text-gray-600"
+            onClick={handleCopyClick}
+          >
             https://www.mintly.lol/invite={inviteLink}
           </a>
-          <button
-            onClick={handleCopyClick}
-            className="px-2 py-1 bg-blue-500 text-white rounded hover:bg-blue-600"
-          >
-            {copied ? "Copied!" : "Copy"}
-          </button>
-          <button
-            onClick={handleTwitterShare}
-            className="px-2 py-1 bg-blue-400 text-white rounded hover:bg-blue-500"
-          >
-            Share on Twitter
-          </button>
+          <div className="flex justify-center items-center gap-4">
+            <CopyButton handleCopyClick={handleCopyClick} copied={copied} />
+            <ShareButton handleTwitterShare={handleTwitterShare} />
+          </div>
         </div>
       ) : null}
     </div>

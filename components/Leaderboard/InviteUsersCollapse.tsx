@@ -1,8 +1,11 @@
-const InviteUsersCollapse = () => {
+import ReferralLink from "./ReferralLink";
+
+const InviteUsersCollapse = (props: { inviteLink: string }) => {
+  const { inviteLink } = props;
   return (
     <div
       tabIndex={0}
-      className="collapse collapse-plus border border-base-300 bg-base-200"
+      className="collapse collapse-plus border border-base-300 bg-base-200 w-full"
     >
       <div className="collapse-title text-xl font-medium">Invite friends</div>
 
@@ -16,6 +19,7 @@ const InviteUsersCollapse = () => {
             <span>• 11+ invites: 250 XP</span>
           </div>
         </div>
+        <ReferralLink inviteLink={inviteLink ? inviteLink : ""} />
       </div>
     </div>
   );

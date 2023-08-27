@@ -66,9 +66,6 @@ const LeaderboardComponent = () => {
     (user) => user.ethereumAddress === address
   );
 
-  console.log(leaderboard);
-  console.log(filteredStats[0]);
-
   return (
     <section className="py-10 bg-base-200 sm:py-16 lg:py-24 min-w-[60vw]">
       <div className="max-w-5xl px-4 mx-auto sm:px-6 lg:px-8">
@@ -86,19 +83,27 @@ const LeaderboardComponent = () => {
         {filteredStats.length > 0 ? (
           <>
             <UserStats filteredStats={filteredStats} />
-            <ReferralLink
+            {/* <ReferralLink
               inviteLink={
                 filteredStats[0].inviteLink ? filteredStats[0].inviteLink : ""
               }
-            />
+            /> */}
           </>
         ) : (
           <LoadingSpinner />
         )}
-        <>
-          <DailyReward />
-          <InviteUsersCollapse />
-        </>
+        {leaderboard.length > 0 ? (
+          <div className="flex flex-col justify-center items-center gap-2">
+            <DailyReward />
+            <InviteUsersCollapse
+              inviteLink={
+                filteredStats[0].inviteLink ? filteredStats[0].inviteLink : ""
+              }
+            />
+          </div>
+        ) : (
+          <LoadingSpinner />
+        )}
 
         <LeaderboardTable leaderboard={leaderboard} />
       </div>
