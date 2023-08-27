@@ -12,6 +12,10 @@ export const handleErrors = ({
       return setErrorMessage(
         "You have insufficient funds to complete this transaction."
       );
+    } else if (dataMessage.includes("ERC721: invalid token ID")) {
+      return setErrorMessage(
+        "Invalid ERC721 token ID provided. Please check and try again."
+      );
     } else if (dataMessage.includes("execution reverted")) {
       return setErrorMessage(
         "Transaction execution was reverted. Please check the transaction details."
