@@ -5,10 +5,12 @@ import CustomButtonNetwork from "../Buttons/CustomButtonNetwork";
 import { activeChains } from "../../constants/chainsConfig";
 import CardImage from "./CardImage";
 import { useNetwork } from "wagmi";
+import { checkIfReferredUser } from "../../utils/helpers/checkIfReferredUser";
 
 const Minting = () => {
   const [lastMintId, setLastMintId] = useState(0);
   const [mintNetwork, setMintNetwork] = useState("Goerli");
+  const [isInvited, setIsInvited] = useState(false);
   const { chain } = useNetwork();
 
   useEffect(() => {
@@ -18,6 +20,8 @@ const Minting = () => {
       const networkObject = activeChains.find((net) => net.name === chain.name);
       selected = networkObject?.name || "Goerli";
     }
+    const isReferredUser = checkIfReferredUser();
+    setIsInvited(isReferredUser);
     setMintNetwork(selected);
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -58,6 +62,7 @@ const Minting = () => {
                 <CustomButtonMint
                   setLastMintId={setLastMintId}
                   mintNetwork={mintNetwork}
+                  isInvited={isInvited}
                 />
               </div>
             </div>
