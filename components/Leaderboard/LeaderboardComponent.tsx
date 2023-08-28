@@ -46,6 +46,7 @@ interface LeaderboardData {
 
 const LeaderboardComponent = () => {
   const [leaderboard, setLeaderboard] = useState<LeaderboardData[]>([]);
+  const [userData, setUserData] = useState<LeaderboardData[]>([]);
   const { address } = useAccount();
 
   useEffect(() => {
@@ -56,15 +57,29 @@ const LeaderboardComponent = () => {
     });
   }, []);
 
+  useEffect(() => {
+    const filteredStats = leaderboard.filter(
+      (user) => user.ethereumAddress === address
+    );
+
+    if (filteredStats.length > 0) {
+      setUserData(filteredStats);
+    } else {
+      // TODO: implement logic for fetching single user data if address is not present in leaderboard
+    }
+  }, [leaderboard, address]);
+
   const fetchLeaderboard = async () => {
     const response = await callLeaderboardAPI();
     const data = await response.json();
     return data.data;
   };
 
-  const filteredStats = leaderboard.filter(
-    (user) => user.ethereumAddress === address
-  );
+  const fetchUserStats = async () => {
+    // const response = await callLeaderboardAPI();
+    // const data = await response.json();
+    // return data.data;
+  };
 
   return (
     <section className="py-10 bg-base-200 sm:py-16 lg:py-24 min-w-[60vw]">
@@ -80,9 +95,9 @@ const LeaderboardComponent = () => {
             </span>
           </p>
         </div>
-        {filteredStats.length > 0 ? (
+        {userData.length > 0 ? (
           <>
-            <UserStats filteredStats={filteredStats} />
+            <UserStats filteredStats={userData} />
             {/* <ReferralLink
               inviteLink={
                 filteredStats[0].inviteLink ? filteredStats[0].inviteLink : ""
@@ -92,20 +107,27 @@ const LeaderboardComponent = () => {
         ) : (
           <LoadingSpinner />
         )}
-        {leaderboard.length > 0 ? (
+        {userData.length > 0 ? (
           <div className="flex flex-col justify-center items-center gap-2">
             <DailyReward />
-            <InviteUsersCollapse
-              inviteLink={
-                filteredStats[0].inviteLink ? filteredStats[0].inviteLink : ""
-              }
-            />
+            {userData.length > 0 ? (
+              <InviteUsersCollapse
+                inviteLink={
+                  userData[0].inviteLink ? userData[0].inviteLink : ""
+                }
+              />
+            ) : (
+              <></>
+            )}
           </div>
         ) : (
           <LoadingSpinner />
         )}
-
-        <LeaderboardTable leaderboard={leaderboard} />
+        {leaderboard.length > 0 ? (
+          <LeaderboardTable leaderboard={leaderboard} />
+        ) : (
+          <></>
+        )}
       </div>
     </section>
   );

@@ -7,10 +7,10 @@ const UserStats = (props: any) => {
   const { filteredStats } = props;
 
   const mintCount = filteredStats.length ? filteredStats[0].mints[0].count : 0;
-  const bridgeCount = filteredStats.length
+  const bridgeCount = filteredStats[0].bridges.length
     ? filteredStats[0].bridges[0].count
     : 0;
-  const currentStreak = filteredStats.length
+  const currentStreak = filteredStats[0].streaks.length
     ? filteredStats[0].streaks[0].currentStreak
     : 0;
   const totalPoints = filteredStats.length ? filteredStats[0].totalPoints : 0;
@@ -18,7 +18,6 @@ const UserStats = (props: any) => {
     ? filteredStats[0].inviteCount
     : 0;
 
-  console.log("filteredStats", filteredStats);
   return (
     <div>
       <div className="stats shadow w-full">
