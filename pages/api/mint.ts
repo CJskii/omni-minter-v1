@@ -56,22 +56,23 @@ const updateUserData = async (ethereumAddress: string, updateData: any) => {
 const handleReferral = async (ethereumAddress: string) => {
   const user = await prisma.user.findUnique({
     where: { ethereumAddress },
+    select: { invitedById: true, mints: true },
   });
 
   // If the user doesn't exist or wasn't referred by anyone, exit early
   if (!user || !user.invitedById) {
-    return false;
+    return { isValidReferral: false, referrerAddress: null };
   }
 
   // Check if the user has minted before
   if (user.mints && user.mints.length > 0) {
-    return false; // User has already minted before, so we shouldn't award referral points again
+    return { isValidReferral: false, referrerAddress: null }; // User has already minted before, so we shouldn't award referral points again
   }
 
   // If the user was referred and is minting for the first time, award the referrer
   await awardReferralPoints(user.invitedById);
 
-  return true;
+  return { isValidReferral: true, referrerAddress: user.invitedById };
 };
 
 const awardReferralPoints = async (referrerAddress: string) => {
@@ -126,9 +127,12 @@ export default async function handler(
     console.log("isInvited", isInvited);
     console.log("referredBy", referredBy);
     if (isInvited) {
-      const isValidReferral = await handleReferral(ethereumAddress);
-      if (isValidReferral) {
-        updateData.invitedById = referredBy;
+      const { isValidReferral, referrerAddress } = await handleReferral(
+        ethereumAddress
+      );
+      if (isValidReferral && referrerAddress) {
+        // TODO: Award referral points to invited user
+        updateData.invitedById = referrerAddress;
       }
     }
 

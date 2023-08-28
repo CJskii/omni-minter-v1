@@ -1,5 +1,7 @@
 import { updateMintData } from "../api/mintAPI";
 import { updateBridgeData } from "../api/bridgeAPI";
+import { createUser } from "../api/createUserAPI";
+import { checkIfReferredUser } from "./checkIfReferredUser";
 
 const handleApiResponse = (response: any, operation: string) => {
   if (response.status === 200) {
@@ -21,9 +23,9 @@ const handleInteraction = async ({
   referredBy?: string;
   operation: string;
 }) => {
-  const user = { address, isInvited, referredBy };
   switch (operation) {
     case "new_mint":
+      const user = { address, isInvited, referredBy };
       updateMintData({ user }).then((response) =>
         handleApiResponse(response, "Mint")
       );
@@ -33,6 +35,13 @@ const handleInteraction = async ({
         handleApiResponse(response, "Bridge")
       );
       break;
+    case "new_user":
+      const { refLink } = checkIfReferredUser();
+      createUser({ address, refLink }).then((response) => {
+        if (response.status === 201) {
+          localStorage.setItem("createdUserAddress", address);
+        }
+      });
     default:
       break;
   }
