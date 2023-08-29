@@ -131,7 +131,7 @@ export default async function handler(
         ethereumAddress
       );
       if (isValidReferral && referrerAddress) {
-        // TODO: Award referral points to invited user
+        updateData.totalPoints += 100;
         updateData.invitedById = referrerAddress;
       }
     }

@@ -6,7 +6,9 @@ import ReferralStats from "./Referral";
 const UserStats = (props: any) => {
   const { filteredStats } = props;
 
-  const mintCount = filteredStats.length ? filteredStats[0].mints[0].count : 0;
+  const mintCount = filteredStats[0].mints.length
+    ? filteredStats[0].mints[0].count
+    : 0;
   const bridgeCount = filteredStats[0].bridges.length
     ? filteredStats[0].bridges[0].count
     : 0;

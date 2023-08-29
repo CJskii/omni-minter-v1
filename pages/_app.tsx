@@ -41,9 +41,8 @@ function MyApp({ Component, pageProps }: AppProps) {
 
   useEffect(() => {
     const referralCode = router.query.invite;
-    localStorage.removeItem("referralCode");
     if (referralCode) {
-      localStorage.setItem("referralCode", referralCode as string);
+      localStorage.setItem("Mintly_referralCode", referralCode as string);
 
       if (router.pathname !== "/") {
         router.push("/");
