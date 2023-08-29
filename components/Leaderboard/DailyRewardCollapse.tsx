@@ -1,22 +1,33 @@
 import { FaAward } from "react-icons/fa";
+import { callClaimRewards } from "../../utils/api/callClaimRewardsAPI";
+import { useAccount } from "wagmi";
 
-const DailyRewardCollapse = () => {
-  // Mock variable representing the current day the user is on
-  // In a real-world scenario, this would be fetched from the Prisma DB
-  const currentUserDay = 3; // Example: user is on day 3
+const DailyRewardCollapse = (props: { currentRewardDay: number }) => {
+  const { currentRewardDay } = props;
+  const { address } = useAccount();
 
+  // TODO: move this to database
   const rewards = [
     { day: 1, points: 30 },
     { day: 2, points: 60 },
     { day: 3, points: 120 },
     { day: 4, points: 150 },
-    { day: 5, points: 300 },
-    { day: 6, points: 400 },
-    { day: 7, points: 500 },
-    { day: 8, points: 500 },
+    { day: 5, points: 200 },
+    { day: 6, points: 250 },
+    { day: 7, points: 300 },
+    { day: 8, points: 300 },
   ];
 
-  const currentReward = rewards.find((reward) => reward.day === currentUserDay);
+  const currentReward = rewards.find(
+    (reward) => reward.day === currentRewardDay
+  );
+
+  const handleClaim = () => {
+    if (!currentReward || !address) return;
+    console.log("claimed");
+    const { day, points } = currentReward;
+    callClaimRewards({ address, day });
+  };
 
   return (
     <div
@@ -46,10 +57,7 @@ const DailyRewardCollapse = () => {
                 <button
                   className="btn btn-primary"
                   onMouseDown={(e) => e.preventDefault()}
-                  onClick={() => {
-                    // Claim logic here
-                    console.log("Claimed!");
-                  }}
+                  onClick={handleClaim}
                 >
                   Claim
                 </button>

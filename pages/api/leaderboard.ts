@@ -24,6 +24,7 @@ export default async function handler(
         interactions: true,
         streaks: true,
         inviteCount: true,
+        currentRewardDay: true,
       },
       orderBy: {
         totalPoints: "desc",

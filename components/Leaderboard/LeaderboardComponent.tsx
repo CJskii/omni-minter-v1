@@ -19,6 +19,7 @@ interface LeaderboardData {
   ethereumAddress: string;
   totalPoints: number;
   inviteLink: string;
+  currentRewardDay: number;
   mints: [
     {
       count: number;
@@ -113,7 +114,7 @@ const LeaderboardComponent = () => {
         )}
         {userData.length > 0 ? (
           <div className="flex flex-col justify-center items-center gap-2">
-            <DailyReward />
+            <DailyReward currentRewardDay={userData[0].currentRewardDay} />
             {userData.length > 0 ? (
               <InviteUsersCollapse
                 inviteLink={

@@ -9,30 +9,37 @@ export default async function handler(
     return res.status(405).end();
   }
 
-  const { ethereumAddress } = req.body;
+  const { ethereumAddress, rewardDay } = req.body;
 
   try {
+    const dailyReward = await prisma.DailyReward.findMany({
+      where: {
+        day: rewardDay,
+      },
+    });
+
+    if (dailyReward.length === 0) {
+      return res.status(400).json({
+        status: "error",
+        message: "Error claiming reward",
+      });
+    }
+    // TODO: Check if user has already claimed reward for this day
+    // TODO: Claim reward logic
+
     const user = await prisma.user.findFirst({
       where: {
         ethereumAddress: ethereumAddress,
       },
       select: {
-        ethereumAddress: true,
-        inviteLink: true,
         totalPoints: true,
-        mints: true,
-        bridges: true,
-        interactions: true,
-        streaks: true,
-        inviteCount: true,
-        currentRewardDay: true,
       },
     });
 
     res.status(200).json({
       status: "exists",
-      message: "User stats fetched successfully",
-      data: user,
+      message: "Reward claimed successfully",
+      data: dailyReward,
     });
   } catch (error) {
     console.error(error);
