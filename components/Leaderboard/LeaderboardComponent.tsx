@@ -5,8 +5,8 @@ import { useAccount } from "wagmi";
 import UserStats from "./Stats/UserStats";
 import DailyReward from "./DailyRewardCollapse";
 import InviteUsersCollapse from "./InviteUsersCollapse";
-import ReferralLink from "./ReferralLink";
 import LeaderboardTable from "./Data/Table";
+import { callUserStats } from "../../utils/api/callUserStatsAPI";
 
 // create interface for leaderboard data
 
@@ -16,7 +16,6 @@ import LeaderboardTable from "./Data/Table";
 // points: number
 
 interface LeaderboardData {
-  // write it here
   ethereumAddress: string;
   totalPoints: number;
   inviteLink: string;
@@ -65,7 +64,11 @@ const LeaderboardComponent = () => {
     if (filteredStats.length > 0) {
       setUserData(filteredStats);
     } else {
-      // TODO: implement logic for fetching single user data if address is not present in leaderboard
+      fetchUserStats().then((data) => {
+        if (data) {
+          setUserData([data]);
+        }
+      });
     }
   }, [leaderboard, address]);
 
@@ -76,9 +79,10 @@ const LeaderboardComponent = () => {
   };
 
   const fetchUserStats = async () => {
-    // const response = await callLeaderboardAPI();
-    // const data = await response.json();
-    // return data.data;
+    if (address === undefined) return;
+    const response = await callUserStats(address);
+    const data = await response.json();
+    return data.data;
   };
 
   return (

@@ -38,7 +38,7 @@ const ReferralLink = (props: { inviteLink: string }) => {
             className="underline cursor-pointer text-gray-600"
             onClick={handleCopyClick}
           >
-            https://www.mintly.lol/invite={inviteLink}
+            https://www.mintly.lol/?invite={inviteLink}
           </a>
           <div className="flex justify-center items-center gap-4">
             <CopyButton handleCopyClick={handleCopyClick} copied={copied} />
