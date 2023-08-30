@@ -71,6 +71,7 @@ const LeaderboardComponent = () => {
         }
       });
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [leaderboard, address]);
 
   const fetchLeaderboard = async () => {

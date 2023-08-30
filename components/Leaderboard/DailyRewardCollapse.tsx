@@ -1,32 +1,63 @@
 import { FaAward } from "react-icons/fa";
-import { callClaimRewards } from "../../utils/api/callClaimRewardsAPI";
 import { useAccount } from "wagmi";
+import handleInteraction from "../../utils/helpers/handleInteraction";
+import { useState, useEffect } from "react";
+import { callDailyRewardsData } from "../../utils/api/callRewardAPI";
+
+interface RewardData {
+  id: number;
+  day: number;
+  points: number;
+  reward: string;
+  description: string;
+}
 
 const DailyRewardCollapse = (props: { currentRewardDay: number }) => {
   const { currentRewardDay } = props;
   const { address } = useAccount();
+  const [rewardsData, setRewardsData] = useState([]);
+  const [currentRewardData, setCurrentRewardData] = useState<RewardData>();
 
-  // TODO: move this to database
-  const rewards = [
-    { day: 1, points: 30 },
-    { day: 2, points: 60 },
-    { day: 3, points: 120 },
-    { day: 4, points: 150 },
-    { day: 5, points: 200 },
-    { day: 6, points: 250 },
-    { day: 7, points: 300 },
-    { day: 8, points: 300 },
-  ];
+  useEffect(() => {
+    if (!address || rewardsData.length) return;
+    fetchDailyRewardsData().then((data) => {
+      console.log("data is fetched");
+      setRewardsData(data);
+      console.log(data);
+      const currentReward = data.find(
+        (reward: RewardData) => reward.day === currentRewardDay
+      );
+      setCurrentRewardData(currentReward);
+    });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [address]);
 
-  const currentReward = rewards.find(
-    (reward) => reward.day === currentRewardDay
-  );
+  useEffect(() => {
+    if (!rewardsData) return;
+    const currentReward = rewardsData.find(
+      (reward: RewardData) => reward.day === currentRewardDay
+    );
+    setCurrentRewardData(currentReward);
+  }, [currentRewardDay, rewardsData]);
 
-  const handleClaim = () => {
-    if (!currentReward || !address) return;
+  const handleClaim = async () => {
+    if (!currentRewardData || !address) return;
     console.log("claimed");
-    const { day, points } = currentReward;
-    callClaimRewards({ address, day });
+    console.log(currentRewardData);
+    const { day } = currentRewardData;
+    // const response = await handleInteraction({
+    //   address,
+    //   day,
+    //   operation: "claim_daily_reward",
+    // });
+    // const data = await response.json();
+    // return data;
+  };
+
+  const fetchDailyRewardsData = async () => {
+    const response = await callDailyRewardsData();
+    const data = await response.json();
+    return data.data;
   };
 
   return (
@@ -50,9 +81,11 @@ const DailyRewardCollapse = (props: { currentRewardDay: number }) => {
             </figure>
             <div className="card-body items-center text-center">
               <h2 className="card-title">
-                Day {currentReward?.day ? currentReward?.day : 1} Reward
+                Day {currentRewardData?.day ? currentRewardData?.day : 1} Reward
               </h2>
-              <p>+{currentReward?.points ? currentReward?.points : 30} XP</p>
+              <p>
+                +{currentRewardData?.points ? currentRewardData?.points : 30} XP
+              </p>
               <div className="card-actions">
                 <button
                   className="btn btn-primary"
