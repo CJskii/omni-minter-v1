@@ -12,32 +12,36 @@ export default async function handler(
   const { ethereumAddress, rewardDay } = req.body;
 
   try {
-    const dailyReward = await prisma.DailyReward.findMany({
-      where: {
-        day: rewardDay,
-      },
+    // Fetch the daily reward for the given day
+    const dailyReward = await prisma.dailyReward.findUnique({
+      where: { day: rewardDay },
     });
 
-    if (dailyReward.length === 0) {
+    if (!dailyReward) {
       return res.status(400).json({
         status: "error",
         message: "Error claiming reward",
       });
     }
-    // TODO: Check if user has already claimed reward for this day
-    // TODO: Claim reward logic
 
-    const user = await prisma.user.findFirst({
-      where: {
-        ethereumAddress: ethereumAddress,
-      },
-      select: {
-        totalPoints: true,
+    // Update the user's total points and current reward day
+    let newRewardDay = rewardDay === 8 ? 8 : rewardDay + 1;
+
+    await prisma.user.update({
+      where: { ethereumAddress },
+      data: {
+        totalPoints: {
+          increment: dailyReward.points,
+        },
+        currentRewardDay: newRewardDay,
+        lastRewardClaimedAt: new Date(),
       },
     });
 
+    // TODO: Add logic to record this in UserDailyReward table
+
     res.status(200).json({
-      status: "exists",
+      status: "success",
       message: "Reward claimed successfully",
       data: dailyReward,
     });

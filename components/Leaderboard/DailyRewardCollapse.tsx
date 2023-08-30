@@ -45,13 +45,13 @@ const DailyRewardCollapse = (props: { currentRewardDay: number }) => {
     console.log("claimed");
     console.log(currentRewardData);
     const { day } = currentRewardData;
-    // const response = await handleInteraction({
-    //   address,
-    //   day,
-    //   operation: "claim_daily_reward",
-    // });
-    // const data = await response.json();
-    // return data;
+    const response = await handleInteraction({
+      address,
+      day,
+      operation: "claim_daily_reward",
+    });
+    const data = await response.json();
+    return data;
   };
 
   const fetchDailyRewardsData = async () => {
