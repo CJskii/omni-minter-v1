@@ -22,7 +22,6 @@ const DailyRewardCollapse = (props: {
   const { address } = useAccount();
   const [rewardsData, setRewardsData] = useState([]);
   const [currentRewardData, setCurrentRewardData] = useState<RewardData>();
-  const [nextReward, setNextReward] = useState<RewardData>();
 
   // Determine whether the "Claim" button should be disabled
   const today = new Date();
@@ -58,7 +57,7 @@ const DailyRewardCollapse = (props: {
     }
     // If the last claimed date was yesterday, increment the reward day
     else if (daysDifference === 1) {
-      newRewardDay = Math.min(currentRewardDay + 1, 8); // Max day is 8
+      newRewardDay = Math.min(currentRewardDay, 8); // Max day is 8
     }
 
     // Find the reward data for the new reward day
@@ -75,22 +74,25 @@ const DailyRewardCollapse = (props: {
     const { day } = currentRewardData;
     const response = await handleInteraction({
       address,
-      day,
+
       operation: "claim_daily_reward",
     });
-    if (response) {
+    if (response.status === "success") {
       setUserData((prev: any) => {
         return [
           {
             ...prev[0],
             lastRewardClaimedAt: new Date().toISOString(),
-            currentRewardDay: prev[0].currentRewardDay + 1,
+            currentRewardDay: response.data.newRewardDay,
             totalPoints: response.data.totalPoints,
           },
         ];
       });
+      console.log(response);
+    } else {
+      console.log(response);
     }
-    console.log(response);
+    // console.log(response);
     // const data = await response.json();
     // return data;
   };
@@ -132,10 +134,10 @@ const DailyRewardCollapse = (props: {
                   className="btn btn-primary"
                   onMouseDown={(e) => e.preventDefault()}
                   onClick={handleClaim}
-                  // disabled={isClaimButtonDisabled}
+                  disabled={isClaimButtonDisabled}
                 >
-                  {/* {isClaimButtonDisabled ? "Come back tomorrow" : "Claim"} */}
-                  Claim
+                  {isClaimButtonDisabled ? "Come back tomorrow" : "Claim"}
+                  {/* Claim */}
                 </button>
               </div>
             </div>

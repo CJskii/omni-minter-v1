@@ -11,7 +11,7 @@ const handleApiResponse = async (response: any, operation: string) => {
   } else {
     console.log(`${operation} data update failed`);
     console.log(response);
-    return { error: `${operation} data update failed` };
+    return await response.json();
   }
 };
 
@@ -19,13 +19,11 @@ const handleInteraction = async ({
   address,
   isInvited = false,
   referredBy = "",
-  day,
   operation,
 }: {
   address: string;
   isInvited?: boolean;
   referredBy?: string;
-  day?: number;
   operation: string;
 }) => {
   let response;
@@ -42,8 +40,7 @@ const handleInteraction = async ({
       response = await createUser({ address, refLink });
       return handleApiResponse(response, "User");
     case "claim_daily_reward":
-      if (!day) return { error: "No day provided" } as any;
-      response = await callClaimRewards({ address, day });
+      response = await callClaimRewards({ address });
       return handleApiResponse(response, "Daily reward");
     default:
       break;
