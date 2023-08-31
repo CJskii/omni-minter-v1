@@ -3,7 +3,7 @@ import { callLeaderboardAPI } from "../../utils/api/callLeaderboardAPI";
 import LoadingSpinner from "./Loading";
 import { useAccount } from "wagmi";
 import UserStats from "./Stats/UserStats";
-import DailyReward from "./DailyRewardCollapse";
+import DailyReward from "./Rewards/DailyRewardCollapse";
 import InviteUsersCollapse from "./InviteUsersCollapse";
 import LeaderboardTable from "./Data/Table";
 import { callUserStats } from "../../utils/api/callUserStatsAPI";
