@@ -20,6 +20,7 @@ interface LeaderboardData {
   totalPoints: number;
   inviteLink: string;
   currentRewardDay: number;
+  lastRewardClaimedAt: string;
   mints: [
     {
       count: number;
@@ -74,6 +75,10 @@ const LeaderboardComponent = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [leaderboard, address]);
 
+  useEffect(() => {
+    console.log("new user data", userData);
+  }, [userData]);
+
   const fetchLeaderboard = async () => {
     const response = await callLeaderboardAPI();
     const data = await response.json();
@@ -115,7 +120,11 @@ const LeaderboardComponent = () => {
         )}
         {userData.length > 0 ? (
           <div className="flex flex-col justify-center items-center gap-2">
-            <DailyReward currentRewardDay={userData[0].currentRewardDay} />
+            <DailyReward
+              currentRewardDay={userData[0].currentRewardDay}
+              lastRewardClaimedAt={userData[0].lastRewardClaimedAt}
+              setUserData={setUserData}
+            />
             {userData.length > 0 ? (
               <InviteUsersCollapse
                 inviteLink={

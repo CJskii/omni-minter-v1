@@ -3,6 +3,7 @@ import { useAccount } from "wagmi";
 import handleInteraction from "../../utils/helpers/handleInteraction";
 import { useState, useEffect } from "react";
 import { callDailyRewardsData } from "../../utils/api/callRewardAPI";
+import { differenceInCalendarDays, parseISO } from "date-fns";
 
 interface RewardData {
   id: number;
@@ -12,11 +13,22 @@ interface RewardData {
   description: string;
 }
 
-const DailyRewardCollapse = (props: { currentRewardDay: number }) => {
-  const { currentRewardDay } = props;
+const DailyRewardCollapse = (props: {
+  currentRewardDay: number;
+  lastRewardClaimedAt: string;
+  setUserData: any;
+}) => {
+  const { currentRewardDay, setUserData, lastRewardClaimedAt } = props;
   const { address } = useAccount();
   const [rewardsData, setRewardsData] = useState([]);
   const [currentRewardData, setCurrentRewardData] = useState<RewardData>();
+  const [nextReward, setNextReward] = useState<RewardData>();
+
+  // Determine whether the "Claim" button should be disabled
+  const today = new Date();
+  const lastClaimedDate = parseISO(props.lastRewardClaimedAt);
+  const daysDifference = differenceInCalendarDays(today, lastClaimedDate);
+  const isClaimButtonDisabled = daysDifference === 0;
 
   useEffect(() => {
     if (!address || rewardsData.length) return;
@@ -33,12 +45,28 @@ const DailyRewardCollapse = (props: { currentRewardDay: number }) => {
   }, [address]);
 
   useEffect(() => {
-    if (!rewardsData) return;
+    // Calculate the difference between the current date and the last claimed date
+    const today = new Date();
+    const lastClaimedDate = parseISO(lastRewardClaimedAt);
+    const daysDifference = differenceInCalendarDays(today, lastClaimedDate);
+
+    let newRewardDay = currentRewardDay;
+
+    // Reset the reward day to 1 if the last claimed date was more than a day ago
+    if (daysDifference > 1) {
+      newRewardDay = 1;
+    }
+    // If the last claimed date was yesterday, increment the reward day
+    else if (daysDifference === 1) {
+      newRewardDay = Math.min(currentRewardDay + 1, 8); // Max day is 8
+    }
+
+    // Find the reward data for the new reward day
     const currentReward = rewardsData.find(
-      (reward: RewardData) => reward.day === currentRewardDay
+      (reward: RewardData) => reward.day === newRewardDay
     );
     setCurrentRewardData(currentReward);
-  }, [currentRewardDay, rewardsData]);
+  }, [lastRewardClaimedAt, currentRewardDay, rewardsData]);
 
   const handleClaim = async () => {
     if (!currentRewardData || !address) return;
@@ -50,8 +78,21 @@ const DailyRewardCollapse = (props: { currentRewardDay: number }) => {
       day,
       operation: "claim_daily_reward",
     });
-    const data = await response.json();
-    return data;
+    if (response) {
+      setUserData((prev: any) => {
+        return [
+          {
+            ...prev[0],
+            lastRewardClaimedAt: new Date().toISOString(),
+            currentRewardDay: prev[0].currentRewardDay + 1,
+            totalPoints: response.data.totalPoints,
+          },
+        ];
+      });
+    }
+    console.log(response);
+    // const data = await response.json();
+    // return data;
   };
 
   const fetchDailyRewardsData = async () => {
@@ -91,7 +132,9 @@ const DailyRewardCollapse = (props: { currentRewardDay: number }) => {
                   className="btn btn-primary"
                   onMouseDown={(e) => e.preventDefault()}
                   onClick={handleClaim}
+                  // disabled={isClaimButtonDisabled}
                 >
+                  {/* {isClaimButtonDisabled ? "Come back tomorrow" : "Claim"} */}
                   Claim
                 </button>
               </div>

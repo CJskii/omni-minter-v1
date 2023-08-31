@@ -26,6 +26,7 @@ export default async function handler(
         streaks: true,
         inviteCount: true,
         currentRewardDay: true,
+        lastRewardClaimedAt: true,
       },
     });
 
