@@ -1,9 +1,10 @@
 import { FaAward } from "react-icons/fa";
 import { useAccount } from "wagmi";
-import handleInteraction from "../../utils/helpers/handleInteraction";
+import { claimDailyReward } from "../../utils/helpers/rewards/claimDailyReward";
 import { useState, useEffect } from "react";
 import { callDailyRewardsData } from "../../utils/api/callRewardAPI";
-import { differenceInCalendarDays, parseISO } from "date-fns";
+import { getCurrentReward } from "../../utils/helpers/rewards/getCurrentReward";
+import { shouldDisableClaimButton } from "../../utils/helpers/rewards/shouldDisableClaimButton";
 
 interface RewardData {
   id: number;
@@ -22,19 +23,14 @@ const DailyRewardCollapse = (props: {
   const { address } = useAccount();
   const [rewardsData, setRewardsData] = useState([]);
   const [currentRewardData, setCurrentRewardData] = useState<RewardData>();
+  const [isLoading, setIsLoading] = useState(false);
 
-  // Determine whether the "Claim" button should be disabled
-  const today = new Date();
-  const lastClaimedDate = parseISO(props.lastRewardClaimedAt);
-  const daysDifference = differenceInCalendarDays(today, lastClaimedDate);
-  const isClaimButtonDisabled = daysDifference === 0;
+  const isClaimButtonDisabled = shouldDisableClaimButton(lastRewardClaimedAt);
 
   useEffect(() => {
     if (!address || rewardsData.length) return;
     fetchDailyRewardsData().then((data) => {
-      console.log("data is fetched");
       setRewardsData(data);
-      console.log(data);
       const currentReward = data.find(
         (reward: RewardData) => reward.day === currentRewardDay
       );
@@ -44,63 +40,40 @@ const DailyRewardCollapse = (props: {
   }, [address]);
 
   useEffect(() => {
-    // Calculate the difference between the current date and the last claimed date
-    const today = new Date();
-    const lastClaimedDate = parseISO(lastRewardClaimedAt);
-    const daysDifference = differenceInCalendarDays(today, lastClaimedDate);
-
-    let newRewardDay = currentRewardDay;
-
-    // Reset the reward day to 1 if the last claimed date was more than a day ago
-    if (daysDifference > 1) {
-      newRewardDay = 1;
-    }
-    // If the last claimed date was yesterday, increment the reward day
-    else if (daysDifference === 1) {
-      newRewardDay = Math.min(currentRewardDay, 8); // Max day is 8
-    }
-
-    // Find the reward data for the new reward day
-    const currentReward = rewardsData.find(
-      (reward: RewardData) => reward.day === newRewardDay
-    );
+    if (!rewardsData.length) return;
+    const currentReward = getCurrentReward({
+      rewardsData,
+      currentRewardDay,
+      lastRewardClaimedAt,
+    });
     setCurrentRewardData(currentReward);
   }, [lastRewardClaimedAt, currentRewardDay, rewardsData]);
 
   const handleClaim = async () => {
     if (!currentRewardData || !address) return;
-    console.log("claimed");
-    console.log(currentRewardData);
-    const { day } = currentRewardData;
-    const response = await handleInteraction({
+    setIsLoading(true);
+    const response = await claimDailyReward({
       address,
-
-      operation: "claim_daily_reward",
+      setUserData,
     });
-    if (response.status === "success") {
-      setUserData((prev: any) => {
-        return [
-          {
-            ...prev[0],
-            lastRewardClaimedAt: new Date().toISOString(),
-            currentRewardDay: response.data.newRewardDay,
-            totalPoints: response.data.totalPoints,
-          },
-        ];
-      });
-      console.log(response);
-    } else {
-      console.log(response);
-    }
-    // console.log(response);
-    // const data = await response.json();
-    // return data;
+    setIsLoading(false);
+    console.log(response);
   };
 
   const fetchDailyRewardsData = async () => {
     const response = await callDailyRewardsData();
     const data = await response.json();
     return data.data;
+  };
+
+  const renderButtonText = () => {
+    if (isClaimButtonDisabled && !isLoading) {
+      return "Come back tomorrow";
+    } else if (isLoading) {
+      return <span className="loading loading-infinity loading-md"></span>;
+    } else {
+      return "Claim";
+    }
   };
 
   return (
@@ -130,14 +103,14 @@ const DailyRewardCollapse = (props: {
                 +{currentRewardData?.points ? currentRewardData?.points : 30} XP
               </p>
               <div className="card-actions">
+                {isLoading ? <></> : <></>}
                 <button
                   className="btn btn-primary"
                   onMouseDown={(e) => e.preventDefault()}
                   onClick={handleClaim}
                   disabled={isClaimButtonDisabled}
                 >
-                  {isClaimButtonDisabled ? "Come back tomorrow" : "Claim"}
-                  {/* Claim */}
+                  {renderButtonText()}
                 </button>
               </div>
             </div>
