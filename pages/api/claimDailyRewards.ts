@@ -3,20 +3,22 @@ import { prisma } from "../../prisma/client";
 import { differenceInCalendarDays, parseISO, isToday } from "date-fns";
 
 const fetchUserData = async (ethereumAddress: string) => {
-  const user = await prisma.user.findUnique({
-    where: { ethereumAddress },
-    select: {
-      totalPoints: true,
-      lastRewardClaimedAt: true,
-      currentRewardDay: true,
-    },
-  });
-  return user;
   return await prisma.user.findUnique({
     where: { ethereumAddress },
     select: {
       totalPoints: true,
       lastRewardClaimedAt: true,
+      currentRewardDay: true,
+      mints: {
+        select: {
+          updatedAt: true,
+        },
+      },
+      bridges: {
+        select: {
+          updatedAt: true,
+        },
+      },
     },
   });
 };
@@ -50,6 +52,36 @@ const calculateNextDayRewardDay = (dailyReward: any) => {
   const claimedRewardDay = dailyReward.day;
   let nextRewardDay = claimedRewardDay < 8 ? claimedRewardDay + 1 : 8;
   return nextRewardDay;
+};
+
+const isValidRewardDay = (user: any, day: number) => {
+  const mintedToday = isToday(new Date(user.mints.updatedAt));
+  const bridgedToday = isToday(new Date(user.bridges.updatedAt));
+  if (day === 3) {
+    return mintedToday
+      ? { message: "Success", isValid: true }
+      : {
+          message: "You should mint at least once today to claim this reward",
+          isValid: false,
+        };
+  } else if (day === 5) {
+    return bridgedToday
+      ? { message: "Success", isValid: true }
+      : {
+          message: "You should bridge at least once today to claim this reward",
+          isValid: false,
+        };
+  } else if (day === 7) {
+    return mintedToday && bridgedToday
+      ? { message: "Success", isValid: true }
+      : {
+          message:
+            "You should mint and bridge at least once today to claim this reward",
+          isValid: false,
+        };
+  } else {
+    return { message: "Success", isValid: true };
+  }
 };
 
 export default async function handler(
@@ -86,6 +118,15 @@ export default async function handler(
 
     // Calculate the new reward day
     const claimRewardDay = calculateNextReward(user);
+
+    const { message, isValid } = isValidRewardDay(user, claimRewardDay);
+
+    if (!isValid) {
+      return res.status(400).json({
+        status: "error",
+        message: message,
+      });
+    }
 
     // Fetch the daily reward for the new reward day
     const dailyReward = await prisma.dailyReward.findUnique({
