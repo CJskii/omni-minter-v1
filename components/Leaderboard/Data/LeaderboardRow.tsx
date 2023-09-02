@@ -31,6 +31,19 @@ interface LeaderboardData {
 }
 const LeaderboardRow = (props: LeaderboardRowProps) => {
   const { user, index } = props;
+
+  const calculateUserLevel = (totalXP: number): number => {
+    let level = 0;
+    let xpForNextLevel = 0;
+
+    while (totalXP >= xpForNextLevel) {
+      level++;
+      xpForNextLevel = Math.pow(level, 2) * 10; // XP required for next level (quadratic formula)
+    }
+
+    return level - 1;
+  };
+
   return (
     <div
       tabIndex={0}
@@ -48,7 +61,7 @@ const LeaderboardRow = (props: LeaderboardRowProps) => {
         </div>
 
         {/* Number of Points */}
-        <span className="points">{user.totalPoints}</span>
+        <span className="points">{calculateUserLevel(user.totalPoints)}</span>
       </div>
 
       <div className="collapse-content flex flex-row-reverse justify-between">
@@ -67,15 +80,13 @@ const LeaderboardRow = (props: LeaderboardRowProps) => {
         <div className="flex flex-col justify-center items-start">
           {" "}
           <p>
-            🔥 Current Streak:{" "}
-            {user.streaks && user.streaks.length > 0
-              ? user.streaks[0].currentStreak
-              : 0}
+            🎉 Total XP:{" "}
+            {user.totalPoints && user.totalPoints > 0 ? user.totalPoints : 0}
           </p>
           <p>
-            🎉 Interactions:{" "}
-            {user.interactions && user.interactions.length > 0
-              ? user.interactions[0].count
+            🔥 Streak:{" "}
+            {user.streaks && user.streaks.length > 0
+              ? user.streaks[0].currentStreak
               : 0}
           </p>
         </div>

@@ -43,7 +43,7 @@ const LeaderboardTable = (props: LeaderboardData) => {
               <span className="pl-2">Wallet address</span>
             </div>
 
-            <span className="pr-6">Total XP</span>
+            <span className="pr-6">Level</span>
           </div>
           {leaderboard
             .filter((user: User) => user.totalPoints > 0)
