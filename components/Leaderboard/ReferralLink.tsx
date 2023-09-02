@@ -8,7 +8,7 @@ const ReferralLink = (props: { inviteLink: string }) => {
 
   const handleCopyClick = () => {
     navigator.clipboard.writeText(
-      `https://www.mintly.lol/invite=${inviteLink}`
+      `https://www.mintly.lol/?invite=${inviteLink}`
     );
     setCopied(true);
     setTimeout(() => setCopied(false), 2000);
@@ -16,10 +16,10 @@ const ReferralLink = (props: { inviteLink: string }) => {
 
   const handleTwitterShare = () => {
     const text = encodeURIComponent(
-      "Join me on Mintly and earn rewards! Here's my invite link:"
+      "Join me on Mintly and earn rewards!\n\nHere's my invite link:"
     );
     const url = encodeURIComponent(
-      `https://www.mintly.lol/invite=${inviteLink}`
+      `https://www.mintly.lol/?invite=${inviteLink}`
     );
     window.open(
       `https://twitter.com/intent/tweet?text=${text}&url=${url}`,
