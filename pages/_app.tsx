@@ -67,6 +67,17 @@ function MyApp({ Component, pageProps }: AppProps) {
           <title>Mintly</title>
           <meta name="description" content="Mintly" />
           <link rel="icon" href="/favicon.ico" />
+          <meta name="twitter:card" content="summary_large_image" />
+          <meta name="twitter:site" content="@Mintly_lol" />
+          <meta name="twitter:title" content="Join me on Mintly!" />
+          <meta
+            name="twitter:description"
+            content="Earn rewards and have fun!"
+          />
+          <meta
+            name="twitter:image"
+            content="https://pbs.twimg.com/profile_banners/1280015719229386754/1691925867/1500x500"
+          />
         </Head>
         <div className="flex flex-col justify-between items-center min-h-screen font-plex-mono">
           <Navbar />

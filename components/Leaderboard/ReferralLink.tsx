@@ -1,5 +1,4 @@
 import { useState } from "react";
-import { FaCopy } from "react-icons/fa";
 import ShareButton from "../Buttons/ShareButton";
 import CopyButton from "../Buttons/CopyButton";
 const ReferralLink = (props: { inviteLink: string }) => {
@@ -16,7 +15,7 @@ const ReferralLink = (props: { inviteLink: string }) => {
 
   const handleTwitterShare = () => {
     const text = encodeURIComponent(
-      "Join me on Mintly and earn rewards!\n\nHere's my invite link:"
+      "🚀 I'm earning rewards on #Mintly and you can too! 🎉 \n Get extra XP when you join from my invite link 🫂\n\n Don't miss out on the fun. 👇 \n"
     );
     const url = encodeURIComponent(
       `https://www.mintly.lol/?invite=${inviteLink}`
