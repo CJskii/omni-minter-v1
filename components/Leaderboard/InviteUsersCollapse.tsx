@@ -10,7 +10,7 @@ const InviteUsersCollapse = (props: { inviteLink: string }) => {
       <div className="collapse-title text-xl font-medium">Invite friends</div>
 
       <div className="collapse-content flex flex-col items-center space-y-4 text-base-content">
-        <div className="text-center flex flex-col justify-center items-center ">
+        <div className="text-center flex flex-col justify-center items-center">
           Invite your friends to Mintly and earn points when they mint their
           first NFT! The more friends you invite, the more points you earn:
           <div className="pl-5 mt-2 flex flex-col justify-center items-start">

@@ -44,6 +44,13 @@ const LeaderboardRow = (props: LeaderboardRowProps) => {
     return level - 1;
   };
 
+  // Function to truncate Ethereum address
+  const truncateAddress = (address: string) => {
+    return `${address.substring(0, 6)}...${address.substring(
+      address.length - 4
+    )}`;
+  };
+
   return (
     <div
       tabIndex={0}
@@ -55,8 +62,11 @@ const LeaderboardRow = (props: LeaderboardRowProps) => {
           <span className="leaderboard-rank">#{index + 1}</span>
 
           {/* Wallet Address */}
-          <span className="wallet-address truncate">
+          <span className="wallet-address truncate hidden md:inline">
             {user.ethereumAddress}
+          </span>
+          <span className="wallet-address truncate md:hidden">
+            {truncateAddress(user.ethereumAddress)}
           </span>
         </div>
 

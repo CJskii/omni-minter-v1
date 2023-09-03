@@ -102,23 +102,22 @@ const DailyRewardCollapse = (props: {
           </p>
           <div className="reward-card p-4 relative">
             <div className="absolute inset-0 flex items-center justify-center opacity-10 text-gray-600"></div>
-            <div className="card w-96 bg-base-100 shadow-xl">
+            <div className="card w-full sm:w-96 bg-base-100 shadow-xl">
               <figure className="px-10 pt-10">
-                <FaAward className="w-[100px] h-[100px] text-yellow-500" />
+                <FaAward className="w-[64px] h-[64px] sm:w-[100px] sm:h-[100px] text-yellow-500" />
               </figure>
               <div className="card-body items-center text-center">
                 <span className="text-neutral-content text-lg">
                   Day {currentRewardData?.day ? currentRewardData?.day : 1}
                 </span>
                 <h2 className="card-title pb-2 text-2xl">
-                  {" "}
                   {currentRewardData?.reward
                     ? currentRewardData?.reward
                     : "Reward"}
                 </h2>
                 <div className="card-actions">
                   <button
-                    className="btn btn-primary"
+                    className="btn btn-primary max-w-[100%]"
                     onMouseDown={(e) => e.preventDefault()}
                     onClick={handleClaim}
                     disabled={isClaimButtonDisabled}

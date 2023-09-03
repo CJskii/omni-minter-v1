@@ -95,6 +95,9 @@ const Navbar = () => {
               <Link href="/onft-bridge">Bridge</Link>
             </li>
             <li onClick={() => setExpanded(false)}>
+              <Link href="/leaderboard">Leaderboard</Link>
+            </li>
+            <li onClick={() => setExpanded(false)}>
               <Link href="/faq">FAQ</Link>
             </li>
             <li onClick={() => setExpanded(false)}>
