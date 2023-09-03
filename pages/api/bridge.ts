@@ -1,6 +1,59 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import { prisma } from "../../prisma/client";
 
+const fetchUserData = async (ethereumAddress: string) => {
+  return await await prisma.user.findUnique({
+    where: { ethereumAddress },
+    select: {
+      totalPoints: true,
+      bridges: {
+        select: { id: true, count: true, updatedAt: true },
+      },
+      interactions: {
+        select: { id: true, updatedAt: true, count: true },
+      },
+      streaks: {
+        select: { id: true, currentStreak: true, updatedAt: true },
+      },
+    },
+  });
+};
+
+const calculatePoints = (user: any, streak: any) => {
+  let pointsToAdd = 50; // 50 points for bridging
+  const currentStreak = streak ? streak : 1;
+  const today = new Date().toDateString();
+  const lastInteractionDate = user.interactions[0]?.updatedAt.toDateString();
+  if (lastInteractionDate !== today) {
+    if (currentStreak === 0) {
+      pointsToAdd += 20; // Default 20 points if no streak data
+    } else if (currentStreak >= 1 && currentStreak <= 7) {
+      pointsToAdd += 20;
+    } else if (currentStreak >= 8 && currentStreak <= 14) {
+      pointsToAdd += 40;
+    } else if (currentStreak >= 15 && currentStreak <= 30) {
+      pointsToAdd += 75;
+    } else if (currentStreak > 30) {
+      pointsToAdd += 100;
+    }
+  }
+  return pointsToAdd;
+};
+
+const handleStreaks = (user: any) => {
+  const today = new Date().toDateString();
+  const lastInteractionDate = user.interactions[0]?.updatedAt.toDateString();
+  const yesterday = new Date();
+  yesterday.setDate(yesterday.getDate() - 1);
+  let streak = user.streaks[0]?.currentStreak || 0;
+  if (lastInteractionDate === yesterday.toDateString()) {
+    streak += 1;
+  } else if (lastInteractionDate !== today) {
+    streak = 1; // Reset streak
+  }
+  return streak;
+};
+
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse
@@ -13,45 +66,9 @@ export default async function handler(
 
   try {
     // Fetch the user and related data
-    const user = await prisma.user.findUnique({
-      where: { ethereumAddress },
-      select: {
-        totalPoints: true,
-        bridges: {
-          select: { id: true, count: true, updatedAt: true },
-        },
-        interactions: {
-          select: { id: true, updatedAt: true, count: true },
-        },
-        streaks: {
-          select: { id: true, currentStreak: true, updatedAt: true },
-        },
-      },
-    });
-
-    let pointsToAdd = 50; // 50 points for bridging
-
-    const today = new Date().toDateString();
-    const lastInteractionDate = user.interactions[0]?.updatedAt.toDateString();
-    // console.log("Today:", today);
-    // console.log("Last interaction:", lastInteractionDate);
-    // Handle daily interaction
-    if (lastInteractionDate !== today) {
-      // console.log("Daily interaction!");
-      pointsToAdd += 20; // 20 points for daily interaction
-    }
-
-    // Handle streaks
-    const yesterday = new Date();
-    yesterday.setDate(yesterday.getDate() - 1);
-
-    let streak = user.streaks[0]?.currentStreak || 0;
-
-    if (lastInteractionDate === yesterday.toDateString()) {
-      streak += 1;
-    } else if (lastInteractionDate !== today) {
-      streak = 1; // Reset streak
-    }
+    const user = await fetchUserData(ethereumAddress);
+    const streak = handleStreaks(user);
+    const pointsToAdd = calculatePoints(user, streak);
 
     // Update user points, bridge counter, interactions, and streaks
     const updateData: any = {

@@ -9,7 +9,16 @@ const ReferralStats = (props: any) => {
       </div>
       <div className="stat-title">Invites</div>
       <div className="stat-value">{inviteCount ? inviteCount : 0}</div>
-      <div className="stat-desc">150 XP each</div>
+      <div className="stat-desc">
+        {inviteCount >= 1 && inviteCount <= 5
+          ? 150
+          : inviteCount >= 6 && inviteCount <= 10
+          ? 200
+          : inviteCount >= 11
+          ? 250
+          : 150}{" "}
+        XP each
+      </div>
     </div>
   );
 };

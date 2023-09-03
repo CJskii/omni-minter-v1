@@ -19,13 +19,28 @@ const fetchUserData = async (ethereumAddress: string) => {
   });
 };
 
-const calculatePoints = (user: any) => {
-  let pointsToAdd = 100; // 100 points for minting
+const calculatePoints = (user: any, streak: number) => {
+  let pointsToAdd = 100; // Default 100 points for minting
   const today = new Date().toDateString();
   const lastInteractionDate = user.interactions[0]?.updatedAt.toDateString();
+  const currentStreak =
+    user.streaks && user.streaks.currentStreak > 0
+      ? user.streaks[0]?.currentStreak
+      : 0;
 
+  // Points for daily interaction
   if (lastInteractionDate !== today) {
-    pointsToAdd += 20; // 20 points for daily interaction
+    if (currentStreak === 0) {
+      pointsToAdd += 20;
+    } else if (currentStreak >= 1 && currentStreak <= 7) {
+      pointsToAdd += 20;
+    } else if (currentStreak >= 8 && currentStreak <= 14) {
+      pointsToAdd += 40;
+    } else if (currentStreak >= 15 && currentStreak <= 30) {
+      pointsToAdd += 75;
+    } else if (currentStreak > 30) {
+      pointsToAdd += 100;
+    }
   }
 
   return pointsToAdd;
@@ -117,8 +132,8 @@ export default async function handler(
   try {
     // Fetch the user and related data
     const user = await fetchUserData(ethereumAddress);
-    const pointsToAdd = calculatePoints(user);
     const streak = handleStreaks(user);
+    const pointsToAdd = calculatePoints(user, streak);
 
     // Update user points, mint counter, interactions, and streaks
     const updateData: any = {
