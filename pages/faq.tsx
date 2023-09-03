@@ -7,7 +7,7 @@ const FAQ = () => {
             FAQ
           </h2>
           <p className="max-w-xl mx-auto mt-4 text-base leading-relaxed text-gray-300">
-            Explore the common questions and answers about Mintly's new features
+            Explore the common questions and answers about Mintly
           </p>
         </div>
 
@@ -19,7 +19,7 @@ const FAQ = () => {
             </div>
             <div className="ml-4">
               <p className="text-xl font-semibold text-white">
-                Why are&rsquo;t my transactions appearing?
+                Why aren&rsquo;t my transactions appearing?
               </p>
               <p className="mt-4 text-base text-gray-400">
                 Processing transactions might take some time. If your
@@ -124,9 +124,10 @@ const FAQ = () => {
                 Do you plan for an airdrop?
               </p>
               <p className="mt-4 text-base text-gray-400">
-                While we can't confirm any specific plans at this moment, we're
-                always exploring exciting ways to reward our community. Stay
-                tuned for updates; you won't want to miss what's coming!
+                While we can&rsquo;t confirm any specific plans at this moment,
+                we&rsquo;re always exploring exciting ways to reward our
+                community. Stay tuned for updates; you won&rsquo;t want to miss
+                what&rsquo;s coming!
               </p>
             </div>
           </div>
@@ -140,10 +141,10 @@ const FAQ = () => {
                 What do I get for being at the top of the leaderboard?
               </p>
               <p className="mt-4 text-base text-gray-400">
-                Climbing to the top of the leaderboard won't just earn you
-                bragging rights. We're working on some intriguing incentives
-                that will make the competition even more thrilling. Keep an eye
-                out for announcements!
+                Climbing to the top of the leaderboard won&rsquo;t just earn you
+                bragging rights. We&rsquo;re working on some intriguing
+                incentives that will make the competition even more thrilling.
+                Keep an eye out for announcements!
               </p>
             </div>
           </div>
@@ -152,7 +153,7 @@ const FAQ = () => {
         <div className="flex items-center justify-center mt-12 md:mt-20">
           <div className="px-8 py-4 text-center bg-gray-800 rounded-full">
             <p className="text-gray-50">
-              Didn’t find the answer you are looking for?{" "}
+              Didn&rsquo;t find the answer you are looking for?{" "}
               <a
                 href="https://discord.gg/VWbgEbF2Nf"
                 title=""
