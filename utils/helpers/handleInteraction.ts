@@ -6,11 +6,8 @@ import { callClaimRewards } from "../api/callClaimRewardsAPI";
 
 const handleApiResponse = async (response: any, operation: string) => {
   if (response.status === 200) {
-    console.log(`${operation} data updated`);
     return await response.json();
   } else {
-    console.log(`${operation} data update failed`);
-    console.log(response);
     return await response.json();
   }
 };

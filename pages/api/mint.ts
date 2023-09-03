@@ -139,8 +139,6 @@ export default async function handler(
     const updateData: any = {
       totalPoints: user.totalPoints + pointsToAdd,
     };
-    console.log("isInvited", isInvited);
-    console.log("referredBy", referredBy);
     if (isInvited) {
       const { isValidReferral, referrerAddress } = await handleReferral(
         ethereumAddress

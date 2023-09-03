@@ -97,8 +97,6 @@ export default async function handler(
   try {
     const user = await fetchUserData(ethereumAddress);
 
-    console.log(user);
-
     if (!user) {
       return res.status(404).json({
         status: "error",
@@ -113,8 +111,6 @@ export default async function handler(
         message: "Reward already claimed today",
       });
     }
-
-    console.log(checkIfUserClaimedRewardToday(user));
 
     // Calculate the new reward day
     const claimRewardDay = calculateNextReward(user);

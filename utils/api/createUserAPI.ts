@@ -5,7 +5,6 @@ export async function createUser({
   address: string;
   refLink: string | null;
 }) {
-  console.log("createUser", address, refLink);
   const response = await fetch("/api/createUser", {
     method: "POST",
     headers: {

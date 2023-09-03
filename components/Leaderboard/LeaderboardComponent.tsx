@@ -75,10 +75,6 @@ const LeaderboardComponent = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [leaderboard, address]);
 
-  useEffect(() => {
-    console.log("new user data", userData);
-  }, [userData]);
-
   const fetchLeaderboard = async () => {
     const response = await callLeaderboardAPI();
     const data = await response.json();
