@@ -7,11 +7,12 @@ const FAQ = () => {
             FAQ
           </h2>
           <p className="max-w-xl mx-auto mt-4 text-base leading-relaxed text-gray-300">
-            Explore the common questions and answers about Mintly
+            Explore the common questions and answers about Mintly's new features
           </p>
         </div>
 
         <div className="grid grid-cols-1 mt-12 md:mt-20 md:grid-cols-2 gap-y-16 gap-x-20">
+          {/* Transactions */}
           <div className="flex items-start">
             <div className="flex items-center justify-center flex-shrink-0 w-8 h-8 bg-gray-700 rounded-full">
               <span className="text-lg font-semibold text-white">?</span>
@@ -29,6 +30,7 @@ const FAQ = () => {
             </div>
           </div>
 
+          {/* Supported Chains */}
           <div className="flex items-start">
             <div className="flex items-center justify-center flex-shrink-0 w-8 h-8 bg-gray-700 rounded-full">
               <span className="text-lg font-semibold text-white">?</span>
@@ -46,34 +48,102 @@ const FAQ = () => {
             </div>
           </div>
 
+          {/* Leaderboard Feature */}
           <div className="flex items-start">
             <div className="flex items-center justify-center flex-shrink-0 w-8 h-8 bg-gray-700 rounded-full">
               <span className="text-lg font-semibold text-white">?</span>
             </div>
             <div className="ml-4">
               <p className="text-xl font-semibold text-white">
-                How does activity calculation work?
+                How does the leaderboard work?
               </p>
               <p className="mt-4 text-base text-gray-400">
-                Volume is determined by the number of transactions on specific
-                chains and the number of messages relayed through the LayerZero
-                message relayers.
+                The leaderboard ranks the top 100 wallets based on XP. Your XP
+                is automatically converted to levels and you can view activity
+                of other users.
               </p>
             </div>
           </div>
 
+          {/* Personal Dashboard */}
           <div className="flex items-start">
             <div className="flex items-center justify-center flex-shrink-0 w-8 h-8 bg-gray-700 rounded-full">
               <span className="text-lg font-semibold text-white">?</span>
             </div>
             <div className="ml-4">
               <p className="text-xl font-semibold text-white">
-                What&rsquo;s a &rsquo;sybil&rsquo; ? Am I one for using multiple
-                addresses?
+                What can I see on my personal dashboard?
               </p>
               <p className="mt-4 text-base text-gray-400">
-                Being a sybil means using lots of fake wallets to unfairly gain
-                power. Just signing up doesn&rsquo;t make you one.
+                Your dashboard displays stats like mints, bridges, streaks, and
+                referrals with XP it earns depending on current progression.
+              </p>
+            </div>
+          </div>
+
+          {/* Streaks */}
+          <div className="flex items-start">
+            <div className="flex items-center justify-center flex-shrink-0 w-8 h-8 bg-gray-700 rounded-full">
+              <span className="text-lg font-semibold text-white">?</span>
+            </div>
+            <div className="ml-4">
+              <p className="text-xl font-semibold text-white">
+                How do streaks work?
+              </p>
+              <p className="mt-4 text-base text-gray-400">
+                Interact daily to maintain your streaks and earn an additional
+                XP for your first interaction each day. When hitting milestones
+                of day 7, 15 and 31 your daily experience will increase.
+              </p>
+            </div>
+          </div>
+
+          {/* Referral Program */}
+          <div className="flex items-start">
+            <div className="flex items-center justify-center flex-shrink-0 w-8 h-8 bg-gray-700 rounded-full">
+              <span className="text-lg font-semibold text-white">?</span>
+            </div>
+            <div className="ml-4">
+              <p className="text-xl font-semibold text-white">
+                How does the referral program work?
+              </p>
+              <p className="mt-4 text-base text-gray-400">
+                Share your referral link to earn extra XP. The more friends you
+                invite, the more XP you earn. Your friend will also earn an
+                additional 100 XP.
+              </p>
+            </div>
+          </div>
+          {/* Airdrop */}
+          <div className="flex items-start">
+            <div className="flex items-center justify-center flex-shrink-0 w-8 h-8 bg-gray-700 rounded-full">
+              <span className="text-lg font-semibold text-white">?</span>
+            </div>
+            <div className="ml-4">
+              <p className="text-xl font-semibold text-white">
+                Do you plan for an airdrop?
+              </p>
+              <p className="mt-4 text-base text-gray-400">
+                While we can't confirm any specific plans at this moment, we're
+                always exploring exciting ways to reward our community. Stay
+                tuned for updates; you won't want to miss what's coming!
+              </p>
+            </div>
+          </div>
+          {/* Leaderboard Rewards */}
+          <div className="flex items-start">
+            <div className="flex items-center justify-center flex-shrink-0 w-8 h-8 bg-gray-700 rounded-full">
+              <span className="text-lg font-semibold text-white">?</span>
+            </div>
+            <div className="ml-4">
+              <p className="text-xl font-semibold text-white">
+                What do I get for being at the top of the leaderboard?
+              </p>
+              <p className="mt-4 text-base text-gray-400">
+                Climbing to the top of the leaderboard won't just earn you
+                bragging rights. We're working on some intriguing incentives
+                that will make the competition even more thrilling. Keep an eye
+                out for announcements!
               </p>
             </div>
           </div>
