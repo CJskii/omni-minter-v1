@@ -17,6 +17,7 @@ export default async function handler(
     });
 
     if (existingUser) {
+      console.error("User already exists");
       return res
         .status(200)
         .json({ status: "exists", message: "User already exists" });
@@ -25,6 +26,7 @@ export default async function handler(
     const referrer = await isValidRefLink(refLink);
 
     if (!referrer) {
+      console.error("Invalid referral link");
       return res
         .status(400)
         .json({ status: "error", message: "Invalid referral link" });
@@ -38,7 +40,7 @@ export default async function handler(
         invitedById: referrer.ethereumAddress, // Set the referrer's ethereumAddress as invitedById
       },
     });
-
+    console.log(`New user created`);
     return res.status(201).json(newUser); // 201 means Created
   } catch (error) {
     console.error(error);

@@ -125,7 +125,7 @@ export default async function handler(
       where: { ethereumAddress },
       data: updateData,
     });
-
+    console.log("Bridge recorded and points awarded");
     res.status(200).json({ message: "Bridge recorded and points awarded" });
   } catch (error) {
     console.error("Error in /api/bridge:", error);

@@ -31,7 +31,7 @@ export default async function handler(
         totalPoints: "desc",
       },
     });
-
+    console.log(`Leaderboard fetched`);
     res.status(200).json({
       status: "exists",
       message: "Leaderboard fetched successfully",

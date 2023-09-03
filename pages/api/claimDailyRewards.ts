@@ -98,6 +98,7 @@ export default async function handler(
     const user = await fetchUserData(ethereumAddress);
 
     if (!user) {
+      console.error("User not found");
       return res.status(404).json({
         status: "error",
         message: "User not found",
@@ -106,6 +107,7 @@ export default async function handler(
 
     // Check if the user has already claimed their reward today
     if (checkIfUserClaimedRewardToday(user)) {
+      console.error("Reward already claimed today");
       return res.status(400).json({
         status: "error",
         message: "Reward already claimed today",
@@ -118,6 +120,7 @@ export default async function handler(
     const { message, isValid } = isValidRewardDay(user, claimRewardDay);
 
     if (!isValid) {
+      console.error(message);
       return res.status(400).json({
         status: "error",
         message: message,
@@ -132,6 +135,7 @@ export default async function handler(
     const nextRewardDay = calculateNextDayRewardDay(dailyReward);
 
     if (!dailyReward) {
+      console.error("Daily reward not found");
       return res.status(400).json({
         status: "error",
         message: "Error claiming reward",
@@ -151,7 +155,7 @@ export default async function handler(
     });
 
     // TODO: Add logic to record this in UserDailyReward table
-
+    console.log("Reward claimed successfully");
     res.status(200).json({
       status: "success",
       message: "Reward claimed successfully",

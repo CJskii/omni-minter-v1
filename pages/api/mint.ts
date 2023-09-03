@@ -196,6 +196,7 @@ export default async function handler(
     }
 
     await updateUserData(ethereumAddress, updateData);
+    console.log("Mint recorded and points awarded");
     res.status(200).json({ message: "Mint recorded and points awarded" });
   } catch (error) {
     console.error("Error in /api/mint:", error);

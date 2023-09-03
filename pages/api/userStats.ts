@@ -29,7 +29,7 @@ export default async function handler(
         lastRewardClaimedAt: true,
       },
     });
-
+    console.log(`User stats fetched`);
     res.status(200).json({
       status: "exists",
       message: "User stats fetched successfully",

@@ -15,7 +15,7 @@ export default async function handler(
         day: "asc",
       },
     });
-
+    console.log(`Daily rewards fetched`);
     res.status(200).json({
       status: "exists",
       message: "Daily rewards fetched successfully",
