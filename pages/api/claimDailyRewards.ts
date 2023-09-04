@@ -33,6 +33,10 @@ const checkIfUserClaimedRewardToday = (user: any) => {
 
 const calculateNextReward = (user: any) => {
   const today = new Date();
+  if (!user.lastRewardClaimedAt) {
+    return 1; // First reward day
+  }
+
   const lastClaimedDate = parseISO(user.lastRewardClaimedAt.toISOString());
   const daysDifference = differenceInCalendarDays(today, lastClaimedDate);
 
