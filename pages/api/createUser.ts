@@ -25,19 +25,12 @@ export default async function handler(
 
     const referrer = await isValidRefLink(refLink);
 
-    if (!referrer) {
-      console.error("Invalid referral link");
-      return res
-        .status(400)
-        .json({ status: "error", message: "Invalid referral link" });
-    }
-
     // Create the new user with the referral link
     const newUser = await prisma.user.create({
       data: {
         ethereumAddress,
         inviteLink: generateInviteLink(),
-        invitedById: referrer.ethereumAddress, // Set the referrer's ethereumAddress as invitedById
+        invitedById: referrer ? referrer.ethereumAddress : null, // Set the referrer's ethereumAddress as invitedById
       },
     });
     console.log(`New user created`);
