@@ -22,11 +22,10 @@ const fetchUserData = async (ethereumAddress: string) => {
 const calculatePoints = (user: any, streak: number) => {
   let pointsToAdd = 100; // Default 100 points for minting
   const today = new Date().toDateString();
-  const lastInteractionDate = user.interactions[0]?.updatedAt.toDateString();
-  const currentStreak =
-    user.streaks && user.streaks.currentStreak > 0
-      ? user.streaks[0]?.currentStreak
-      : 0;
+  const lastInteractionDate = user.interactions.length
+    ? user.interactions[0]?.updatedAt.toDateString()
+    : null;
+  const currentStreak = streak ? streak : 1;
 
   // Points for daily interaction
   if (lastInteractionDate !== today) {
@@ -49,9 +48,11 @@ const calculatePoints = (user: any, streak: number) => {
 const handleStreaks = (user: any) => {
   const yesterday = new Date();
   yesterday.setDate(yesterday.getDate() - 1);
-  let streak = user.streaks[0]?.currentStreak || 0;
+  let streak = user.streaks.length ? user.streaks[0].currentStreak : 0;
 
-  const lastInteractionDate = user.interactions[0]?.updatedAt.toDateString();
+  const lastInteractionDate = user.interactions.length
+    ? user.interactions[0]?.updatedAt.toDateString()
+    : null;
   if (lastInteractionDate === yesterday.toDateString()) {
     streak += 1;
   } else if (lastInteractionDate !== new Date().toDateString()) {
@@ -132,6 +133,11 @@ export default async function handler(
   try {
     // Fetch the user and related data
     const user = await fetchUserData(ethereumAddress);
+    if (!user) {
+      console.error("User not found");
+      return res.status(404).json({ message: "User not found" });
+    }
+
     const streak = handleStreaks(user);
     const pointsToAdd = calculatePoints(user, streak);
 
