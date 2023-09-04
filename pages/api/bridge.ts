@@ -23,7 +23,9 @@ const calculatePoints = (user: any, streak: any) => {
   let pointsToAdd = 50; // 50 points for bridging
   const currentStreak = streak ? streak : 1;
   const today = new Date().toDateString();
-  const lastInteractionDate = user.interactions[0]?.updatedAt.toDateString();
+  const lastInteractionDate = user.interactions.length
+    ? user.interactions[0]?.updatedAt.toDateString()
+    : null;
   if (lastInteractionDate !== today) {
     if (currentStreak === 0) {
       pointsToAdd += 20; // Default 20 points if no streak data
@@ -42,10 +44,12 @@ const calculatePoints = (user: any, streak: any) => {
 
 const handleStreaks = (user: any) => {
   const today = new Date().toDateString();
-  const lastInteractionDate = user.interactions[0]?.updatedAt.toDateString();
+  const lastInteractionDate = user.interactions.length
+    ? user.interactions[0]?.updatedAt.toDateString()
+    : null;
   const yesterday = new Date();
   yesterday.setDate(yesterday.getDate() - 1);
-  let streak = user.streaks[0]?.currentStreak || 0;
+  let streak = user.streaks.length ? user.streaks[0].currentStreak : 0;
   if (lastInteractionDate === yesterday.toDateString()) {
     streak += 1;
   } else if (lastInteractionDate !== today) {
@@ -67,6 +71,11 @@ export default async function handler(
   try {
     // Fetch the user and related data
     const user = await fetchUserData(ethereumAddress);
+    if (!user) {
+      console.error("User not found");
+      return res.status(404).json({ message: "User not found" });
+    }
+
     const streak = handleStreaks(user);
     const pointsToAdd = calculatePoints(user, streak);
 
