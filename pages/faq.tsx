@@ -121,7 +121,7 @@ const FAQ = () => {
             </div>
             <div className="ml-4">
               <p className="text-xl font-semibold text-white">
-                Do you plan for an airdrop?
+                Do you plan to have token?
               </p>
               <p className="mt-4 text-base text-gray-400">
                 While we can&rsquo;t confirm any specific plans at this moment,
