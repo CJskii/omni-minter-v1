@@ -1,5 +1,5 @@
-import CustomButton from "./CustomButton";
-import CustomButtonMobile from "./CustomButtonMobile";
+import CustomButton from "./Buttons/CustomButton";
+import CustomButtonMobile from "./Buttons/CustomButtonMobile";
 import { ConnectButton } from "@rainbow-me/rainbowkit";
 import { useState } from "react";
 import Image from "next/image";
@@ -34,6 +34,14 @@ const Navbar = () => {
             }`}
           >
             ONFT Bridge
+          </Link>
+          <Link
+            href="/leaderboard"
+            className={`btn ${
+              router.pathname === "/leaderboard" ? "btn-active" : ""
+            }`}
+          >
+            Leaderboard
           </Link>
           <Link
             href="/faq"
@@ -85,6 +93,9 @@ const Navbar = () => {
             </li>
             <li onClick={() => setExpanded(false)}>
               <Link href="/onft-bridge">Bridge</Link>
+            </li>
+            <li onClick={() => setExpanded(false)}>
+              <Link href="/leaderboard">Leaderboard</Link>
             </li>
             <li onClick={() => setExpanded(false)}>
               <Link href="/faq">FAQ</Link>

@@ -1,18 +1,14 @@
 import { useState, useEffect } from "react";
-import { ethers } from "ethers";
-import { JsonRpcSigner } from "@ethersproject/providers";
-import { Contract } from "@ethersproject/contracts";
-import { CONTRACT_ABI } from "../../constants/contractABI";
 import { getContractAddress } from "../../utils/getConstants";
-import { getRemoteChainId } from "../../utils/getConstants";
 import { useNetwork, useAccount } from "wagmi";
-import CustomButtonNetwork from "../CustomButtonNetwork";
-import CustomButtonBridge from "./CustomButtonBridge";
+import CustomButtonNetwork from "../Buttons/CustomButtonNetwork";
+import CustomButtonBridge from "../Buttons/CustomButtonBridge";
 import SelectBridgeFromModal from "./SelectBridgeFromModal";
 import SelectBridgeToModal from "./SelectBridgeToModal";
 import BridgingModal from "./BridgingModal";
-import getProviderOrSigner from "../../utils/getProviderOrSigner";
-import { updateBridgeData } from "../../utils/api/bridgeAPI";
+import { handleBridging } from "../../utils/helpers/handleBridging";
+import { handleErrors } from "../../utils/helpers/handleErrors";
+import handleInteraction from "../../utils/helpers/handleInteraction";
 
 interface BridgeProps {
   passedNftId: string;
@@ -69,110 +65,33 @@ const Bridging = (props: BridgeProps) => {
     try {
       setIsLoading(true);
       setShowBridgingModal(true);
-      const signer = await getProviderOrSigner(true);
-      const ownerAddress = await (signer as JsonRpcSigner).getAddress();
-
-      // REMOTE CHAIN ID IS THE CHAIN OF THE RECEIVING NETWORK
-      // ex. if you are sending from Ethereum to Polygon, the remote chain id is the Polygon chain id
-
-      const remoteChainId = getRemoteChainId(targetNetwork);
-
       console.log(
         `Sending NFT #${TOKEN_ID} from ${fromNetwork} to ${toNetwork}`
       );
 
-      const contract = new Contract(CONTRACT_ADDRESS, CONTRACT_ABI, signer);
-
-      const adapterParams = ethers.utils.solidityPack(
-        ["uint16", "uint256"],
-        [1, 200000]
-      );
-      // console.log(`adapterParams: ${adapterParams}`);
-      // console.log(`remoteChainId: ${remoteChainId}`);
-      // console.log(`ownerAddress: ${ownerAddress}`);
-      // console.log(`TOKEN_ID: ${TOKEN_ID}`);
-      // console.log(`remoteChainId: ${remoteChainId}`);
-      const fees = await contract.estimateSendFee(
-        remoteChainId,
-        ownerAddress,
+      const result = await handleBridging({
         TOKEN_ID,
-        false,
-        adapterParams
-      );
+        CONTRACT_ADDRESS,
+        targetNetwork,
+      });
 
-      console.log(`fees: ${fees}`);
+      const { txHash } = result;
 
-      const nativeFee = fees[0];
-      console.log(`native fees (wei): ${nativeFee}`);
-
-      const tx = await contract.sendFrom(
-        ownerAddress, // 'from' address to send tokens
-        remoteChainId, // remote LayerZero chainId
-        ownerAddress, // 'to' address to send tokens
-        TOKEN_ID, // tokenId to send
-        ownerAddress, // refund address (if too much message fee is sent, it gets refunded)
-        ethers.constants.AddressZero, // address(0x0) if not paying in ZRO (LayerZero Token)
-        adapterParams, // flexible bytes array to indicate messaging adapter services
-        { value: nativeFee.mul(5).div(4) }
-      );
-
-      await tx.wait();
-      console.log("NFT sent!");
-      if (address)
-        updateBridgeData(address).then((response) => {
-          if (response.status === 200) {
-            console.log("Bridge data updated");
-          } else {
-            console.log("Bridge data update failed");
-            console.log(response);
-          }
+      if (address) {
+        handleInteraction({
+          address,
+          operation: "new_bridge",
         });
+      }
+
       setNftId("");
       setIsLoading(false);
-      setTxHash(tx.hash);
+      setTxHash(txHash);
       onBridgeComplete();
     } catch (e) {
       console.error(e);
       setIsLoading(false);
-
-      const dataMessage = (e as any).data?.message;
-      const genericMessage = (e as any)?.message;
-
-      if (dataMessage) {
-        if (dataMessage.includes("insufficient funds")) {
-          return setErrorMessage(
-            "You have insufficient funds to complete this transaction."
-          );
-        } else if (dataMessage.includes("ERC721: invalid token ID")) {
-          return setErrorMessage(
-            "Invalid ERC721 token ID provided. Please check and try again."
-          );
-        } else if (dataMessage.includes("execution reverted")) {
-          return setErrorMessage(
-            "Transaction execution was reverted. Please check the transaction details."
-          );
-        } else {
-          return setErrorMessage(dataMessage);
-        }
-      } else if (genericMessage) {
-        if (genericMessage.includes("insufficient funds")) {
-          return setErrorMessage(
-            "You have insufficient funds to complete this transaction."
-          );
-        } else if (genericMessage.includes("ERC721: invalid token ID")) {
-          return setErrorMessage(
-            "Invalid ERC721 token ID provided. Please check and try again."
-          );
-        } else if (genericMessage.includes("execution reverted")) {
-          return setErrorMessage(
-            "Transaction execution was reverted. Please check the transaction details."
-          );
-        } else {
-          return setErrorMessage("An error occurred");
-        }
-      } else {
-        return setErrorMessage("An unknown error occurred.");
-      }
+      handleErrors({ e, setErrorMessage });
     }
   };
 

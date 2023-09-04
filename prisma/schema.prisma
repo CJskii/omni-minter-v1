@@ -8,24 +8,26 @@ datasource db {
 }
 
 model User {
-  ethereumAddress String         @id
-  createdAt       DateTime       @default(now())
-  updatedAt       DateTime       @updatedAt
-  totalPoints     Int            @default(0)
-  inviteLink      String         @unique
-  invitedById     String?
-  leaderboardRank Int?
-  discordHandle   String?
-  githubHandle    String?
-  twitterHandle   String?
-  bridges         Bridges[]
-  interactions    Interactions[]
-  mints           Mints[]
-  referrals       Referrals[]
-  streaks         Streaks[]
-  invitedBy       User?          @relation("ReferralRelation", fields: [invitedById], references: [ethereumAddress])
-  referredUsers   User[]         @relation("ReferralRelation")
-  redeemedRewards UserReward[]
+  ethereumAddress     String            @id
+  createdAt           DateTime          @default(now())
+  updatedAt           DateTime          @updatedAt
+  totalPoints         Int               @default(0)
+  inviteLink          String            @unique
+  invitedById         String?
+  leaderboardRank     Int?
+  discordHandle       String?
+  githubHandle        String?
+  twitterHandle       String?
+  currentRewardDay    Int               @default(1)
+  inviteCount         Int               @default(0)
+  lastRewardClaimedAt DateTime?
+  bridges             Bridges[]
+  interactions        Interactions[]
+  mints               Mints[]
+  streaks             Streaks[]
+  invitedBy           User?             @relation("ReferralRelation", fields: [invitedById], references: [ethereumAddress])
+  referredUsers       User[]            @relation("ReferralRelation")
+  dailyRewards        UserDailyReward[]
 
   @@index([totalPoints])
 }
@@ -57,15 +59,6 @@ model Interactions {
   user            User     @relation(fields: [ethereumAddress], references: [ethereumAddress])
 }
 
-model Referrals {
-  id              Int      @id @default(autoincrement())
-  ethereumAddress String
-  createdAt       DateTime @default(now())
-  updatedAt       DateTime @updatedAt
-  referredUserId  String
-  user            User     @relation(fields: [ethereumAddress], references: [ethereumAddress])
-}
-
 model Streaks {
   id              Int       @id @default(autoincrement())
   ethereumAddress String
@@ -77,19 +70,20 @@ model Streaks {
   user            User      @relation(fields: [ethereumAddress], references: [ethereumAddress])
 }
 
-model Reward {
-  id          Int          @id @default(autoincrement())
-  name        String
+model DailyReward {
+  id          Int               @id @default(autoincrement())
+  day         Int               @unique
+  reward      String
   description String
-  cost        Int
-  redeemedBy  UserReward[]
+  points      Int
+  users       UserDailyReward[]
 }
 
-model UserReward {
-  id              Int      @id @default(autoincrement())
-  ethereumAddress String
-  rewardId        Int
-  redeemedAt      DateTime @default(now())
-  user            User     @relation(fields: [ethereumAddress], references: [ethereumAddress])
-  reward          Reward   @relation(fields: [rewardId], references: [id])
+model UserDailyReward {
+  id            Int         @id @default(autoincrement())
+  userId        String
+  dailyRewardId Int
+  claimedAt     DateTime    @default(now())
+  dailyReward   DailyReward @relation(fields: [dailyRewardId], references: [id])
+  user          User        @relation(fields: [userId], references: [ethereumAddress])
 }

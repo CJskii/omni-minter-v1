@@ -1,7 +1,7 @@
 import { ConnectButton } from "@rainbow-me/rainbowkit";
 import { useEffect } from "react";
 import { useAccount } from "wagmi";
-import { createUserAPI } from "../utils/api/createUserAPI";
+import handleInteraction from "../../utils/helpers/handleInteraction";
 
 export const CustomButton = () => {
   const { address, isConnected } = useAccount();
@@ -10,11 +10,7 @@ export const CustomButton = () => {
     if (address) {
       const storedAddress = localStorage.getItem("createdUserAddress");
       if (storedAddress !== address) {
-        createUserAPI(address).then((response) => {
-          if (response.status === 201) {
-            localStorage.setItem("createdUserAddress", address);
-          }
-        });
+        handleInteraction({ address, operation: "new_user" });
       }
     }
   }, [isConnected, address]);

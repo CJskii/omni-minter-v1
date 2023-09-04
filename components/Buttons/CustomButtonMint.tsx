@@ -1,18 +1,19 @@
 import { ConnectButton } from "@rainbow-me/rainbowkit";
 import { useEffect, useState } from "react";
-import { ethers } from "ethers";
-import { Contract } from "@ethersproject/contracts";
-import { CONTRACT_ABI } from "../constants/contractABI";
 import { useNetwork } from "wagmi";
-import { getContractAddress } from "../utils/getConstants";
-import getProviderOrSigner from "../utils/getProviderOrSigner";
-import MintedNFTModal from "./Minter/MintedNFTModal";
-import { updateMintData } from "../utils/api/mintAPI";
+import { getContractAddress } from "../../utils/getConstants";
+import MintedNFTModal from "../Minter/MintedNFTModal";
+import { updateMintData } from "../../utils/api/mintAPI";
 import { useAccount } from "wagmi";
+import { handleErrors } from "../../utils/helpers/handleErrors";
+import { handleMinting } from "../../utils/helpers/handleMinting";
+import handleInteraction from "../../utils/helpers/handleInteraction";
 
 interface MintButtonProps {
   setLastMintId: (id: number) => void;
   mintNetwork: string;
+  isInvited: boolean;
+  referredBy: string;
 }
 
 export const CustomButtonMint = (props: MintButtonProps) => {
@@ -27,7 +28,7 @@ export const CustomButtonMint = (props: MintButtonProps) => {
 
   const { chain } = useNetwork();
   const { address } = useAccount();
-  const { setLastMintId, mintNetwork } = props;
+  const { setLastMintId, mintNetwork, isInvited, referredBy } = props;
 
   useEffect(() => {
     setSelectedNetwork(mintNetwork);
@@ -47,103 +48,46 @@ export const CustomButtonMint = (props: MintButtonProps) => {
 
     console.log(`Minting NFT on ${mintNetwork} network...`);
     const CONTRACT_ADDRESS = getContractAddress(mintNetwork);
+    const currentlyConnectedChain = chain?.name ? chain.name : "";
 
     try {
-      // Initiate provider and signer
-      const provider = await getProviderOrSigner();
-      const signer = await getProviderOrSigner(true);
       setIsLoading(true);
-      if (!(provider instanceof ethers.providers.Web3Provider)) {
-        console.error("Provider is not an instance of Web3Provider");
-        return;
-      }
-
-      // Initiate contract instance and get fee
-      const contract = new Contract(CONTRACT_ADDRESS, CONTRACT_ABI, signer);
-      const contractFeeInWei = await contract.fee();
-      const feeInEther = ethers.utils.formatEther(contractFeeInWei);
-      console.log(`Fee: ${feeInEther}`);
-
-      // Mint NFT
-
-      const nextMintId = await contract.nextMintId();
-      console.log(`Next mint ID: ${nextMintId.toString()}`);
       setShowMintModal(true);
       setMinting(true);
 
-      let tx = await (
-        await contract.mint({ value: ethers.utils.parseEther(feeInEther) })
-      ).wait();
+      const result = await handleMinting({
+        CONTRACT_ADDRESS,
+        currentlyConnectedChain,
+      });
 
-      let transactionReceipt = await provider.getTransactionReceipt(
-        tx.transactionHash
-      );
-      // console.log(transactionReceipt);
-
-      let mintedID;
-
-      if (
-        chain.name.toLowerCase() != "polygon" &&
-        chain.name.toLowerCase() != "polygon mumbai"
-      ) {
-        mintedID = parseInt(transactionReceipt.logs[0].topics[3], 16);
-      } else {
-        mintedID = parseInt(transactionReceipt.logs[1].topics[3], 16);
+      if (!result) {
+        throw new Error("Failed to mint NFT");
       }
+
+      const { mintedID, txHash } = result;
 
       setLastMintId(mintedID);
       setMintedNFT(mintedID.toString());
       setMinting(false);
       setIsLoading(false);
-      console.log(`ONFT nftId: ${mintedID.toString()}`);
-      if (address)
-        updateMintData(address).then((response) => {
-          if (response.status === 200) {
-            console.log("Mint data updated");
-          } else {
-            console.log("Mint data update failed");
-            console.log(response);
-          }
-        });
 
-      setTxHash(tx.transactionHash);
+      console.log(`ONFT nftId: ${mintedID.toString()}`);
+
+      if (address) {
+        await handleInteraction({
+          address,
+          isInvited,
+          referredBy,
+          operation: "new_mint",
+        });
+      }
+
+      setTxHash(txHash);
     } catch (e) {
       console.error(e);
       setIsLoading(false);
       setMinting(false);
-      const dataMessage = (e as any).data?.message;
-      const genericMessage = (e as any)?.message;
-      if (dataMessage) {
-        if (dataMessage.includes("insufficient funds")) {
-          return setErrorMessage(
-            "You have insufficient funds to complete this transaction."
-          );
-        } else if (dataMessage.includes("execution reverted")) {
-          return setErrorMessage(
-            "Transaction execution was reverted. Please check the transaction details."
-          );
-        } else {
-          return setErrorMessage(dataMessage);
-        }
-      } else if (genericMessage) {
-        if (genericMessage.includes("insufficient funds")) {
-          return setErrorMessage(
-            "You have insufficient funds to complete this transaction."
-          );
-        } else if (genericMessage.includes("ERC721: invalid token ID")) {
-          return setErrorMessage(
-            "Invalid ERC721 token ID provided. Please check and try again."
-          );
-        } else if (genericMessage.includes("execution reverted")) {
-          return setErrorMessage(
-            "Transaction execution was reverted. Please check the transaction details."
-          );
-        } else {
-          return setErrorMessage("An error occurred");
-        }
-      } else {
-        return setErrorMessage("An unknown error occurred.");
-      }
+      handleErrors({ e, setErrorMessage });
     }
   };
 
