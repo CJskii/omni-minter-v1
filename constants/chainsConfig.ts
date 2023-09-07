@@ -13,6 +13,7 @@ import {
   base,
   polygonZkEvm,
   bsc,
+  zora,
   mantle,
   metis,
   optimism,
@@ -72,6 +73,7 @@ export const mainnetChains: ChainConfig[] = [
     ...optimism,
     iconUrl: "/chain-icons/optimism.svg",
   },
+  { ...zora, iconUrl: "/chain-icons/zora.svg" },
   {
     ...bsc,
     iconUrl: "/chain-icons/bsc.svg",

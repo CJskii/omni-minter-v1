@@ -479,4 +479,5 @@ export const networkTransferMappings: { [key: string]: string[] } = {
     "Fantom",
     "Kava",
   ],
+  Zora: ["Base", "Arbitrum One", "OP Mainnet", "Polygon"],
 };
