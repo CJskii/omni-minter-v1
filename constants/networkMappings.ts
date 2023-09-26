@@ -437,7 +437,7 @@ export const networkTransferMappings: { [key: string]: string[] } = {
     "Tenet",
     "Meter.io",
   ],
-  Harmony: [
+  "Harmony One": [
     "Arbitrum One",
     "OP Mainnet",
     "BNB Smart Chain",
