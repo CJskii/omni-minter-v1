@@ -16,6 +16,9 @@ import {
   zora,
   mantle,
   metis,
+  zkSync,
+  canto,
+  harmonyOne,
   optimism,
   arbitrum,
   polygon,
@@ -73,6 +76,10 @@ export const mainnetChains: ChainConfig[] = [
     ...optimism,
     iconUrl: "/chain-icons/optimism.svg",
   },
+  {
+    ...zkSync,
+    iconUrl: "/chain-icons/zksync.svg",
+  },
   { ...zora, iconUrl: "/chain-icons/zora.svg" },
   {
     ...bsc,
@@ -86,14 +93,15 @@ export const mainnetChains: ChainConfig[] = [
     ...polygonZkEvm,
     iconUrl: "/chain-icons/polygon-zkevm.svg",
   },
-  // {
-  //   ...mantle,
-  //   iconUrl: "/chain-icons/mantle.svg",
-  // },
-  // {
-  //   ...metis,
-  //   iconUrl: "/chain-icons/metis.svg",
-  // },
+
+  {
+    ...mantle,
+    iconUrl: "/chain-icons/mantle.svg",
+  },
+  {
+    ...metis,
+    iconUrl: "/chain-icons/metis.svg",
+  },
   {
     ...coreDao,
     iconUrl: "/chain-icons/coredao.svg",
@@ -106,6 +114,8 @@ export const mainnetChains: ChainConfig[] = [
   { ...celo, iconUrl: "/chain-icons/celo.svg" },
   { ...moonbeam, iconUrl: "/chain-icons/moonbeam.svg" },
   { ...moonriver, iconUrl: "/chain-icons/moonriver.svg" },
+  { ...canto, iconUrl: "/chain-icons/canto.svg" },
+  { ...harmonyOne, iconUrl: "/chain-icons/harmony.svg" },
 ];
 
 export const testnetChains: ChainConfig[] = [

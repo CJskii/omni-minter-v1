@@ -128,6 +128,15 @@ const transformNetworkName = (networkName: string) => {
     case "zora":
       networkName = "zora";
       break;
+    case "canto":
+      networkName = "canto";
+      break;
+    case "harmony one":
+      networkName = "harmony";
+      break;
+    case "zksync era":
+      networkName = "zksync";
+      break;
     default:
       break;
   }
@@ -168,6 +177,12 @@ const getEnvVarName = (key: string): string | undefined => {
       return process.env.NEXT_PUBLIC_MOONRIVER_CONTRACT_ADDRESS;
     case "ZORA":
       return process.env.NEXT_PUBLIC_ZORA_CONTRACT_ADDRESS;
+    case "CANTO":
+      return process.env.NEXT_PUBLIC_CANTO_CONTRACT_ADDRESS;
+    case "HARMONY":
+      return process.env.NEXT_PUBLIC_HARMONY_CONTRACT_ADDRESS;
+    case "ZKSYNC":
+      return process.env.NEXT_PUBLIC_ZKSYNC_CONTRACT_ADDRESS;
     default:
       return undefined;
   }
