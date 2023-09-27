@@ -125,6 +125,9 @@ const transformNetworkName = (networkName: string) => {
     case "moonriver":
       networkName = "moonriver";
       break;
+    case "zora":
+      networkName = "zora";
+      break;
     default:
       break;
   }
@@ -163,6 +166,8 @@ const getEnvVarName = (key: string): string | undefined => {
       return process.env.NEXT_PUBLIC_MOONBEAM_CONTRACT_ADDRESS;
     case "MOONRIVER":
       return process.env.NEXT_PUBLIC_MOONRIVER_CONTRACT_ADDRESS;
+    case "ZORA":
+      return process.env.NEXT_PUBLIC_ZORA_CONTRACT_ADDRESS;
     default:
       return undefined;
   }

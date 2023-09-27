@@ -152,6 +152,7 @@ export const networkTransferMappings: { [key: string]: string[] } = {
     "Fantom",
     "Kava",
     "Moonriver",
+    "Zora",
   ],
   "OP Mainnet": [
     "Base",
@@ -181,6 +182,7 @@ export const networkTransferMappings: { [key: string]: string[] } = {
     "Meter.io",
     "Loot",
     "Beam",
+    "Zora",
   ],
   "Arbitrum One": [
     "Base",
@@ -211,6 +213,7 @@ export const networkTransferMappings: { [key: string]: string[] } = {
     "Meter.io",
     "Loot",
     "Beam",
+    "Zora",
   ],
   "BNB Smart Chain": [
     "Base",
@@ -269,6 +272,7 @@ export const networkTransferMappings: { [key: string]: string[] } = {
     "Meter.io",
     "Loot",
     "Beam",
+    "Zora",
   ],
   "Polygon zkEVM": [
     "Base",
@@ -479,4 +483,5 @@ export const networkTransferMappings: { [key: string]: string[] } = {
     "Fantom",
     "Kava",
   ],
+  Zora: ["Base", "Arbitrum One", "OP Mainnet", "Polygon"],
 };
