@@ -167,10 +167,10 @@ export default async function handler(
     });
 
     // TODO: Add logic to record this in UserDailyReward table
-    console.log("Reward claimed successfully");
+    console.log(`Day ${claimRewardDay} reward claimed successfully`);
     res.status(200).json({
       status: "success",
-      message: `Day ${claimRewardDay} reward claimed successfully`,
+      message: "Reward claimed successfully",
       data: {
         dailyReward,
         newRewardDay: updatedUser.currentRewardDay,
