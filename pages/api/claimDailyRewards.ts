@@ -59,8 +59,8 @@ const calculateNextDayRewardDay = (dailyReward: any) => {
 };
 
 const isValidRewardDay = (user: any, day: number) => {
-  const mintedToday = isToday(new Date(user.mints.updatedAt));
-  const bridgedToday = isToday(new Date(user.bridges.updatedAt));
+  const mintedToday = isToday(new Date(user.mints[0].updatedAt));
+  const bridgedToday = isToday(new Date(user.bridges[0].updatedAt));
   if (day === 3) {
     return mintedToday
       ? { message: "Success", isValid: true }
@@ -162,7 +162,7 @@ export default async function handler(
     console.log("Reward claimed successfully");
     res.status(200).json({
       status: "success",
-      message: "Reward claimed successfully",
+      message: `Day ${claimRewardDay} reward claimed successfully`,
       data: {
         dailyReward,
         newRewardDay: updatedUser.currentRewardDay,
