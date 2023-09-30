@@ -13,6 +13,11 @@
   "moonbeam": 126,
   "moonriver": 167,
   "celo": 125,
+  "canto": 159,
+  "harmony": 116,
+  "metis": 151,
+  "mantle": 181,
+  "zksync": 165,
 
   "goerli": 10121,
   "bsc-testnet": 10102,

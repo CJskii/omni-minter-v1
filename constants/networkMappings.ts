@@ -1,6 +1,3 @@
-// TODO: Figure out why Mantle and zkEVM are not working
-// TODO: test Metis and Mantle from the backend calls
-
 export const networkTransferMappings: { [key: string]: string[] } = {
   "Polygon zkEVM Testnet": [
     "Goerli",
@@ -336,7 +333,21 @@ export const networkTransferMappings: { [key: string]: string[] } = {
     "Fantom",
     "Kava",
   ],
-
+  "zkSync Era": [
+    "Base",
+    "Linea",
+    "Arbitrum One",
+    "Arbitrum Nova",
+    "OP Mainnet",
+    "BNB Smart Chain",
+    "Polygon",
+    "Polygon zkEVM",
+    "Avalanche",
+    "Canto",
+    "Fantom",
+    "Tenet",
+    "Meter.io",
+  ],
   "Core Dao": [
     "Arbitrum One",
     "OP Mainnet",
@@ -344,7 +355,6 @@ export const networkTransferMappings: { [key: string]: string[] } = {
     "Polygon",
     "Avalanche",
   ],
-
   Gnosis: [
     "Arbitrum One",
     "OP Mainnet",
@@ -427,7 +437,7 @@ export const networkTransferMappings: { [key: string]: string[] } = {
     "Tenet",
     "Meter.io",
   ],
-  Harmony: [
+  "Harmony One": [
     "Arbitrum One",
     "OP Mainnet",
     "BNB Smart Chain",

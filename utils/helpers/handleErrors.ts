@@ -8,7 +8,13 @@ export const handleErrors = ({
   const dataMessage = (e as any).data?.message;
   const genericMessage = (e as any)?.message;
   if (dataMessage) {
-    if (dataMessage.includes("insufficient funds")) {
+    if (
+      dataMessage.includes("insufficient funds") ||
+      dataMessage.includes(
+        "rpc error: code = Unknown desc = rpc error: code = Internal desc = insufficient balance for transfer: unknown request"
+      ) ||
+      dataMessage.includes("insufficient balance for transfer")
+    ) {
       return setErrorMessage(
         "You have insufficient funds to complete this transaction."
       );
