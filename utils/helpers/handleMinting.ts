@@ -30,7 +30,11 @@ export const handleMinting = async ({
   console.log(`Next mint ID: ${nextMintId.toString()}`);
 
   let tx = await (
-    await contract.mint({ value: ethers.utils.parseEther(feeInEther) })
+    await contract.mint({
+      value: ethers.utils.parseEther(feeInEther),
+      gasLimit:
+        currentlyConnectedChain.toLowerCase() == "mantle" ? 100000 : null,
+    })
   ).wait();
 
   let transactionReceipt = await provider.getTransactionReceipt(
