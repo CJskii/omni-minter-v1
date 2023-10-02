@@ -44,7 +44,9 @@ export const handleMinting = async ({
   const txHash: string = tx.transactionHash;
   let mintedID: number;
 
-  if (
+  if (currentlyConnectedChain.toLowerCase() === "zksync era") {
+    mintedID = parseInt(transactionReceipt.logs[3].topics[3], 16);
+  } else if (
     currentlyConnectedChain.toLowerCase() != "polygon" &&
     currentlyConnectedChain.toLowerCase() != "polygon mumbai"
   ) {
