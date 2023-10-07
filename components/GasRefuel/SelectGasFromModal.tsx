@@ -25,44 +25,32 @@ const SelectGasFromModal = (props: ModalProps) => {
   const { setFromNetwork } = props;
 
   const { chain } = useNetwork();
-  const defaultNetwork =
-    chain?.name && !chain.unsupported
-      ? activeChains.find((net) => net.name === chain?.name) || activeChains[0]
-      : activeChains[0];
 
-  const [selectedNetwork, setSelectedNetwork] =
-    useState<Network>(defaultNetwork);
+  const [selectedNetwork, setSelectedNetwork] = useState<Network>(
+    activeChains[0]
+  );
   const [searchTerm, setSearchTerm] = useState<string>("");
+
+  useEffect(() => {
+    if (chain?.name) {
+      const clientSelectedNetwork =
+        activeChains.find((net) => net.name === chain.name) || activeChains[0];
+      setSelectedNetwork(clientSelectedNetwork);
+    }
+  }, [chain]);
+
+  useEffect(() => {
+    setFromNetwork(selectedNetwork.name);
+  }, [selectedNetwork, setFromNetwork]);
 
   const filteredChains = activeChains.filter((network) =>
     network.name.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
-  useEffect(() => {
-    let selected = defaultNetwork;
-
-    if (chain?.name) {
-      selected =
-        activeChains.find((net) => net.name === chain?.name) || defaultNetwork;
-    } else if (chain?.name && !chain.unsupported) {
-      selected =
-        activeChains.find((net) => net.name === chain.name) || defaultNetwork;
-    }
-
-    setSelectedNetwork(selected);
-
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [chain]);
-
-  useEffect(() => {
-    setFromNetwork(selectedNetwork.name);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
   return (
     <div>
       <button
-        className="btn-square w-full"
+        className=" w-full"
         onClick={() => (window as any).fromNetworkModal.showModal()}
       >
         <div className="w-full">

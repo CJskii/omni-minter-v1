@@ -25,41 +25,42 @@ interface ModalProps {
 const SelectGasToModal = (props: ModalProps) => {
   const { fromNetwork, setToNetwork } = props;
   const { chain } = useNetwork();
-
-  const validNetworks = networkTransferMappings[fromNetwork];
-  const defaultNetwork = validNetworks
-    ? activeChains.find(
-        (net) =>
-          validNetworks.includes(net.name) &&
-          net.name !== fromNetwork &&
-          net.name
-      ) || activeChains[0]
-    : activeChains[0];
-
-  const [selectedNetwork, setSelectedNetwork] =
-    useState<Network>(defaultNetwork);
-
+  const [selectedNetwork, setSelectedNetwork] = useState<Network>(
+    activeChains[0]
+  );
   const [searchTerm, setSearchTerm] = useState<string>("");
 
-  const filteredChains = activeChains.filter((network) =>
-    network.name.toLowerCase().includes(searchTerm.toLowerCase())
-  );
-
   useEffect(() => {
-    setToNetwork(selectedNetwork.name);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [selectedNetwork]);
+    const validNetworks = networkTransferMappings[fromNetwork];
+    const defaultNetwork = validNetworks
+      ? activeChains.find(
+          (net) => validNetworks.includes(net.name) && net.name !== fromNetwork
+        ) || activeChains[0]
+      : activeChains[0];
 
-  useEffect(() => {
     setSelectedNetwork(defaultNetwork);
+    setToNetwork(defaultNetwork.name);
+  }, [fromNetwork, setToNetwork]);
 
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [chain?.name, defaultNetwork, chain?.unsupported]);
+  useEffect(() => {
+    if (chain?.name) {
+      const updatedNetwork =
+        activeChains.find((net) => net.name === chain.name) || activeChains[0];
+      setSelectedNetwork(updatedNetwork);
+    }
+  }, [chain]);
+
+  const validNetworks = networkTransferMappings[fromNetwork] || [];
+  const filteredChains = activeChains.filter(
+    (network) =>
+      network.name.toLowerCase().includes(searchTerm.toLowerCase()) &&
+      validNetworks.includes(network.name)
+  );
 
   return (
     <div>
       <button
-        className="btn-square w-full"
+        className="w-full"
         onClick={() => (window as any).toNetworkModal.showModal()}
       >
         <div className="w-full">
