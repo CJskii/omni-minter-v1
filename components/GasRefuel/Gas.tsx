@@ -4,10 +4,30 @@ import { handleGasRefuel } from "../../utils/helpers/handleGasRefuel";
 import SelectGasFromModal from "./SelectGasFromModal";
 import SelectGasToModal from "./SelectGasToModal";
 import { IoSwapHorizontalSharp } from "react-icons/io5";
+import { useNetworkSelection } from "../../utils/hooks/useNetworkSelection";
+import { activeChains } from "../../constants/chainsConfig";
+import NetworkModal from "./NetworkModal";
 
 const Gas = () => {
-  const [fromNetwork, setFromNetwork] = useState<string>("");
-  const [toNetwork, setToNetowork] = useState<string>("");
+  const { chain } = useNetwork();
+
+  const {
+    selectedNetwork: fromNetwork,
+    onNetworkSelect: setFromNetwork,
+    searchTerm: fromSearchTerm,
+    onSearchChange: setFromSearchTerm,
+    filteredChains: fromFilteredChains,
+    onClose: onFromClose,
+  } = useNetworkSelection(activeChains[0]);
+
+  const {
+    selectedNetwork: toNetwork,
+    onNetworkSelect: setToNetwork,
+    searchTerm: toSearchTerm,
+    onSearchChange: setToSearchTerm,
+    filteredChains: toFilteredChains,
+    onClose: onToClose,
+  } = useNetworkSelection(activeChains[1]);
 
   const handleGas = async () => {
     const CONTRACT_ADDRESS = "0xaa1293660a7bA50569b7F24Cbf7C1fc50BEE340E";
@@ -38,20 +58,34 @@ const Gas = () => {
             </h2>
 
             <div className="grid grid-cols-[1fr,auto,1fr] items-center gap-4 py-4 px-2 mt-4">
-              <SelectGasFromModal setFromNetwork={setFromNetwork} />
+              <NetworkModal
+                selectedNetwork={fromNetwork}
+                onNetworkSelect={setFromNetwork}
+                searchTerm={fromSearchTerm}
+                onSearchChange={setFromSearchTerm}
+                filteredChains={fromFilteredChains}
+                onClose={onFromClose}
+                dialogId="fromNetworkModal"
+                title="From"
+              />
               <div className="py-4 px-2 ">
                 <IoSwapHorizontalSharp
                   className="text-2xl cursor-pointer"
                   onClick={() => {
                     setFromNetwork(toNetwork);
-                    setToNetowork(fromNetwork);
+                    setToNetwork(fromNetwork);
                   }}
                 />
               </div>
-
-              <SelectGasToModal
-                setToNetwork={setToNetowork}
-                fromNetwork={fromNetwork}
+              <NetworkModal
+                selectedNetwork={toNetwork}
+                onNetworkSelect={setToNetwork}
+                searchTerm={toSearchTerm}
+                onSearchChange={setToSearchTerm}
+                filteredChains={toFilteredChains}
+                onClose={onToClose}
+                dialogId="toNetworkModal"
+                title="To"
               />
             </div>
 
