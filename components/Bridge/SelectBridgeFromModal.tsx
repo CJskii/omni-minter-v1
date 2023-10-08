@@ -2,20 +2,7 @@ import Image from "next/image";
 import { useEffect, useState } from "react";
 import { activeChains } from "../../constants/chainsConfig";
 import { useNetwork } from "wagmi";
-
-type Network = {
-  id: number;
-  name: string;
-  network: string;
-  iconUrl?: string;
-  iconBackground?: string;
-  nativeCurrency: {
-    decimals: number;
-    name: string;
-    symbol: string;
-  };
-  [key: string]: any;
-};
+import { Network } from "../../types/network";
 
 interface BridgeProps {
   mintNetwork: string;

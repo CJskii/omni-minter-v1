@@ -11,3 +11,14 @@ export interface Network {
   };
   [key: string]: any;
 }
+
+export interface NetworkModalProps {
+  selectedNetwork: Network;
+  onNetworkSelect: (network: any) => void;
+  searchTerm: string;
+  onSearchChange: (searchTerm: string) => void;
+  filteredChains: any[];
+  dialogId: string;
+  onClose: (dialogId: string) => void;
+  title: string;
+}

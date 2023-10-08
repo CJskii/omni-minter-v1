@@ -1,34 +1,4 @@
-interface LeaderboardRowProps {
-  user: any;
-  index: number;
-}
-
-interface LeaderboardData {
-  ethereumAddress: string;
-  totalPoints: number;
-  mints: [
-    {
-      count: number;
-    }
-  ];
-  bridges: [
-    {
-      count: number;
-    }
-  ];
-  interactions: [
-    {
-      count: number;
-    }
-  ];
-  streaks: [
-    {
-      currentStreak: number;
-    }
-  ];
-
-  key: [any];
-}
+import { LeaderboardRowProps } from "../../../types/leaderboard";
 const LeaderboardRow = (props: LeaderboardRowProps) => {
   const { user, index } = props;
 

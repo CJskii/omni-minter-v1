@@ -1,16 +1,5 @@
 import Image from "next/image";
-import { Network } from "../../types/network";
-
-interface NetworkModalProps {
-  selectedNetwork: Network;
-  onNetworkSelect: (network: any) => void;
-  searchTerm: string;
-  onSearchChange: (searchTerm: string) => void;
-  filteredChains: any[];
-  dialogId: string;
-  onClose: (dialogId: string) => void;
-  title: string;
-}
+import { NetworkModalProps } from "../../types/network";
 
 const NetworkModal = ({
   selectedNetwork,

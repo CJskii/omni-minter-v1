@@ -1,14 +1,5 @@
-interface BridgingModalProps {
-  showBridgingModal: boolean;
-  setShowBridgingModal: (showBridgingModal: boolean) => void;
-  isLoading: boolean;
-  txHash: string;
-  setTxHash: (txHash: string) => void;
-  errorMessage: string;
-  setErrorMessage: (errorMessage: string) => void;
-}
-
 import { useEffect, useRef } from "react";
+import { BridgingModalProps } from "../../types/bridgeModal";
 
 const BridgingModal = (props: BridgingModalProps) => {
   const {
