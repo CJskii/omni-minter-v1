@@ -3,7 +3,10 @@ import { activeChains } from "../../constants/chainsConfig";
 import { useNetwork } from "wagmi";
 import { Network } from "../../types/network";
 
-export const useNetworkSelection = (initialNetwork: Network) => {
+export const useNetworkSelection = (
+  initialNetwork: Network,
+  filterFn: (network: Network) => boolean = () => true
+) => {
   const { chain } = useNetwork();
   const [selectedNetwork, setSelectedNetwork] = useState(
     initialNetwork || activeChains[0]
@@ -18,8 +21,10 @@ export const useNetworkSelection = (initialNetwork: Network) => {
     }
   }, [chain]);
 
-  const filteredChains = activeChains.filter((network) =>
-    network.name.toLowerCase().includes(searchTerm.toLowerCase())
+  const filteredChains = activeChains.filter(
+    (network) =>
+      filterFn(network) &&
+      network.name.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
   const onNetworkSelect = (network: Network) => {

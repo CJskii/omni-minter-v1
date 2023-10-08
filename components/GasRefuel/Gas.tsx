@@ -1,15 +1,20 @@
 import { useNetwork } from "wagmi";
-import { useState } from "react";
+import { useEffect } from "react";
 import { handleGasRefuel } from "../../utils/helpers/handleGasRefuel";
-import SelectGasFromModal from "./SelectGasFromModal";
-import SelectGasToModal from "./SelectGasToModal";
 import { IoSwapHorizontalSharp } from "react-icons/io5";
 import { useNetworkSelection } from "../../utils/hooks/useNetworkSelection";
 import { activeChains } from "../../constants/chainsConfig";
 import NetworkModal from "./NetworkModal";
+import { Network } from "../../types/network";
+import { getValidToNetworks } from "../../utils/getValidToNetworks";
 
 const Gas = () => {
   const { chain } = useNetwork();
+
+  const isValidToNetwork = (toNetwork: Network) => {
+    const validToNetworks = getValidToNetworks(fromNetwork);
+    return validToNetworks.includes(toNetwork.name);
+  };
 
   const {
     selectedNetwork: fromNetwork,
@@ -27,7 +32,7 @@ const Gas = () => {
     onSearchChange: setToSearchTerm,
     filteredChains: toFilteredChains,
     onClose: onToClose,
-  } = useNetworkSelection(activeChains[1]);
+  } = useNetworkSelection(activeChains[1], isValidToNetwork);
 
   const handleGas = async () => {
     const CONTRACT_ADDRESS = "0xaa1293660a7bA50569b7F24Cbf7C1fc50BEE340E";
@@ -47,6 +52,20 @@ const Gas = () => {
       console.error(e);
     }
   };
+
+  useEffect(() => {
+    // If the currently selected "To" network is not valid after the "From" network changes, reset it.
+    if (!isValidToNetwork(toNetwork)) {
+      const validNetworks = getValidToNetworks(fromNetwork);
+      const defaultNetwork = activeChains.find(
+        (chain) => chain.name === validNetworks[0]
+      );
+      defaultNetwork
+        ? setToNetwork(defaultNetwork)
+        : setToNetwork(activeChains[0]);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [fromNetwork, toNetwork, setToNetwork]);
 
   return (
     <div className="flex flex-col justify-between items-center min-w-full">
@@ -90,7 +109,8 @@ const Gas = () => {
             </div>
 
             <p className="pt-5 pb-3">
-              Step 1: Input amount of $token to receive on #network
+              Step 1: Input amount of ${toNetwork.nativeCurrency.symbol} to
+              receive on {toNetwork.name}
             </p>
             <div className="w-full flex justify-center items-center gap-4">
               <input
