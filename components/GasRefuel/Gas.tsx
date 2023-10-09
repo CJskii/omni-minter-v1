@@ -7,6 +7,7 @@ import { activeChains } from "../../constants/chainsConfig";
 import NetworkModal from "./NetworkModal";
 import { Network } from "../../types/network";
 import { getValidToNetworks } from "../../utils/getValidToNetworks";
+import { estimateGasBridgeFee } from "../../utils/helpers/handleGasRefuel";
 
 const Gas = () => {
   const { chain } = useNetwork();
@@ -51,6 +52,16 @@ const Gas = () => {
     } catch (e) {
       console.error(e);
     }
+  };
+
+  const estimateGas = async () => {
+    const gasFee = await estimateGasBridgeFee({
+      CONTRACT_ADDRESS: "0xaa1293660a7bA50569b7F24Cbf7C1fc50BEE340E",
+      targetNetwork: "Goerli",
+      value: "0.001",
+    });
+
+    console.log(gasFee);
   };
 
   useEffect(() => {
@@ -123,7 +134,9 @@ const Gas = () => {
             </div>
 
             <p className="pt-5 pb-3">Step 2: Check transaction details</p>
-            <button className="btn btn-primary">Preview</button>
+            <button className="btn btn-primary" onClick={estimateGas}>
+              Preview
+            </button>
           </div>
         </div>
       </section>

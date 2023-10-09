@@ -5,6 +5,51 @@ import { CONTRACT_ABI } from "../../constants/contractABI";
 import getProviderOrSigner from "../../utils/getProviderOrSigner";
 import { getRemoteChainId } from "../../utils/getConstants";
 
+export const estimateGasBridgeFee = async ({
+  CONTRACT_ADDRESS,
+  targetNetwork,
+  value,
+}: {
+  CONTRACT_ADDRESS: string;
+  targetNetwork: string;
+  value: string;
+}) => {
+  const signer = (await getProviderOrSigner(true)) as JsonRpcSigner;
+  const ownerAddress = await signer.getAddress();
+  const contract = new Contract(CONTRACT_ADDRESS, CONTRACT_ABI, signer);
+  const remoteChainId = getRemoteChainId(targetNetwork);
+  const gasInWei = ethers.utils.parseUnits(value, "ether");
+  console.log(`Gas in wei: ${gasInWei}`);
+
+  let adapterParams = ethers.utils.solidityPack(
+    ["uint16", "uint", "uint", "address"],
+    [2, 200000, "55555555555", ownerAddress]
+  );
+  console.log(`Sending transaction to ${CONTRACT_ADDRESS}`);
+  // Estimate gas fee
+  try {
+    const [_nativeFee, _zroFee] = await contract.estimateGasBridgeFee(
+      remoteChainId,
+      false,
+      adapterParams
+    );
+
+    console.log(
+      `Estimated native fee: ${ethers.utils.formatEther(
+        _nativeFee.toString()
+      )} ETH`
+    );
+    console.log(
+      `Estimated ZRO fee: ${ethers.utils.formatEther(_zroFee.toString())} ZRO`
+    );
+    const estimatedFee = _nativeFee; // or _zroFee
+
+    return estimatedFee;
+  } catch (error) {
+    console.error(`Error estimating gas fee: ${(error as any).message}`);
+  }
+};
+
 export const handleGasRefuel = async ({
   CONTRACT_ADDRESS,
   targetNetwork,
@@ -17,6 +62,7 @@ export const handleGasRefuel = async ({
   const contract = new Contract(CONTRACT_ADDRESS, CONTRACT_ABI, signer);
 
   const remoteChainId = getRemoteChainId(targetNetwork);
+  console.log(contract);
 
   const gasRefuelValueInWei = ethers.utils.parseUnits("0.000001", "ether");
 
