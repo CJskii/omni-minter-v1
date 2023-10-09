@@ -19,14 +19,12 @@ export const estimateGasBridgeFee = async ({
   const contract = new Contract(CONTRACT_ADDRESS, CONTRACT_ABI, signer);
   const remoteChainId = getRemoteChainId(targetNetwork);
   const gasInWei = ethers.utils.parseUnits(value, "ether");
-  console.log(`Gas in wei: ${gasInWei}`);
 
   let adapterParams = ethers.utils.solidityPack(
     ["uint16", "uint", "uint", "address"],
-    [2, 200000, "55555555555", ownerAddress]
+    [2, 200000, gasInWei.toString(), ownerAddress]
   );
-  console.log(`Sending transaction to ${CONTRACT_ADDRESS}`);
-  // Estimate gas fee
+
   try {
     const [_nativeFee, _zroFee] = await contract.estimateGasBridgeFee(
       remoteChainId,
@@ -34,89 +32,53 @@ export const estimateGasBridgeFee = async ({
       adapterParams
     );
 
-    console.log(
-      `Estimated native fee: ${ethers.utils.formatEther(
-        _nativeFee.toString()
-      )} ETH`
-    );
-    console.log(
-      `Estimated ZRO fee: ${ethers.utils.formatEther(_zroFee.toString())} ZRO`
-    );
-    const estimatedFee = _nativeFee; // or _zroFee
-
-    return estimatedFee;
+    return _nativeFee; // or _zroFee depending on the use case
   } catch (error) {
     console.error(`Error estimating gas fee: ${(error as any).message}`);
+    throw error; // Propagate the error to handle it in the UI layer
   }
 };
 
 export const handleGasRefuel = async ({
   CONTRACT_ADDRESS,
   targetNetwork,
+  value,
+  estimatedFee,
 }: {
   CONTRACT_ADDRESS: string;
   targetNetwork: string;
+  value: string;
+  estimatedFee: string;
 }) => {
   const signer = (await getProviderOrSigner(true)) as JsonRpcSigner;
   const ownerAddress = await signer.getAddress();
   const contract = new Contract(CONTRACT_ADDRESS, CONTRACT_ABI, signer);
-
   const remoteChainId = getRemoteChainId(targetNetwork);
-  console.log(contract);
-
-  const gasRefuelValueInWei = ethers.utils.parseUnits("0.000001", "ether");
-
-  const gasInEther = ethers.utils.formatEther("55555555555");
-  console.log(`Gas: ${gasInEther}`);
-  const gasInWei = ethers.utils.parseUnits("0.029", "ether");
-  console.log(`Gas in wei: ${gasInWei}`);
+  const gasInWei = ethers.utils.parseUnits(value, "ether");
 
   let adapterParams = ethers.utils.solidityPack(
     ["uint16", "uint", "uint", "address"],
-    [2, 200000, gasInWei, ownerAddress]
+    [2, 200000, gasInWei.toString(), ownerAddress]
   );
-  console.log(`Sending transaction to ${CONTRACT_ADDRESS}`);
-  // Estimate gas fee
+
+  const gasPrice = await signer.getGasPrice();
+
   try {
-    const [_nativeFee, _zroFee] = await contract.estimateGasBridgeFee(
+    const tx = await contract.bridgeGas(
       remoteChainId,
-      false,
-      adapterParams
+      ownerAddress,
+      adapterParams,
+      {
+        value: estimatedFee,
+        gasLimit: ethers.utils.parseUnits("250000", "wei"),
+        gasPrice: gasPrice.mul(5).div(4),
+      }
     );
 
-    console.log(
-      `Estimated native fee: ${ethers.utils.formatEther(
-        _nativeFee.toString()
-      )} ETH`
-    );
-    console.log(
-      `Estimated ZRO fee: ${ethers.utils.formatEther(_zroFee.toString())} ZRO`
-    );
-    const estimatedFee = _nativeFee; // or _zroFee
-
-    console.log(estimatedFee);
-    const gasPrice = await signer.getGasPrice();
-
-    try {
-      const tx = await contract.bridgeGas(
-        remoteChainId,
-        ownerAddress,
-        adapterParams,
-        {
-          value: estimatedFee,
-          gasLimit: ethers.utils.parseUnits("250000", "wei"),
-          gasPrice: gasPrice.mul(5).div(4),
-        }
-      );
-      console.log(`Transaction hash: ${tx.hash}`);
-
-      const receipt = await tx.wait();
-      console.log(`Transaction was mined in block ${receipt.blockNumber}`);
-      return { txHash: tx.hash };
-    } catch (error) {
-      console.error(`Error in transaction: ${(error as any).message}`);
-    }
+    const receipt = await tx.wait();
+    return { txHash: tx.hash, blockNumber: receipt.blockNumber };
   } catch (error) {
-    console.error(`Error estimating gas fee: ${(error as any).message}`);
+    console.error(`Error in transaction: ${(error as any).message}`);
+    throw error; // Propagate the error to handle it in the UI layer
   }
 };

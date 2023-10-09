@@ -1,5 +1,5 @@
 import { useNetwork } from "wagmi";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { handleGasRefuel } from "../../utils/helpers/handleGasRefuel";
 import { IoSwapHorizontalSharp } from "react-icons/io5";
 import { useNetworkSelection } from "../../utils/hooks/useNetworkSelection";
@@ -8,9 +8,14 @@ import NetworkModal from "./NetworkModal";
 import { Network } from "../../types/network";
 import { getValidToNetworks } from "../../utils/getValidToNetworks";
 import { estimateGasBridgeFee } from "../../utils/helpers/handleGasRefuel";
+import { getContractAddress } from "../../utils/getConstants";
+import { ethers } from "ethers";
 
 const Gas = () => {
   const { chain } = useNetwork();
+
+  const [inputAmount, setInputAmount] = useState("");
+  const [gasFee, setGasFee] = useState("");
 
   const isValidToNetwork = (toNetwork: Network) => {
     const validToNetworks = getValidToNetworks(fromNetwork);
@@ -36,12 +41,15 @@ const Gas = () => {
   } = useNetworkSelection(activeChains[1], isValidToNetwork);
 
   const handleGas = async () => {
-    const CONTRACT_ADDRESS = "0xaa1293660a7bA50569b7F24Cbf7C1fc50BEE340E";
+    const CONTRACT_ADDRESS = getContractAddress(fromNetwork.name);
+    let targetNetwork = toNetwork.name.toLowerCase();
 
     try {
       const result = await handleGasRefuel({
         CONTRACT_ADDRESS,
-        targetNetwork: "Sepolia",
+        targetNetwork,
+        value: inputAmount,
+        estimatedFee: gasFee,
       });
 
       if (!result) {
@@ -55,13 +63,18 @@ const Gas = () => {
   };
 
   const estimateGas = async () => {
-    const gasFee = await estimateGasBridgeFee({
-      CONTRACT_ADDRESS: "0xaa1293660a7bA50569b7F24Cbf7C1fc50BEE340E",
-      targetNetwork: "Goerli",
-      value: "0.001",
+    const CONTRACT_ADDRESS = getContractAddress(fromNetwork.name);
+    let targetNetwork = toNetwork.name.toLowerCase();
+
+    console.log(CONTRACT_ADDRESS, targetNetwork, inputAmount);
+    const estimatedFee = await estimateGasBridgeFee({
+      CONTRACT_ADDRESS,
+      targetNetwork,
+      value: inputAmount,
     });
 
-    console.log(gasFee);
+    setGasFee(estimatedFee);
+    console.log(estimatedFee);
   };
 
   useEffect(() => {
@@ -119,24 +132,53 @@ const Gas = () => {
               />
             </div>
 
-            <p className="pt-5 pb-3">
-              Step 1: Input amount of ${toNetwork.nativeCurrency.symbol} to
-              receive on {toNetwork.name}
-            </p>
-            <div className="w-full flex justify-center items-center gap-4">
-              <input
-                className="input input-bordered flex-grow"
-                placeholder="Amount"
-              />
-              <button className="btn btn-primary flex-shrink-0 w-1/3 max-w-[30%]">
-                Max
-              </button>
-            </div>
-
-            <p className="pt-5 pb-3">Step 2: Check transaction details</p>
-            <button className="btn btn-primary" onClick={estimateGas}>
-              Preview
-            </button>
+            {gasFee != "" ? (
+              <>
+                <div>
+                  <p>
+                    Estimated transaction cost:{" "}
+                    {ethers.utils.formatEther(gasFee.toString())}{" "}
+                    {fromNetwork.nativeCurrency.symbol}
+                  </p>
+                </div>
+                <p className="pt-5 pb-3">Step 3: Confirm transaction</p>
+                <button className="btn btn-primary" onClick={handleGas}>
+                  {" "}
+                  Confirm{" "}
+                </button>
+                <button
+                  className="btn btn-primary mt-2"
+                  onClick={() => {
+                    setGasFee("");
+                  }}
+                >
+                  Back
+                </button>
+              </>
+            ) : (
+              <>
+                <p className="pt-5 pb-3">
+                  Step 1: Input amount of ${toNetwork.nativeCurrency.symbol} to
+                  receive on {toNetwork.name}
+                </p>
+                <div className="w-full flex justify-center items-center gap-4">
+                  <input
+                    className="input input-bordered flex-grow"
+                    placeholder="Amount"
+                    type="number"
+                    value={inputAmount}
+                    onChange={(e) => setInputAmount(e.target.value)}
+                  />
+                  <button className="btn btn-primary flex-shrink-0 w-1/3 max-w-[30%]">
+                    Max
+                  </button>
+                </div>
+                <p className="pt-5 pb-3">Step 2: Check transaction details</p>
+                <button className="btn btn-primary" onClick={estimateGas}>
+                  Preview
+                </button>
+              </>
+            )}
           </div>
         </div>
       </section>
