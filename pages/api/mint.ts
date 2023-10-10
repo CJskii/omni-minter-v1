@@ -2,9 +2,15 @@ import { NextApiRequest, NextApiResponse } from "next";
 import { prisma } from "../../prisma/client";
 
 const fetchUserData = async (ethereumAddress: string) => {
-  return await prisma.user.findUnique({
-    where: { ethereumAddress },
+  return await prisma.user.findFirst({
+    where: {
+      ethereumAddress: {
+        equals: ethereumAddress,
+        mode: "insensitive",
+      },
+    },
     select: {
+      ethereumAddress: true,
       totalPoints: true,
       mints: {
         select: { id: true, count: true, updatedAt: true },
@@ -201,7 +207,7 @@ export default async function handler(
       };
     }
 
-    await updateUserData(ethereumAddress, updateData);
+    await updateUserData(user.ethereumAddress, updateData);
     console.log("Mint recorded and points awarded");
     res.status(200).json({ message: "Mint recorded and points awarded" });
   } catch (error) {

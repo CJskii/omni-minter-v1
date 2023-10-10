@@ -3,9 +3,15 @@ import { prisma } from "../../prisma/client";
 import { differenceInCalendarDays, parseISO, isToday } from "date-fns";
 
 const fetchUserData = async (ethereumAddress: string) => {
-  return await prisma.user.findUnique({
-    where: { ethereumAddress },
+  return await prisma.user.findFirst({
+    where: {
+      ethereumAddress: {
+        equals: ethereumAddress,
+        mode: "insensitive",
+      },
+    },
     select: {
+      ethereumAddress: true,
       totalPoints: true,
       lastRewardClaimedAt: true,
       currentRewardDay: true,
@@ -144,7 +150,9 @@ export default async function handler(
 
     // Update the user's total points and current reward day
     const updatedUser = await prisma.user.update({
-      where: { ethereumAddress },
+      where: {
+        ethereumAddress: user.ethereumAddress,
+      },
       data: {
         totalPoints: {
           increment: dailyReward.points,

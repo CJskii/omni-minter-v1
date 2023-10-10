@@ -2,9 +2,15 @@ import { NextApiRequest, NextApiResponse } from "next";
 import { prisma } from "../../prisma/client";
 
 const fetchUserData = async (ethereumAddress: string) => {
-  return await await prisma.user.findUnique({
-    where: { ethereumAddress },
+  return await await prisma.user.findFirst({
+    where: {
+      ethereumAddress: {
+        equals: ethereumAddress,
+        mode: "insensitive",
+      },
+    },
     select: {
+      ethereumAddress: true,
       totalPoints: true,
       bridges: {
         select: { id: true, count: true, updatedAt: true },
@@ -131,7 +137,9 @@ export default async function handler(
     }
 
     await prisma.user.update({
-      where: { ethereumAddress },
+      where: {
+        ethereumAddress: user.ethereumAddress,
+      },
       data: updateData,
     });
     console.log("Bridge recorded and points awarded");
