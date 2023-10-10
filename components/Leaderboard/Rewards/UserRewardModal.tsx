@@ -1,12 +1,6 @@
 import { useEffect, useRef } from "react";
 import DisplayModalMessage from "./DisplayModalMessage";
-
-interface UserRewardModal {
-  showRewardModal: boolean;
-  setShowRewardModal: (show: boolean) => void;
-  isLoading: boolean;
-  response: any;
-}
+import { UserRewardModal } from "../../../types/rewards";
 
 const UserRewardModal = (props: UserRewardModal) => {
   const { showRewardModal, setShowRewardModal, isLoading, response } = props;

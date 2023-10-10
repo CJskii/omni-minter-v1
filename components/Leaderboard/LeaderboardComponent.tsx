@@ -7,43 +7,14 @@ import DailyReward from "./Rewards/DailyRewardCollapse";
 import InviteUsersCollapse from "./InviteUsersCollapse";
 import LeaderboardTable from "./Data/Table";
 import { callUserStats } from "../../utils/api/callUserStatsAPI";
+import { User as LeaderboardData } from "../../types/leaderboard";
 
 // create interface for leaderboard data
 
 // data is an array of objects
 // each object has the following properties:
 // address: string
-// points: number
-
-interface LeaderboardData {
-  ethereumAddress: string;
-  totalPoints: number;
-  inviteLink: string;
-  currentRewardDay: number;
-  lastRewardClaimedAt: string;
-  mints: [
-    {
-      count: number;
-    }
-  ];
-  bridges: [
-    {
-      count: number;
-    }
-  ];
-  interactions: [
-    {
-      count: number;
-    }
-  ];
-  streaks: [
-    {
-      currentStreak: number;
-    }
-  ];
-
-  key: [any];
-}
+// points: numbe
 
 const LeaderboardComponent = () => {
   const [leaderboard, setLeaderboard] = useState<LeaderboardData[]>([]);

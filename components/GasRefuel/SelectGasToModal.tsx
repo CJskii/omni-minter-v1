@@ -1,51 +1,67 @@
 import Image from "next/image";
-import { useEffect, useState } from "react";
+import { useState, useEffect } from "react";
 import { activeChains } from "../../constants/chainsConfig";
+import { networkTransferMappings } from "../../constants/networkMappings";
 import { useNetwork } from "wagmi";
-import { Network } from "../../types/network";
+type Network = {
+  id: number;
+  name: string;
+  network: string;
+  iconUrl?: string;
+  iconBackground?: string;
+  nativeCurrency: {
+    decimals: number;
+    name: string;
+    symbol: string;
+  };
+  [key: string]: any;
+};
 
-interface BridgeProps {
-  mintNetwork: string;
-  setFromNetwork: (network: string) => void;
+interface ModalProps {
+  setToNetwork: (key: string) => void;
+  fromNetwork: string;
 }
 
-const SelectBridgeFromModal = (props: BridgeProps) => {
-  const { mintNetwork, setFromNetwork } = props;
-
+const SelectGasToModal = (props: ModalProps) => {
+  const { fromNetwork, setToNetwork } = props;
   const { chain } = useNetwork();
-  const defaultNetwork = mintNetwork
-    ? activeChains.find((net) => net.name === mintNetwork) || activeChains[0]
-    : activeChains[0];
-
-  const [selectedNetwork, setSelectedNetwork] =
-    useState<Network>(defaultNetwork);
+  const [selectedNetwork, setSelectedNetwork] = useState<Network>(
+    activeChains[0]
+  );
   const [searchTerm, setSearchTerm] = useState<string>("");
 
-  const filteredChains = activeChains.filter((network) =>
-    network.name.toLowerCase().includes(searchTerm.toLowerCase())
-  );
+  useEffect(() => {
+    const validNetworks = networkTransferMappings[fromNetwork];
+    const defaultNetwork = validNetworks
+      ? activeChains.find(
+          (net) => validNetworks.includes(net.name) && net.name !== fromNetwork
+        ) || activeChains[0]
+      : activeChains[0];
+
+    setSelectedNetwork(defaultNetwork);
+    setToNetwork(defaultNetwork.name);
+  }, [fromNetwork, setToNetwork]);
 
   useEffect(() => {
-    let selected = defaultNetwork;
-
-    if (mintNetwork) {
-      selected =
-        activeChains.find((net) => net.name === mintNetwork) || defaultNetwork;
-    } else if (chain?.name && !chain.unsupported) {
-      selected =
-        activeChains.find((net) => net.name === chain.name) || defaultNetwork;
+    if (chain?.name) {
+      const updatedNetwork =
+        activeChains.find((net) => net.name === chain.name) || activeChains[0];
+      setSelectedNetwork(updatedNetwork);
     }
-
-    setSelectedNetwork(selected);
-
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [chain]);
+
+  const validNetworks = networkTransferMappings[fromNetwork] || [];
+  const filteredChains = activeChains.filter(
+    (network) =>
+      network.name.toLowerCase().includes(searchTerm.toLowerCase()) &&
+      validNetworks.includes(network.name)
+  );
 
   return (
     <div>
       <button
-        className="btn-square w-full"
-        onClick={() => (window as any).fromNetworkModal.showModal()}
+        className="w-full"
+        onClick={() => (window as any).toNetworkModal.showModal()}
       >
         <div className="w-full">
           <a className="flex gap-[15px] py-2 justify-start px-4 items-center border-base-100 border-[1px]">
@@ -62,9 +78,10 @@ const SelectBridgeFromModal = (props: BridgeProps) => {
           </a>
         </div>
       </button>
-      <dialog id="fromNetworkModal" className="modal">
+      <dialog id="toNetworkModal" className="modal">
+        {validNetworks && validNetworks.length === 0 ? <></> : <></>}
         <form method="dialog" className="modal-box p-0 h-[75vh] scrollbar-hide">
-          <h3 className="font-bold text-lg py-2 px-4">Select From Network</h3>{" "}
+          <h3 className="font-bold text-lg py-2 px-4">Select To Network</h3>{" "}
           <input
             type="text"
             className="input input-bordered w-full mb-2 text-sm"
@@ -73,11 +90,11 @@ const SelectBridgeFromModal = (props: BridgeProps) => {
             onChange={(e) => setSearchTerm(e.target.value)}
           />
           <ul className="menu bg-base-200 w-full bg-transparent rounded-box scrollbar-hide">
-            {filteredChains.length === 0 ? (
-              <div className="p-2 text-md">No valid networks</div>
-            ) : (
-              <>
-                {activeChains
+            {validNetworks ? (
+              validNetworks.length === 0 || filteredChains.length === 0 ? (
+                <></>
+              ) : (
+                activeChains
                   .filter(
                     (network) =>
                       !searchTerm ||
@@ -85,17 +102,18 @@ const SelectBridgeFromModal = (props: BridgeProps) => {
                         .toLowerCase()
                         .includes(searchTerm.toLowerCase())
                   )
+                  .filter((net) => validNetworks.includes(net.name))
                   .map((network) => (
                     <li
                       className="w-full"
                       key={network.name}
-                      onClick={() => setFromNetwork(network.name)}
+                      onClick={() => setToNetwork(network.name)}
                     >
                       <a
                         className="flex gap-4"
                         onClick={() => {
                           setSelectedNetwork(network);
-                          (window as any).fromNetworkModal.close();
+                          (window as any).toNetworkModal.close();
                         }}
                       >
                         <Image
@@ -114,8 +132,10 @@ const SelectBridgeFromModal = (props: BridgeProps) => {
                         </div>
                       </a>
                     </li>
-                  ))}
-              </>
+                  ))
+              )
+            ) : (
+              <></>
             )}
           </ul>
         </form>
@@ -127,4 +147,4 @@ const SelectBridgeFromModal = (props: BridgeProps) => {
   );
 };
 
-export default SelectBridgeFromModal;
+export default SelectGasToModal;

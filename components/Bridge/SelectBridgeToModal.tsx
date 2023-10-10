@@ -3,19 +3,7 @@ import { useState, useEffect } from "react";
 import { activeChains } from "../../constants/chainsConfig";
 import { networkTransferMappings } from "../../constants/networkMappings";
 import { useNetwork } from "wagmi";
-type Network = {
-  id: number;
-  name: string;
-  network: string;
-  iconUrl?: string;
-  iconBackground?: string;
-  nativeCurrency: {
-    decimals: number;
-    name: string;
-    symbol: string;
-  };
-  [key: string]: any;
-};
+import { Network } from "../../types/network";
 
 interface BridgeProps {
   setToNetwork: (key: string) => void;

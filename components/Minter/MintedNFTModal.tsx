@@ -1,18 +1,7 @@
 import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/router";
-
-interface MintedNFTModalProps {
-  showMintModal: boolean;
-  setShowMintModal: (show: boolean) => void;
-  minting: boolean;
-  mintedNFT: any;
-  mintNetwork: string;
-  txHash: string;
-  setTxHash: (txHash: string) => void;
-  errorMessage: string;
-  setErrorMessage: (errorMessage: string) => void;
-}
+import { MintedNFTModalProps } from "../../types/mintedNFT";
 
 const MintedNFTModal = (props: MintedNFTModalProps) => {
   const {

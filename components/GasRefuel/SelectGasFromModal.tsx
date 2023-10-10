@@ -2,49 +2,55 @@ import Image from "next/image";
 import { useEffect, useState } from "react";
 import { activeChains } from "../../constants/chainsConfig";
 import { useNetwork } from "wagmi";
-import { Network } from "../../types/network";
 
-interface BridgeProps {
-  mintNetwork: string;
+type Network = {
+  id: number;
+  name: string;
+  network: string;
+  iconUrl?: string;
+  iconBackground?: string;
+  nativeCurrency: {
+    decimals: number;
+    name: string;
+    symbol: string;
+  };
+  [key: string]: any;
+};
+
+interface ModalProps {
   setFromNetwork: (network: string) => void;
 }
 
-const SelectBridgeFromModal = (props: BridgeProps) => {
-  const { mintNetwork, setFromNetwork } = props;
+const SelectGasFromModal = (props: ModalProps) => {
+  const { setFromNetwork } = props;
 
   const { chain } = useNetwork();
-  const defaultNetwork = mintNetwork
-    ? activeChains.find((net) => net.name === mintNetwork) || activeChains[0]
-    : activeChains[0];
 
-  const [selectedNetwork, setSelectedNetwork] =
-    useState<Network>(defaultNetwork);
+  const [selectedNetwork, setSelectedNetwork] = useState<Network>(
+    activeChains[0]
+  );
   const [searchTerm, setSearchTerm] = useState<string>("");
+
+  useEffect(() => {
+    if (chain?.name) {
+      const clientSelectedNetwork =
+        activeChains.find((net) => net.name === chain.name) || activeChains[0];
+      setSelectedNetwork(clientSelectedNetwork);
+    }
+  }, [chain]);
+
+  useEffect(() => {
+    setFromNetwork(selectedNetwork.name);
+  }, [selectedNetwork, setFromNetwork]);
 
   const filteredChains = activeChains.filter((network) =>
     network.name.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
-  useEffect(() => {
-    let selected = defaultNetwork;
-
-    if (mintNetwork) {
-      selected =
-        activeChains.find((net) => net.name === mintNetwork) || defaultNetwork;
-    } else if (chain?.name && !chain.unsupported) {
-      selected =
-        activeChains.find((net) => net.name === chain.name) || defaultNetwork;
-    }
-
-    setSelectedNetwork(selected);
-
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [chain]);
-
   return (
     <div>
       <button
-        className="btn-square w-full"
+        className=" w-full"
         onClick={() => (window as any).fromNetworkModal.showModal()}
       >
         <div className="w-full">
@@ -127,4 +133,4 @@ const SelectBridgeFromModal = (props: BridgeProps) => {
   );
 };
 
-export default SelectBridgeFromModal;
+export default SelectGasFromModal;

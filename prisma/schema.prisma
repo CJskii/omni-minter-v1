@@ -8,26 +8,30 @@ datasource db {
 }
 
 model User {
-  ethereumAddress     String            @id
-  createdAt           DateTime          @default(now())
-  updatedAt           DateTime          @updatedAt
-  totalPoints         Int               @default(0)
-  inviteLink          String            @unique
+  ethereumAddress     String              @id
+  createdAt           DateTime            @default(now())
+  updatedAt           DateTime            @updatedAt
+  totalPoints         Int                 @default(0)
+  inviteLink          String              @unique
   invitedById         String?
   leaderboardRank     Int?
-  discordHandle       String?
-  githubHandle        String?
-  twitterHandle       String?
-  currentRewardDay    Int               @default(1)
-  inviteCount         Int               @default(0)
+  discordHandle       String?             @unique
+  githubHandle        String?             @unique
+  twitterHandle       String?             @unique
+  currentRewardDay    Int                 @default(1)
+  inviteCount         Int                 @default(0)
   lastRewardClaimedAt DateTime?
+  email               String?             @unique
+  isOnWaitlist        Boolean             @default(false)
+  isSubscribed        Boolean             @default(false)
   bridges             Bridges[]
   interactions        Interactions[]
   mints               Mints[]
   streaks             Streaks[]
-  invitedBy           User?             @relation("ReferralRelation", fields: [invitedById], references: [ethereumAddress])
-  referredUsers       User[]            @relation("ReferralRelation")
+  invitedBy           User?               @relation("ReferralRelation", fields: [invitedById], references: [ethereumAddress])
+  referredUsers       User[]              @relation("ReferralRelation")
   dailyRewards        UserDailyReward[]
+  VerificationToken   VerificationToken[]
 
   @@index([totalPoints])
 }
@@ -86,4 +90,17 @@ model UserDailyReward {
   claimedAt     DateTime    @default(now())
   dailyReward   DailyReward @relation(fields: [dailyRewardId], references: [id])
   user          User        @relation(fields: [userId], references: [ethereumAddress])
+}
+
+model VerificationToken {
+  id         Int       @id @default(autoincrement())
+  token      String    @unique
+  identifier String
+  expires    DateTime? @db.Timestamptz(6)
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime
+  user_email String
+  User       User      @relation(fields: [user_email], references: [email])
+
+  @@unique([identifier, token])
 }

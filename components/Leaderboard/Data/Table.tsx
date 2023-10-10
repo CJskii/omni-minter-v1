@@ -1,35 +1,6 @@
 import LeaderboardRow from "./LeaderboardRow";
 import LoadingSpinner from "../Loading";
-
-interface User {
-  ethereumAddress: string;
-  totalPoints: number;
-  inviteLink: string;
-  mints: [
-    {
-      count: number;
-    }
-  ];
-  bridges: [
-    {
-      count: number;
-    }
-  ];
-  interactions: [
-    {
-      count: number;
-    }
-  ];
-  streaks: [
-    {
-      currentStreak: number;
-    }
-  ];
-}
-
-interface LeaderboardData {
-  leaderboard: User[];
-}
+import { LeaderboardData, User } from "../../../types/leaderboard";
 
 const LeaderboardTable = (props: LeaderboardData) => {
   const { leaderboard } = props;

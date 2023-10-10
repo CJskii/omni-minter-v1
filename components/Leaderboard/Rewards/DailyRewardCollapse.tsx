@@ -6,14 +6,7 @@ import { callDailyRewardsData } from "../../../utils/api/callRewardAPI";
 import { getCurrentReward } from "../../../utils/helpers/rewards/getCurrentReward";
 import { shouldDisableClaimButton } from "../../../utils/helpers/rewards/shouldDisableClaimButton";
 import UserRewardModal from "./UserRewardModal";
-
-interface RewardData {
-  id: number;
-  day: number;
-  points: number;
-  reward: string;
-  description: string;
-}
+import { RewardData } from "../../../types/rewards";
 
 const DailyRewardCollapse = (props: {
   currentRewardDay: number;

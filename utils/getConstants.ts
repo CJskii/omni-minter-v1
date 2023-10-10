@@ -42,7 +42,7 @@ export const getRemoteChainId = (targetNetwork: string) => {
   return remoteChainId;
 };
 
-const transformNetworkName = (networkName: string) => {
+export const transformNetworkName = (networkName: string) => {
   switch (networkName.toLowerCase()) {
     case "polygon mumbai":
       networkName = "mumbai";

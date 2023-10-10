@@ -14,7 +14,10 @@ export default async function handler(
   try {
     const user = await prisma.user.findFirst({
       where: {
-        ethereumAddress: ethereumAddress,
+        ethereumAddress: {
+          equals: ethereumAddress,
+          mode: "insensitive",
+        },
       },
       select: {
         ethereumAddress: true,
