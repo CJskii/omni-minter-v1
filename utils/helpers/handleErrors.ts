@@ -5,6 +5,7 @@ export const handleErrors = ({
   e: any;
   setErrorMessage: (message: string) => void;
 }) => {
+  console.log("e", e.data.message);
   const dataMessage = (e as any).data?.message;
   const genericMessage = (e as any)?.message;
   if (dataMessage) {
@@ -21,6 +22,14 @@ export const handleErrors = ({
     } else if (dataMessage.includes("ERC721: invalid token ID")) {
       return setErrorMessage(
         "Invalid ERC721 token ID provided. Please check and try again."
+      );
+    } else if (
+      dataMessage.includes(
+        "execution reverted: Relayer: dstNativeAmt too large"
+      )
+    ) {
+      return setErrorMessage(
+        "The amount you are trying to transfer is too large. Please try again with a smaller amount."
       );
     } else if (dataMessage.includes("execution reverted")) {
       return setErrorMessage(
@@ -41,6 +50,10 @@ export const handleErrors = ({
     } else if (genericMessage.includes("execution reverted")) {
       return setErrorMessage(
         "Transaction execution was reverted. Please check the transaction details."
+      );
+    } else if (genericMessage.includes("dstNativeAmt too large")) {
+      return setErrorMessage(
+        "The amount you are trying to transfer is too large. Please try again with a smaller amount."
       );
     } else {
       return setErrorMessage("An error occurred");

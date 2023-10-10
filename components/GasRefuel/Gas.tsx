@@ -173,8 +173,22 @@ const Gas = () => {
             <h2 className="text-xl font-bold leading-tight sm:text-4xl text-content-focus text-center">
               Gas Refuel
             </h2>
+            <p className="text-sm text-center p-2">
+              Note: this is experimental feature, please proceed with caution!
+            </p>
+            <p className="text-sm text-center">
+              If you run into any issues please contact us in our{" "}
+              <a
+                className="text-yellow-400"
+                href="https://discord.gg/VWbgEbF2Nf"
+                title=""
+                target="_blank"
+              >
+                Discord
+              </a>
+            </p>
 
-            <div className="grid grid-cols-[1fr,auto,1fr] items-center gap-4 py-4 px-2 mt-4">
+            <div className="grid grid-cols-[1fr,auto,1fr] items-center gap-4 py-4 px-2 mt-4 max-sm:flex max-sm:flex-col">
               <NetworkModal
                 selectedNetwork={fromNetwork}
                 onNetworkSelect={setFromNetwork}
@@ -247,7 +261,7 @@ const Gas = () => {
                   Step 1: Input amount of ${toNetwork.nativeCurrency.symbol} to
                   receive on {toNetwork.name}
                 </p>
-                <div className="w-full flex justify-center items-center gap-4">
+                <div className="w-full flex justify-center items-center gap-4 max-[400px]:flex-col">
                   <input
                     className="input input-bordered flex-grow"
                     placeholder="Amount"
