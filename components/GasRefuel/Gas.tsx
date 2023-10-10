@@ -92,11 +92,38 @@ const Gas = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [fromNetwork, toNetwork, setToNetwork]);
 
+  useEffect(() => {
+    setGasFee("");
+  }, [fromNetwork, toNetwork]);
+
   const handleMaxButton = () => {
     const maxGas = getMaxGasValue(toNetwork.name);
     if (maxGas) {
       setInputAmount(maxGas.toString());
     }
+  };
+
+  const requestNetworkSwitch = async (networkChainId: number) => {
+    const hexChainId = `0x${parseInt(networkChainId.toString(), 10).toString(
+      16
+    )}`;
+    try {
+      if (!window.ethereum) return;
+      await window.ethereum.request({
+        method: "wallet_switchEthereumChain",
+        params: [{ chainId: hexChainId }],
+      });
+    } catch (switchError) {
+      console.error(switchError);
+    }
+  };
+
+  const handlePreviewClick = async () => {
+    console.log(chain?.name, fromNetwork.name);
+    if (chain?.name !== fromNetwork.name) {
+      await requestNetworkSwitch(fromNetwork.id);
+    }
+    estimateGas();
   };
 
   return (
@@ -144,9 +171,8 @@ const Gas = () => {
               <>
                 <div>
                   <p>
-                    Estimated transaction gas:{" "}
-                    {ethers.utils.formatEther(gasFee.toString())}{" "}
-                    {fromNetwork.nativeCurrency.symbol}
+                    Estimated to receive on {toNetwork.name} {inputAmount}{" "}
+                    {toNetwork.nativeCurrency.symbol}
                   </p>
                   <p>
                     Estimated total cost{" "}
@@ -168,7 +194,7 @@ const Gas = () => {
                     setGasFee("");
                   }}
                 >
-                  Back
+                  Return
                 </button>
               </>
             ) : (
@@ -195,7 +221,7 @@ const Gas = () => {
                 <p className="pt-5 pb-3">Step 2: Check transaction details</p>
                 <button
                   className="btn btn-primary"
-                  onClick={estimateGas}
+                  onClick={handlePreviewClick}
                   disabled={inputAmount == ""}
                 >
                   Preview

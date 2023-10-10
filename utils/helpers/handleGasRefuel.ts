@@ -70,7 +70,7 @@ export const handleGasRefuel = async ({
       adapterParams,
       {
         value: estimatedFee,
-        gasLimit: ethers.utils.parseUnits("250000", "wei"),
+        // gasLimit: ethers.utils.parseUnits("250000", "wei"),
         gasPrice: gasPrice.mul(5).div(4),
       }
     );
