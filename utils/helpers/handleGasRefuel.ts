@@ -25,6 +25,7 @@ export const estimateGasBridgeFee = async ({
     [2, 200000, gasInWei.toString(), ownerAddress]
   );
 
+  console.log(remoteChainId, adapterParams);
   try {
     const [_nativeFee, _zroFee] = await contract.estimateGasBridgeFee(
       remoteChainId,

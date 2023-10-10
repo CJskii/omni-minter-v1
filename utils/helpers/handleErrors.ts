@@ -5,7 +5,7 @@ export const handleErrors = ({
   e: any;
   setErrorMessage: (message: string) => void;
 }) => {
-  console.log("e", e.data.message);
+  console.log(e);
   const dataMessage = (e as any).data?.message;
   const genericMessage = (e as any)?.message;
   if (dataMessage) {
@@ -50,6 +50,10 @@ export const handleErrors = ({
     } else if (genericMessage.includes("execution reverted")) {
       return setErrorMessage(
         "Transaction execution was reverted. Please check the transaction details."
+      );
+    } else if (genericMessage.includes("Unrecognized chain ID")) {
+      return setErrorMessage(
+        "Unrecognised network. Please add source chain to your wallet and try again."
       );
     } else if (genericMessage.includes("dstNativeAmt too large")) {
       return setErrorMessage(

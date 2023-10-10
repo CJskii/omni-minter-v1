@@ -13,9 +13,12 @@ import { ethers } from "ethers";
 import { getMaxGasValue } from "../../utils/getMaxGasValue";
 import GasModal from "./GasModal";
 import { handleErrors } from "../../utils/helpers/handleErrors";
+import { useChainModal } from "@rainbow-me/rainbowkit";
+import { requestNetworkSwitch } from "../../utils/requestNetworkSwitch";
 
 const Gas = () => {
   const { chain } = useNetwork();
+  const { openChainModal } = useChainModal();
 
   const [inputAmount, setInputAmount] = useState("");
   const [gasFee, setGasFee] = useState("");
@@ -23,7 +26,6 @@ const Gas = () => {
   const [txHash, setTxHash] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
   const [transactionBlockNumber, setTransactionBlockNumber] = useState(0);
-  const [txTotalCost, setTxTotalCost] = useState("");
   const [isLoading, setIsLoading] = useState(false);
 
   const isValidToNetwork = (toNetwork: Network) => {
@@ -128,27 +130,20 @@ const Gas = () => {
     }
   };
 
-  const requestNetworkSwitch = async (networkChainId: number) => {
-    const hexChainId = `0x${parseInt(networkChainId.toString(), 10).toString(
-      16
-    )}`;
-    try {
-      if (!window.ethereum) return;
-      await window.ethereum.request({
-        method: "wallet_switchEthereumChain",
-        params: [{ chainId: hexChainId }],
-      });
-    } catch (switchError) {
-      console.error(switchError);
-    }
-  };
-
   const handlePreviewClick = async () => {
-    console.log(chain?.name, fromNetwork.name);
-    if (chain?.name !== fromNetwork.name) {
-      await requestNetworkSwitch(fromNetwork.id);
+    setIsLoading(true);
+    try {
+      if (chain?.name !== fromNetwork.name) {
+        await requestNetworkSwitch(fromNetwork.id, openChainModal);
+      }
+      await estimateGas();
+    } catch (e) {
+      console.error(e);
+      handleErrors({ e, setErrorMessage });
+      setShowGasModal(true);
+    } finally {
+      setIsLoading(false);
     }
-    estimateGas();
   };
 
   return (
