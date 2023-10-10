@@ -76,7 +76,11 @@ export const handleGasRefuel = async ({
     );
 
     const receipt = await tx.wait();
-    return { txHash: tx.hash, blockNumber: receipt.blockNumber };
+
+    return {
+      txHash: tx.hash,
+      blockNumber: receipt.blockNumber,
+    };
   } catch (error) {
     console.error(`Error in transaction: ${(error as any).message}`);
     throw error; // Propagate the error to handle it in the UI layer

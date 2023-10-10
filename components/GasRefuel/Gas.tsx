@@ -11,12 +11,20 @@ import { estimateGasBridgeFee } from "../../utils/helpers/handleGasRefuel";
 import { getContractAddress } from "../../utils/getConstants";
 import { ethers } from "ethers";
 import { getMaxGasValue } from "../../utils/getMaxGasValue";
+import GasModal from "./GasModal";
+import { handleErrors } from "../../utils/helpers/handleErrors";
 
 const Gas = () => {
   const { chain } = useNetwork();
 
   const [inputAmount, setInputAmount] = useState("");
   const [gasFee, setGasFee] = useState("");
+  const [showGasModal, setShowGasModal] = useState(false);
+  const [txHash, setTxHash] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
+  const [transactionBlockNumber, setTransactionBlockNumber] = useState(0);
+  const [txTotalCost, setTxTotalCost] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
 
   const isValidToNetwork = (toNetwork: Network) => {
     const validToNetworks = getValidToNetworks(fromNetwork);
@@ -42,6 +50,8 @@ const Gas = () => {
   } = useNetworkSelection(activeChains[1], isValidToNetwork);
 
   const handleGas = async () => {
+    setIsLoading(true);
+    setShowGasModal(true);
     const CONTRACT_ADDRESS = getContractAddress(fromNetwork.name);
     let targetNetwork = toNetwork.name.toLowerCase();
 
@@ -56,26 +66,41 @@ const Gas = () => {
       if (!result) {
         throw new Error("Failed to mint NFT");
       }
-
-      const { txHash } = result;
+      const { txHash, blockNumber } = result;
+      setTxHash(txHash);
+      setTransactionBlockNumber(blockNumber);
+      setGasFee("");
+      setIsLoading(false);
     } catch (e) {
       console.error(e);
+      handleErrors({ e, setErrorMessage });
+      setIsLoading(false);
+      setShowGasModal(true);
     }
   };
 
   const estimateGas = async () => {
-    const CONTRACT_ADDRESS = getContractAddress(fromNetwork.name);
-    let targetNetwork = toNetwork.name.toLowerCase();
+    setIsLoading(true);
+    try {
+      const CONTRACT_ADDRESS = getContractAddress(fromNetwork.name);
+      let targetNetwork = toNetwork.name.toLowerCase();
 
-    console.log(CONTRACT_ADDRESS, targetNetwork, inputAmount);
-    const estimatedFee = await estimateGasBridgeFee({
-      CONTRACT_ADDRESS,
-      targetNetwork,
-      value: inputAmount,
-    });
+      console.log(CONTRACT_ADDRESS, targetNetwork, inputAmount);
+      const estimatedFee = await estimateGasBridgeFee({
+        CONTRACT_ADDRESS,
+        targetNetwork,
+        value: inputAmount,
+      });
 
-    setGasFee(estimatedFee);
-    console.log(estimatedFee);
+      setGasFee(estimatedFee);
+      console.log(estimatedFee);
+      setIsLoading(false);
+    } catch (e) {
+      console.error(e);
+      handleErrors({ e, setErrorMessage });
+      setShowGasModal(true);
+      setIsLoading(false);
+    }
   };
 
   useEffect(() => {
@@ -131,6 +156,20 @@ const Gas = () => {
       <section className="bg-base card card-side bg-base-200 shadow-xl rounded-none">
         <div className="flex items-center justify-center px-4 py-10 sm:px-6 lg:px-8 sm:p-8">
           <div className="md:w-full xl:max-w-2xl 2xl:max-w-2xl xl:mx-auto 2xl:pl-8 h-full flex flex-col justify-between lg:p-8">
+            <GasModal
+              showGasModal={showGasModal}
+              setShowGasModal={setShowGasModal}
+              txHash={txHash}
+              setTxHash={setTxHash}
+              errorMessage={errorMessage}
+              setErrorMessage={setErrorMessage}
+              isLoading={isLoading}
+              data={{
+                inputAmount,
+                toNetwork,
+                transactionBlockNumber,
+              }}
+            />
             <h2 className="text-xl font-bold leading-tight sm:text-4xl text-content-focus text-center">
               Gas Refuel
             </h2>
@@ -184,7 +223,12 @@ const Gas = () => {
                   </p>
                 </div>
                 <p className="pt-5 pb-3">Step 3: Confirm transaction</p>
-                <button className="btn btn-primary" onClick={handleGas}>
+
+                <button
+                  className="btn btn-primary"
+                  onClick={handleGas}
+                  disabled={isLoading ? true : false}
+                >
                   {" "}
                   Confirm{" "}
                 </button>
