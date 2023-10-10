@@ -10,6 +10,7 @@ import { getValidToNetworks } from "../../utils/getValidToNetworks";
 import { estimateGasBridgeFee } from "../../utils/helpers/handleGasRefuel";
 import { getContractAddress } from "../../utils/getConstants";
 import { ethers } from "ethers";
+import { getMaxGasValue } from "../../utils/getMaxGasValue";
 
 const Gas = () => {
   const { chain } = useNetwork();
@@ -91,6 +92,13 @@ const Gas = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [fromNetwork, toNetwork, setToNetwork]);
 
+  const handleMaxButton = () => {
+    const maxGas = getMaxGasValue(toNetwork.name);
+    if (maxGas) {
+      setInputAmount(maxGas.toString());
+    }
+  };
+
   return (
     <div className="flex flex-col justify-between items-center min-w-full">
       <section className="bg-base card card-side bg-base-200 shadow-xl rounded-none">
@@ -136,8 +144,16 @@ const Gas = () => {
               <>
                 <div>
                   <p>
-                    Estimated transaction cost:{" "}
+                    Estimated transaction gas:{" "}
                     {ethers.utils.formatEther(gasFee.toString())}{" "}
+                    {fromNetwork.nativeCurrency.symbol}
+                  </p>
+                  <p>
+                    Estimated total cost{" "}
+                    {(
+                      Number(ethers.utils.formatEther(gasFee.toString())) +
+                      Number(inputAmount)
+                    ).toFixed(5)}{" "}
                     {fromNetwork.nativeCurrency.symbol}
                   </p>
                 </div>
@@ -169,12 +185,19 @@ const Gas = () => {
                     value={inputAmount}
                     onChange={(e) => setInputAmount(e.target.value)}
                   />
-                  <button className="btn btn-primary flex-shrink-0 w-1/3 max-w-[30%]">
+                  <button
+                    className="btn btn-primary flex-shrink-0 w-1/3 max-w-[30%]"
+                    onClick={handleMaxButton}
+                  >
                     Max
                   </button>
                 </div>
                 <p className="pt-5 pb-3">Step 2: Check transaction details</p>
-                <button className="btn btn-primary" onClick={estimateGas}>
+                <button
+                  className="btn btn-primary"
+                  onClick={estimateGas}
+                  disabled={inputAmount == ""}
+                >
                   Preview
                 </button>
               </>
