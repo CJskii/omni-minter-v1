@@ -2,11 +2,18 @@ import { useEffect, useState } from "react";
 import CustomButtonMint from "../Buttons/CustomButtonMint";
 import CustomButtonNetwork from "../Buttons/CustomButtonNetwork";
 import { activeChains } from "../../constants/chainsConfig";
-import CardImage from "./CardImage";
 import { useNetwork } from "wagmi";
 import { checkIfReferredUser } from "../../utils/helpers/checkIfReferredUser";
 import { useNetworkSelection } from "../../utils/hooks/useNetworkSelection";
 import NetworkModal from "../Modals/NetworkModal";
+import dynamic from "next/dynamic";
+
+const CardImage = dynamic(() => import("./CardImage"), {
+  loading: () => (
+    <span className="loading loading-spinner place-self-center "></span>
+  ),
+  ssr: false,
+});
 
 const Minting = () => {
   const [lastMintId, setLastMintId] = useState(0);
@@ -38,7 +45,7 @@ const Minting = () => {
     setMintNetwork(selected);
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [chain]);
+  }, [chain?.name]);
 
   return (
     <div className="flex flex-col justify-betweeen items-center min-w-full">

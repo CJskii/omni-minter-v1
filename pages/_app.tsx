@@ -11,7 +11,7 @@ import { wagmiConfig, theme, chains } from "../constants/wagmiConfig";
 
 const Navbar = dynamic(() => import("../components/Navbar"), {
   loading: () => <span className="loading loading-dots loading-lg"></span>,
-  ssr: false,
+  ssr: true,
 });
 
 const Footer = dynamic(() => import("../components/Footer"), {
