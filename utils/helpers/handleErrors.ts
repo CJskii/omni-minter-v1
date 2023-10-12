@@ -47,6 +47,12 @@ export const handleErrors = ({
       return setErrorMessage(
         "Invalid ERC721 token ID provided. Please check and try again."
       );
+    } else if (
+      genericMessage.includes("send caller is not owner nor approved")
+    ) {
+      return setErrorMessage(
+        "You are not the owner of this token. Please check your NFT ID and try again."
+      );
     } else if (genericMessage.includes("execution reverted")) {
       return setErrorMessage(
         "Transaction execution was reverted. Please check the transaction details."
