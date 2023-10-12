@@ -1,11 +1,8 @@
 import { useEffect, useState } from "react";
-import CustomButtonMint from "../Buttons/CustomButtonMint";
-import CustomButtonNetwork from "../Buttons/CustomButtonNetwork";
 import { activeChains } from "../../constants/chainsConfig";
 import { useNetwork } from "wagmi";
 import { checkIfReferredUser } from "../../utils/helpers/checkIfReferredUser";
 import { useNetworkSelection } from "../../utils/hooks/useNetworkSelection";
-import NetworkModal from "../Modals/NetworkModal";
 import dynamic from "next/dynamic";
 
 const CardImage = dynamic(() => import("./CardImage"), {
@@ -14,6 +11,24 @@ const CardImage = dynamic(() => import("./CardImage"), {
   ),
   ssr: false,
 });
+
+const NetworkModal = dynamic(() => import("../Modals/NetworkModal"), {
+  loading: () => <span className="loading loading-dots loading-lg"></span>,
+  ssr: true,
+});
+
+const CustomButtonMint = dynamic(() => import("../Buttons/CustomButtonMint"), {
+  loading: () => <span className="loading loading-dots loading-lg"></span>,
+  ssr: true,
+});
+
+const CustomButtonNetwork = dynamic(
+  () => import("../Buttons/CustomButtonNetwork"),
+  {
+    loading: () => <span className="loading loading-dots loading-lg"></span>,
+    ssr: true,
+  }
+);
 
 const Minting = () => {
   const [lastMintId, setLastMintId] = useState(0);

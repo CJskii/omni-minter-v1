@@ -1,17 +1,40 @@
 import { useState, useEffect } from "react";
 import { getContractAddress } from "../../utils/getConstants";
 import { useNetwork, useAccount } from "wagmi";
-import CustomButtonNetwork from "../Buttons/CustomButtonNetwork";
-import CustomButtonBridge from "../Buttons/CustomButtonBridge";
-import BridgingModal from "../Modals/BridgingModal";
 import { handleBridging } from "../../utils/helpers/handleBridging";
 import { handleErrors } from "../../utils/helpers/handleErrors";
 import handleInteraction from "../../utils/helpers/handleInteraction";
 import { useNetworkSelection } from "../../utils/hooks/useNetworkSelection";
-import NetworkModal from "../Modals/NetworkModal";
 import { activeChains } from "../../constants/chainsConfig";
 import { getValidToNetworks } from "../../utils/getValidToNetworks";
 import { Network } from "../../types/network";
+import dynamic from "next/dynamic";
+
+const NetworkModal = dynamic(() => import("../Modals/NetworkModal"), {
+  loading: () => <span className="loading loading-dots loading-lg"></span>,
+  ssr: true,
+});
+
+const BridgingModal = dynamic(() => import("../Modals/BridgingModal"), {
+  loading: () => <span className="loading loading-dots loading-lg"></span>,
+  ssr: true,
+});
+
+const CustomButtonNetwork = dynamic(
+  () => import("../Buttons/CustomButtonNetwork"),
+  {
+    loading: () => <span className="loading loading-dots loading-lg"></span>,
+    ssr: true,
+  }
+);
+
+const CustomButtonBridge = dynamic(
+  () => import("../Buttons/CustomButtonBridge"),
+  {
+    loading: () => <span className="loading loading-dots loading-lg"></span>,
+    ssr: true,
+  }
+);
 
 interface BridgeProps {
   passedNftId: string;

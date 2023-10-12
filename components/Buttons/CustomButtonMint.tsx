@@ -2,11 +2,16 @@ import { ConnectButton } from "@rainbow-me/rainbowkit";
 import { useEffect, useState } from "react";
 import { useNetwork } from "wagmi";
 import { getContractAddress } from "../../utils/getConstants";
-import MintedNFTModal from "../Modals/MintedNFTModal";
 import { useAccount } from "wagmi";
 import { handleErrors } from "../../utils/helpers/handleErrors";
 import { handleMinting } from "../../utils/helpers/handleMinting";
 import handleInteraction from "../../utils/helpers/handleInteraction";
+import dynamic from "next/dynamic";
+
+const MintedNFTModal = dynamic(() => import("../Modals/MintedNFTModal"), {
+  loading: () => <span className="loading loading-dots loading-lg"></span>,
+  ssr: true,
+});
 
 interface MintButtonProps {
   setLastMintId: (id: number) => void;
