@@ -4,7 +4,7 @@ import { handleGasRefuel } from "../../utils/helpers/handleGasRefuel";
 import { IoSwapHorizontalSharp } from "react-icons/io5";
 import { useNetworkSelection } from "../../utils/hooks/useNetworkSelection";
 import { activeChains } from "../../constants/chainsConfig";
-import NetworkModal from "./NetworkModal";
+import NetworkModal from "../Modals/NetworkModal";
 import { Network } from "../../types/network";
 import { getValidToNetworks } from "../../utils/getValidToNetworks";
 import { estimateGasBridgeFee } from "../../utils/helpers/handleGasRefuel";

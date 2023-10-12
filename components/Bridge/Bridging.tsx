@@ -3,7 +3,7 @@ import { getContractAddress } from "../../utils/getConstants";
 import { useNetwork, useAccount } from "wagmi";
 import CustomButtonNetwork from "../Buttons/CustomButtonNetwork";
 import CustomButtonBridge from "../Buttons/CustomButtonBridge";
-import BridgingModal from "./BridgingModal";
+import BridgingModal from "../Modals/BridgingModal";
 import { handleBridging } from "../../utils/helpers/handleBridging";
 import { handleErrors } from "../../utils/helpers/handleErrors";
 import handleInteraction from "../../utils/helpers/handleInteraction";
