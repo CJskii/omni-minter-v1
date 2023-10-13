@@ -13,6 +13,8 @@ import { getValidToNetworks } from "../../utils/getValidToNetworks";
 import { getMaxGasValue } from "../../utils/getMaxGasValue";
 import { requestNetworkSwitch } from "../../utils/requestNetworkSwitch";
 import { handleErrors } from "../../utils/helpers/handleErrors";
+import Preview from "./Preview";
+import Confirm from "./ConfirmTransaction";
 
 const NetworkModal = dynamic(() => import("../Modals/NetworkModal"), {
   loading: () => <span className="loading loading-dots loading-lg"></span>,
@@ -193,70 +195,24 @@ const Gas = () => {
             </div>
 
             {gasFee != "" ? (
-              <>
-                <div>
-                  <p>
-                    Estimated to receive on {toNetwork.name} {inputAmount}{" "}
-                    {toNetwork.nativeCurrency.symbol}
-                  </p>
-                  <p>
-                    Estimated total cost{" "}
-                    {(
-                      Number(ethers.utils.formatEther(gasFee.toString())) +
-                      Number(inputAmount)
-                    ).toFixed(5)}{" "}
-                    {fromNetwork.nativeCurrency.symbol}
-                  </p>
-                </div>
-                <p className="pt-5 pb-3">Step 3: Confirm transaction</p>
-
-                <button
-                  className="btn btn-primary"
-                  onClick={handleConfirmButton}
-                  disabled={isLoading ? true : false}
-                >
-                  {" "}
-                  Confirm{" "}
-                </button>
-                <button
-                  className="btn btn-primary mt-2"
-                  onClick={() => {
-                    setGasFee("");
-                  }}
-                >
-                  Return
-                </button>
-              </>
+              <Confirm
+                toNetwork={toNetwork}
+                fromNetwork={fromNetwork}
+                inputAmount={inputAmount}
+                gasFee={gasFee}
+                setGasFee={setGasFee}
+                handleConfirmButton={handleConfirmButton}
+                isLoading={isLoading}
+              />
             ) : (
-              <>
-                <p className="pt-5 pb-3">
-                  Step 1: Input amount of ${toNetwork.nativeCurrency.symbol} to
-                  receive on {toNetwork.name}
-                </p>
-                <div className="w-full flex justify-center items-center gap-4 max-[400px]:flex-col">
-                  <input
-                    className="input input-bordered flex-grow"
-                    placeholder="Amount"
-                    type="number"
-                    value={inputAmount}
-                    onChange={(e) => setInputAmount(e.target.value)}
-                  />
-                  <button
-                    className="btn btn-primary flex-shrink-0 w-1/3 max-w-[30%]"
-                    onClick={handleMaxButton}
-                  >
-                    Max
-                  </button>
-                </div>
-                <p className="pt-5 pb-3">Step 2: Check transaction details</p>
-                <button
-                  className="btn btn-primary"
-                  onClick={handlePreviewClick}
-                  disabled={inputAmount == ""}
-                >
-                  Preview
-                </button>
-              </>
+              <Preview
+                nativeCurrencySymbol={fromNetwork.nativeCurrency.symbol}
+                networkName={toNetwork.name}
+                inputAmount={inputAmount}
+                setInputAmount={setInputAmount}
+                handleMaxButton={handleMaxButton}
+                handlePreviewClick={handlePreviewClick}
+              />
             )}
           </div>
         </div>

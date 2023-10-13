@@ -6,7 +6,7 @@ import getProviderOrSigner from "../../utils/getProviderOrSigner";
 import { getRemoteChainId } from "../../utils/getConstants";
 import { getContractAddress } from "../../utils/getConstants";
 import { handleErrors } from "./handleErrors";
-import { GasTransferParams } from "../../types/gasTransfer";
+import { GasTransferParams } from "../../types/gas-refuel";
 
 export const gasTransferRequest = async ({
   fromNetwork,

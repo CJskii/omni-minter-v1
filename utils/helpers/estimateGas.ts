@@ -6,7 +6,7 @@ import { Contract } from "@ethersproject/contracts";
 import { CONTRACT_ABI } from "../../constants/contractABI";
 import getProviderOrSigner from "../../utils/getProviderOrSigner";
 import { getRemoteChainId } from "../../utils/getConstants";
-import { estimateGasParams } from "../../types/estimateGas";
+import { estimateGasParams } from "../../types/gas-refuel";
 
 export const estimateGasRequest = async ({
   fromNetwork,
