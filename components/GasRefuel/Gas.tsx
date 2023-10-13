@@ -1,20 +1,28 @@
 import { useNetwork } from "wagmi";
-import { useEffect, useState } from "react";
-import { handleGasRefuel } from "../../utils/helpers/handleGasRefuel";
-import { IoSwapHorizontalSharp } from "react-icons/io5";
-import { useNetworkSelection } from "../../utils/hooks/useNetworkSelection";
-import { activeChains } from "../../constants/chainsConfig";
-import NetworkModal from "../Modals/NetworkModal";
-import { Network } from "../../types/network";
-import { getValidToNetworks } from "../../utils/getValidToNetworks";
-import { estimateGasBridgeFee } from "../../utils/helpers/handleGasRefuel";
-import { getContractAddress } from "../../utils/getConstants";
 import { ethers } from "ethers";
-import { getMaxGasValue } from "../../utils/getMaxGasValue";
-import GasModal from "./GasModal";
-import { handleErrors } from "../../utils/helpers/handleErrors";
+import { useEffect, useState } from "react";
+import { IoSwapHorizontalSharp } from "react-icons/io5";
+import dynamic from "next/dynamic";
+import { Network } from "../../types/network";
+import { useNetworkSelection } from "../../utils/hooks/useNetworkSelection";
 import { useChainModal } from "@rainbow-me/rainbowkit";
+import { activeChains } from "../../constants/chainsConfig";
+import { estimateGasRequest } from "../../utils/helpers/estimateGas";
+import { gasTransferRequest } from "../../utils/helpers/handleGasRefuel";
+import { getValidToNetworks } from "../../utils/getValidToNetworks";
+import { getMaxGasValue } from "../../utils/getMaxGasValue";
 import { requestNetworkSwitch } from "../../utils/requestNetworkSwitch";
+import { handleErrors } from "../../utils/helpers/handleErrors";
+
+const NetworkModal = dynamic(() => import("../Modals/NetworkModal"), {
+  loading: () => <span className="loading loading-dots loading-lg"></span>,
+  ssr: true,
+});
+
+const GasModal = dynamic(() => import("../Modals/GasModal"), {
+  loading: () => <span className="loading loading-dots loading-lg"></span>,
+  ssr: true,
+});
 
 const Gas = () => {
   const { chain } = useNetwork();
@@ -51,60 +59,6 @@ const Gas = () => {
     onClose: onToClose,
   } = useNetworkSelection(activeChains[1], isValidToNetwork);
 
-  const handleGas = async () => {
-    setIsLoading(true);
-    setShowGasModal(true);
-    const CONTRACT_ADDRESS = getContractAddress(fromNetwork.name);
-    let targetNetwork = toNetwork.name.toLowerCase();
-
-    try {
-      const result = await handleGasRefuel({
-        CONTRACT_ADDRESS,
-        targetNetwork,
-        value: inputAmount,
-        estimatedFee: gasFee,
-      });
-
-      if (!result) {
-        throw new Error("Failed to mint NFT");
-      }
-      const { txHash, blockNumber } = result;
-      setTxHash(txHash);
-      setTransactionBlockNumber(blockNumber);
-      setGasFee("");
-      setIsLoading(false);
-    } catch (e) {
-      console.error(e);
-      handleErrors({ e, setErrorMessage });
-      setIsLoading(false);
-      setShowGasModal(true);
-    }
-  };
-
-  const estimateGas = async () => {
-    setIsLoading(true);
-    try {
-      const CONTRACT_ADDRESS = getContractAddress(fromNetwork.name);
-      let targetNetwork = toNetwork.name.toLowerCase();
-
-      console.log(CONTRACT_ADDRESS, targetNetwork, inputAmount);
-      const estimatedFee = await estimateGasBridgeFee({
-        CONTRACT_ADDRESS,
-        targetNetwork,
-        value: inputAmount,
-      });
-
-      setGasFee(estimatedFee);
-      console.log(estimatedFee);
-      setIsLoading(false);
-    } catch (e) {
-      console.error(e);
-      handleErrors({ e, setErrorMessage });
-      setShowGasModal(true);
-      setIsLoading(false);
-    }
-  };
-
   useEffect(() => {
     // If the currently selected "To" network is not valid after the "From" network changes, reset it.
     if (!isValidToNetwork(toNetwork)) {
@@ -123,6 +77,21 @@ const Gas = () => {
     setGasFee("");
   }, [fromNetwork, toNetwork]);
 
+  const handleConfirmButton = async () => {
+    await gasTransferRequest({
+      fromNetwork,
+      toNetwork,
+      inputAmount,
+      setIsLoading,
+      setGasFee,
+      setErrorMessage,
+      setShowGasModal,
+      setTxHash,
+      setTransactionBlockNumber,
+      gasFee,
+    });
+  };
+
   const handleMaxButton = () => {
     const maxGas = getMaxGasValue(toNetwork.name);
     if (maxGas) {
@@ -136,7 +105,15 @@ const Gas = () => {
       if (chain?.name !== fromNetwork.name) {
         await requestNetworkSwitch(fromNetwork.id, openChainModal);
       }
-      await estimateGas();
+      await estimateGasRequest({
+        fromNetwork,
+        toNetwork,
+        inputAmount,
+        setIsLoading,
+        setGasFee,
+        setErrorMessage,
+        setShowGasModal,
+      });
     } catch (e) {
       console.error(e);
       handleErrors({ e, setErrorMessage });
@@ -235,7 +212,7 @@ const Gas = () => {
 
                 <button
                   className="btn btn-primary"
-                  onClick={handleGas}
+                  onClick={handleConfirmButton}
                   disabled={isLoading ? true : false}
                 >
                   {" "}

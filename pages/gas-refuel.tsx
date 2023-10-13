@@ -1,5 +1,10 @@
-import Gas from "../components/GasRefuel/Gas";
+import dynamic from "next/dynamic";
 import HeadComponent from "../components/HeadComponent";
+
+const Gas = dynamic(() => import("../components/GasRefuel/Gas"), {
+  loading: () => <span className="loading loading-dots loading-lg"></span>,
+  ssr: true,
+});
 
 const GasRefuel = () => {
   return (

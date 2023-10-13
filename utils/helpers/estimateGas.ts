@@ -1,14 +1,14 @@
+import { getContractAddress } from "../getConstants";
+import { handleErrors } from "./handleErrors";
 import { ethers } from "ethers";
 import { JsonRpcSigner } from "@ethersproject/providers";
 import { Contract } from "@ethersproject/contracts";
 import { CONTRACT_ABI } from "../../constants/contractABI";
 import getProviderOrSigner from "../../utils/getProviderOrSigner";
 import { getRemoteChainId } from "../../utils/getConstants";
-import { getContractAddress } from "../../utils/getConstants";
-import { handleErrors } from "./handleErrors";
-import { GasTransferParams } from "../../types/gasTransfer";
+import { estimateGasParams } from "../../types/estimateGas";
 
-export const gasTransferRequest = async ({
+export const estimateGasRequest = async ({
   fromNetwork,
   toNetwork,
   inputAmount,
@@ -16,49 +16,36 @@ export const gasTransferRequest = async ({
   setGasFee,
   setErrorMessage,
   setShowGasModal,
-  setTxHash,
-  setTransactionBlockNumber,
-  gasFee,
-}: GasTransferParams) => {
+}: estimateGasParams) => {
   setIsLoading(true);
-  setShowGasModal(true);
-  const CONTRACT_ADDRESS = getContractAddress(fromNetwork.name);
-  let targetNetwork = toNetwork.name.toLowerCase();
-
   try {
-    const result = await handleGasTransaction({
+    const CONTRACT_ADDRESS = getContractAddress(fromNetwork.name);
+    let targetNetwork = toNetwork.name.toLowerCase();
+
+    const estimatedFee = await estimateGasBridgeFee({
       CONTRACT_ADDRESS,
       targetNetwork,
       value: inputAmount,
-      estimatedFee: gasFee,
     });
 
-    if (!result) {
-      throw new Error("Failed to mint NFT");
-    }
-    const { txHash, blockNumber } = result;
-    setTxHash(txHash);
-    setTransactionBlockNumber(blockNumber);
-    setGasFee("");
+    setGasFee(estimatedFee);
     setIsLoading(false);
   } catch (e) {
     console.error(e);
     handleErrors({ e, setErrorMessage });
-    setIsLoading(false);
     setShowGasModal(true);
+    setIsLoading(false);
   }
 };
 
-const handleGasTransaction = async ({
+const estimateGasBridgeFee = async ({
   CONTRACT_ADDRESS,
   targetNetwork,
   value,
-  estimatedFee,
 }: {
   CONTRACT_ADDRESS: string;
   targetNetwork: string;
   value: string;
-  estimatedFee: string;
 }) => {
   const signer = (await getProviderOrSigner(true)) as JsonRpcSigner;
   const ownerAddress = await signer.getAddress();
@@ -71,28 +58,16 @@ const handleGasTransaction = async ({
     [2, 200000, gasInWei.toString(), ownerAddress]
   );
 
-  const gasPrice = await signer.getGasPrice();
-
   try {
-    const tx = await contract.bridgeGas(
+    const [_nativeFee, _zroFee] = await contract.estimateGasBridgeFee(
       remoteChainId,
-      ownerAddress,
-      adapterParams,
-      {
-        value: estimatedFee,
-        // gasLimit: ethers.utils.parseUnits("250000", "wei"),
-        gasPrice: gasPrice.mul(5).div(4),
-      }
+      false,
+      adapterParams
     );
 
-    const receipt = await tx.wait();
-
-    return {
-      txHash: tx.hash,
-      blockNumber: receipt.blockNumber,
-    };
+    return _nativeFee; // or _zroFee depending on the use case
   } catch (error) {
-    console.error(`Error in transaction: ${(error as any).message}`);
+    console.error(`Error estimating gas fee: ${(error as any).message}`);
     throw error; // Propagate the error to handle it in the UI layer
   }
 };

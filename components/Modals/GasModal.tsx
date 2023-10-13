@@ -1,20 +1,5 @@
 import { useEffect, useRef } from "react";
-import { Network } from "../../types/network";
-
-interface GasModalProps {
-  showGasModal: boolean;
-  setShowGasModal: (show: boolean) => void;
-  isLoading: boolean;
-  txHash: string;
-  setTxHash: (txHash: string) => void;
-  errorMessage: string;
-  setErrorMessage: (errorMessage: string) => void;
-  data: {
-    toNetwork: Network;
-    inputAmount: string;
-    transactionBlockNumber: number;
-  };
-}
+import { GasModalProps } from "../../types/gasModal";
 
 const GasModal = (props: GasModalProps) => {
   const {
