@@ -494,4 +494,16 @@ export const networkTransferMappings: { [key: string]: string[] } = {
     "Kava",
   ],
   Zora: ["Base", "Arbitrum One", "OP Mainnet", "Polygon"],
+  opBNB: [
+    "Base",
+    "Linea",
+    "Arbitrum One",
+    "OP Mainnet",
+    "zkSync Era",
+    "BNB Smart Chain",
+    "Polygon",
+    "Polygon zkEVM",
+    "Avalanche",
+    "Fantom",
+  ],
 };

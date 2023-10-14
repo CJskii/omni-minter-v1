@@ -27,6 +27,7 @@ import {
   moonbeam,
   avalanche,
   moonriver,
+  opBNB,
 } from "wagmi/chains";
 
 import { linea } from "./customChains/linea";
@@ -75,6 +76,10 @@ export const mainnetChains: ChainConfig[] = [
   {
     ...optimism,
     iconUrl: "/chain-icons/optimism.svg",
+  },
+  {
+    ...opBNB,
+    iconUrl: "/chain-icons/opbnb.svg",
   },
   {
     ...zkSync,
