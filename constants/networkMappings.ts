@@ -150,6 +150,7 @@ export const networkTransferMappings: { [key: string]: string[] } = {
     "Kava",
     "Moonriver",
     "Zora",
+    "opBNB",
   ],
   "OP Mainnet": [
     "Base",
@@ -180,6 +181,7 @@ export const networkTransferMappings: { [key: string]: string[] } = {
     "Loot",
     "Beam",
     "Zora",
+    "opBNB",
   ],
   "Arbitrum One": [
     "Base",
@@ -211,6 +213,7 @@ export const networkTransferMappings: { [key: string]: string[] } = {
     "Loot",
     "Beam",
     "Zora",
+    "opBNB",
   ],
   "BNB Smart Chain": [
     "Base",
@@ -240,6 +243,7 @@ export const networkTransferMappings: { [key: string]: string[] } = {
     "Meter.io",
     "Loot",
     "Beam",
+    "opBNB",
   ],
   Polygon: [
     "Base",
@@ -270,6 +274,7 @@ export const networkTransferMappings: { [key: string]: string[] } = {
     "Loot",
     "Beam",
     "Zora",
+    "opBNB",
   ],
   "Polygon zkEVM": [
     "Base",
@@ -286,6 +291,7 @@ export const networkTransferMappings: { [key: string]: string[] } = {
     "Fantom",
     "Celo",
     "Kava",
+    "opBNB",
   ],
   Mantle: [
     "Base",
@@ -332,6 +338,7 @@ export const networkTransferMappings: { [key: string]: string[] } = {
     "Avalanche",
     "Fantom",
     "Kava",
+    "opBNB",
   ],
   "zkSync Era": [
     "Base",
@@ -347,6 +354,7 @@ export const networkTransferMappings: { [key: string]: string[] } = {
     "Fantom",
     "Tenet",
     "Meter.io",
+    "opBNB",
   ],
   "Core Dao": [
     "Arbitrum One",
@@ -398,6 +406,7 @@ export const networkTransferMappings: { [key: string]: string[] } = {
     "Meter.io",
     "Loot",
     "Beam",
+    "opBNB",
   ],
   Fantom: [
     "Base",
@@ -423,6 +432,7 @@ export const networkTransferMappings: { [key: string]: string[] } = {
     "Tenet",
     "Meter.io",
     "Beam",
+    "opBNB",
   ],
   Canto: [
     "Arbitrum One",
