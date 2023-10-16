@@ -6,61 +6,61 @@ interface MaxGasValues {
 
 export const maxGasValues: MaxGasValues = {
   arbitrum: {
-    adapterParamMaxGas: 0.1,
+    adapterParamMaxGas: 0.02,
   },
   avalanche: {
-    adapterParamMaxGas: 0.1,
+    adapterParamMaxGas: 12,
   },
   bsc: {
-    adapterParamMaxGas: 0.1,
+    adapterParamMaxGas: 1.2,
   },
   fantom: {
-    adapterParamMaxGas: 0.1,
+    adapterParamMaxGas: 600,
   },
   optimism: {
-    adapterParamMaxGas: 0.1,
+    adapterParamMaxGas: 0.02,
   },
   sepolia: {
     adapterParamMaxGas: 0.1,
   },
   celo: {
-    adapterParamMaxGas: 0.1,
+    adapterParamMaxGas: 0.05,
   },
   moonbeam: {
-    adapterParamMaxGas: 0.1,
+    adapterParamMaxGas: 6,
   },
   moonriver: {
-    adapterParamMaxGas: 0.1,
+    adapterParamMaxGas: 0.05,
   },
   zora: {
-    adapterParamMaxGas: 0.1,
+    adapterParamMaxGas: 0.02,
   },
   canto: {
-    adapterParamMaxGas: 0.1,
+    adapterParamMaxGas: 0.95,
   },
   harmony: {
-    adapterParamMaxGas: 0.1,
+    adapterParamMaxGas: 6,
   },
   zksync: {
-    adapterParamMaxGas: 0.1,
+    adapterParamMaxGas: 0.02,
   },
   coredao: {
-    adapterParamMaxGas: 0.1,
+    adapterParamMaxGas: 0.25,
   },
   mantle: {
-    adapterParamMaxGas: 0.1,
+    adapterParamMaxGas: 0.2,
   },
   metis: {
-    adapterParamMaxGas: 0.1,
+    adapterParamMaxGas: 0.05,
   },
   polygon: {
-    adapterParamMaxGas: 0.1,
+    adapterParamMaxGas: 600,
   },
   linea: {
-    adapterParamMaxGas: 0.1,
+    adapterParamMaxGas: 0.02,
   },
   base: {
-    adapterParamMaxGas: 0.1,
+    adapterParamMaxGas: 0.02,
   },
   "arbitrum-goerli": {
     adapterParamMaxGas: 0.1,
@@ -93,6 +93,6 @@ export const maxGasValues: MaxGasValues = {
     adapterParamMaxGas: 0.1,
   },
   zkevm: {
-    adapterParamMaxGas: 0.1,
+    adapterParamMaxGas: 0.02,
   },
 };
