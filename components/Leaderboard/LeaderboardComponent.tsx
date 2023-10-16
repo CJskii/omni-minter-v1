@@ -68,9 +68,6 @@ const LeaderboardComponent = () => {
           </h2>
           <p className="max-w-xl mx-auto mt-4 text-base leading-relaxed text-gray-300 flex flex-col my-4">
             <span className="text-lg">Your stats on Mintly</span>
-            <span className="text-sm">
-              Note: stats are recorded from 26th of August
-            </span>
           </p>
         </div>
         {userData.length > 0 ? (

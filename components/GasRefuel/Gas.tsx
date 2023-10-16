@@ -15,6 +15,7 @@ import { requestNetworkSwitch } from "../../utils/requestNetworkSwitch";
 import { handleErrors } from "../../utils/helpers/handleErrors";
 import Preview from "./Preview";
 import Confirm from "./ConfirmTransaction";
+import DiscordLink from "../DiscordLink";
 
 const NetworkModal = dynamic(() => import("../Modals/NetworkModal"), {
   loading: () => <span className="loading loading-dots loading-lg"></span>,
@@ -152,14 +153,7 @@ const Gas = () => {
             </p>
             <p className="text-sm text-center">
               If you run into any issues please contact us in our{" "}
-              <a
-                className="text-yellow-400"
-                href="https://discord.gg/VWbgEbF2Nf"
-                title=""
-                target="_blank"
-              >
-                Discord
-              </a>
+              <DiscordLink />
             </p>
 
             <div className="grid grid-cols-[1fr,auto,1fr] items-center gap-4 py-4 px-2 mt-4 max-sm:flex max-sm:flex-col">
