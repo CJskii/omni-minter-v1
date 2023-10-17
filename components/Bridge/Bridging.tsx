@@ -1,52 +1,102 @@
 import { useState, useEffect } from "react";
 import { getContractAddress } from "../../utils/getConstants";
 import { useNetwork, useAccount } from "wagmi";
-import CustomButtonNetwork from "../Buttons/CustomButtonNetwork";
-import CustomButtonBridge from "../Buttons/CustomButtonBridge";
-import SelectBridgeFromModal from "./SelectBridgeFromModal";
-import SelectBridgeToModal from "./SelectBridgeToModal";
-import BridgingModal from "./BridgingModal";
 import { handleBridging } from "../../utils/helpers/handleBridging";
 import { handleErrors } from "../../utils/helpers/handleErrors";
 import handleInteraction from "../../utils/helpers/handleInteraction";
+import { useNetworkSelection } from "../../utils/hooks/useNetworkSelection";
+import { activeChains } from "../../constants/chainsConfig";
+import { getValidToNetworks } from "../../utils/getValidToNetworks";
+import { Network } from "../../types/network";
+import dynamic from "next/dynamic";
+
+const NetworkModal = dynamic(() => import("../Modals/NetworkModal"), {
+  loading: () => <span className="loading loading-dots loading-lg"></span>,
+  ssr: true,
+});
+
+const BridgingModal = dynamic(() => import("../Modals/BridgingModal"), {
+  loading: () => <span className="loading loading-dots loading-lg"></span>,
+  ssr: true,
+});
+
+const CustomButtonNetwork = dynamic(
+  () => import("../Buttons/CustomButtonNetwork"),
+  {
+    loading: () => <span className="loading loading-dots loading-lg"></span>,
+    ssr: true,
+  }
+);
+
+const CustomButtonBridge = dynamic(
+  () => import("../Buttons/CustomButtonBridge"),
+  {
+    loading: () => <span className="loading loading-dots loading-lg"></span>,
+    ssr: true,
+  }
+);
 
 interface BridgeProps {
   passedNftId: string;
   mintNetwork: string;
-  onBridgeComplete: () => void;
 }
 
 const Bridging = (props: BridgeProps) => {
-  let { passedNftId, mintNetwork, onBridgeComplete } = props;
+  let { passedNftId } = props;
   const { chain } = useNetwork();
   const { address } = useAccount();
   const [isLoading, setIsLoading] = useState(false);
 
-  const [fromNetwork, setFromNetwork] = useState(mintNetwork || "Goerli");
-  const [toNetwork, setToNetwork] = useState("");
-  const [nftId, setNftId] = useState(passedNftId || "");
+  const [nftId, setNftId] = useState("");
   const [showBridgingModal, setShowBridgingModal] = useState(false);
   const [wrongNetwork, setWrongNetwork] = useState(false);
   const [txHash, setTxHash] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
 
+  const isValidToNetwork = (toNetwork: Network) => {
+    const validToNetworks = getValidToNetworks(fromNetwork);
+    return validToNetworks.includes(toNetwork.name);
+  };
+
+  const {
+    selectedNetwork: fromNetwork,
+    onNetworkSelect: setFromNetwork,
+    searchTerm: fromSearchTerm,
+    onSearchChange: setFromSearchTerm,
+    filteredChains: fromFilteredChains,
+    onClose: onFromClose,
+  } = useNetworkSelection(activeChains[0]);
+
+  const {
+    selectedNetwork: toNetwork,
+    onNetworkSelect: setToNetwork,
+    searchTerm: toSearchTerm,
+    onSearchChange: setToSearchTerm,
+    filteredChains: toFilteredChains,
+    onClose: onToClose,
+  } = useNetworkSelection(activeChains[1], isValidToNetwork);
+
   useEffect(() => {
-    if (passedNftId) setNftId(passedNftId);
-    if (mintNetwork) setFromNetwork(mintNetwork);
-    if (!mintNetwork || (chain?.name && !chain.unsupported)) {
-      setFromNetwork(chain?.name || "Goerli");
+    // If the currently selected "To" network is not valid after the "From" network changes, reset it.
+    if (!isValidToNetwork(toNetwork)) {
+      const validNetworks = getValidToNetworks(fromNetwork);
+      const defaultNetwork = activeChains.find(
+        (chain) => chain.name === validNetworks[0]
+      );
+      defaultNetwork
+        ? setToNetwork(defaultNetwork)
+        : setToNetwork(activeChains[0]);
     }
     checkNetwork();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [passedNftId, mintNetwork, chain?.name, chain?.unsupported]);
+  }, [fromNetwork, toNetwork, setToNetwork]);
 
   useEffect(() => {
-    checkNetwork();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [fromNetwork, toNetwork, chain?.name, chain?.unsupported]);
+    passedNftId ? setNftId(passedNftId) : setNftId("");
+  }, [passedNftId]);
 
   const checkNetwork = () => {
-    if (chain?.name == fromNetwork) {
+    if (chain?.name == fromNetwork.name) {
       setWrongNetwork(false);
     } else {
       setWrongNetwork(true);
@@ -55,8 +105,8 @@ const Bridging = (props: BridgeProps) => {
 
   const handleBridge = async () => {
     const TOKEN_ID = nftId;
-    const CONTRACT_ADDRESS = getContractAddress(fromNetwork);
-    let targetNetwork = toNetwork.toLowerCase();
+    const CONTRACT_ADDRESS = getContractAddress(fromNetwork.name);
+    let targetNetwork = toNetwork.name.toLowerCase();
     if (!nftId || nftId === "") {
       alert("Please enter a valid NFT Id");
       return;
@@ -66,7 +116,7 @@ const Bridging = (props: BridgeProps) => {
       setIsLoading(true);
       setShowBridgingModal(true);
       console.log(
-        `Sending NFT #${TOKEN_ID} from ${fromNetwork} to ${toNetwork}`
+        `Sending NFT #${TOKEN_ID} from ${fromNetwork.name} to ${toNetwork.name}`
       );
 
       const result = await handleBridging({
@@ -87,7 +137,6 @@ const Bridging = (props: BridgeProps) => {
       setNftId("");
       setIsLoading(false);
       setTxHash(txHash);
-      onBridgeComplete();
     } catch (e) {
       console.error(e);
       setIsLoading(false);
@@ -105,7 +154,6 @@ const Bridging = (props: BridgeProps) => {
             </h2>
 
             <div className="space-y-5">
-              {/* Select From Network */}
               <BridgingModal
                 showBridgingModal={showBridgingModal}
                 isLoading={isLoading}
@@ -116,57 +164,57 @@ const Bridging = (props: BridgeProps) => {
                 setErrorMessage={setErrorMessage}
               />
               <div className="my-8">
-                <CustomButtonNetwork mintNetwork={fromNetwork} />
+                <CustomButtonNetwork mintNetwork={fromNetwork.name} />
               </div>
 
+              {/* Select From Network */}
               <div>
-                <label
-                  htmlFor=""
-                  className="text-base font-medium text-natural-content"
-                >
+                <label className="text-base font-medium text-natural-content">
                   Bridge From
                 </label>
                 <div className="mt-2.5 relative text-gray-400 focus-within:text-gray-600">
-                  <SelectBridgeFromModal
-                    setFromNetwork={setFromNetwork}
-                    mintNetwork={mintNetwork}
+                  <NetworkModal
+                    selectedNetwork={fromNetwork}
+                    onNetworkSelect={setFromNetwork}
+                    searchTerm={fromSearchTerm}
+                    onSearchChange={setFromSearchTerm}
+                    filteredChains={fromFilteredChains}
+                    onClose={onFromClose}
+                    dialogId="fromNetworkModal"
+                    title="From"
                   />
                 </div>
               </div>
 
               {/* Select To Network */}
-              {chain?.name && !chain.unsupported ? (
-                <div>
-                  <label
-                    htmlFor=""
-                    className="text-base font-medium text-natural-content"
-                  >
-                    Bridge To
-                  </label>
-                  <div className="mt-2.5 relative text-gray-400 focus-within:text-gray-600">
-                    <SelectBridgeToModal
-                      setToNetwork={setToNetwork}
-                      fromNetwork={fromNetwork}
-                    />
-                  </div>
+              <div>
+                <label className="text-base font-medium text-natural-content">
+                  Bridge To
+                </label>
+                <div className="mt-2.5 relative text-gray-400 focus-within:text-gray-600">
+                  <NetworkModal
+                    selectedNetwork={toNetwork}
+                    onNetworkSelect={setToNetwork}
+                    searchTerm={toSearchTerm}
+                    onSearchChange={setToSearchTerm}
+                    filteredChains={toFilteredChains}
+                    onClose={onToClose}
+                    dialogId="toNetworkModal"
+                    title="To"
+                  />
                 </div>
-              ) : (
-                <></>
-              )}
+              </div>
 
               {/* Input NFT ID */}
               <div className="mt-2.5">
-                <label
-                  htmlFor="nftId"
-                  className="text-base font-medium text-natural-content"
-                >
+                <label className="text-base font-medium text-natural-content">
                   NFT ID
                 </label>
                 <input
                   type="number"
                   id="nftId"
                   className="w-full px-3 py-2 border border-gray-300 rounded-md"
-                  value={passedNftId !== "" ? passedNftId : nftId || ""}
+                  value={nftId}
                   onChange={(e) => setNftId(e.target.value)}
                 />
               </div>

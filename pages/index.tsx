@@ -1,5 +1,12 @@
 import type { NextPage } from "next";
-import Minting from "../components/Minter/Minting";
+import dynamic from "next/dynamic";
+
+const Minting = dynamic(() => import("../components/Minter/Minting"), {
+  loading: () => (
+    <span className="loading loading-dots flex justify-center items-center"></span>
+  ),
+  ssr: true,
+});
 
 const Home: NextPage = () => {
   return <Minting />;

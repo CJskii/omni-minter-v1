@@ -1,25 +1,57 @@
 import { useEffect, useState } from "react";
-import SelectMintModal from "./SelectMintModal";
-import CustomButtonMint from "../Buttons/CustomButtonMint";
-import CustomButtonNetwork from "../Buttons/CustomButtonNetwork";
 import { activeChains } from "../../constants/chainsConfig";
-import CardImage from "./CardImage";
 import { useNetwork } from "wagmi";
 import { checkIfReferredUser } from "../../utils/helpers/checkIfReferredUser";
+import { useNetworkSelection } from "../../utils/hooks/useNetworkSelection";
+import dynamic from "next/dynamic";
+
+const CardImage = dynamic(() => import("./CardImage"), {
+  loading: () => (
+    <span className="loading loading-spinner place-self-center "></span>
+  ),
+  ssr: false,
+});
+
+const NetworkModal = dynamic(() => import("../Modals/NetworkModal"), {
+  loading: () => <span className="loading loading-dots loading-lg"></span>,
+  ssr: true,
+});
+
+const CustomButtonMint = dynamic(() => import("../Buttons/CustomButtonMint"), {
+  loading: () => <span className="loading loading-dots loading-lg"></span>,
+  ssr: true,
+});
+
+const CustomButtonNetwork = dynamic(
+  () => import("../Buttons/CustomButtonNetwork"),
+  {
+    loading: () => <span className="loading loading-dots loading-lg"></span>,
+    ssr: true,
+  }
+);
 
 const Minting = () => {
   const [lastMintId, setLastMintId] = useState(0);
-  const [mintNetwork, setMintNetwork] = useState("Goerli");
+
   const [isInvited, setIsInvited] = useState(false);
   const [referredBy, setReferredBy] = useState("");
   const { chain } = useNetwork();
 
+  const {
+    selectedNetwork: mintNetwork,
+    onNetworkSelect: setMintNetwork,
+    searchTerm: fromSearchTerm,
+    onSearchChange: setFromSearchTerm,
+    filteredChains: fromFilteredChains,
+    onClose: onFromClose,
+  } = useNetworkSelection(activeChains[0]);
+
   useEffect(() => {
-    let selected = "Goerli";
+    let selected = mintNetwork;
 
     if (chain?.name && !chain.unsupported) {
       const networkObject = activeChains.find((net) => net.name === chain.name);
-      selected = networkObject?.name || "Goerli";
+      selected = networkObject || activeChains[0];
     }
     const isReferredUser = checkIfReferredUser();
     const { isReferred, refLink } = isReferredUser;
@@ -28,7 +60,7 @@ const Minting = () => {
     setMintNetwork(selected);
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [chain]);
+  }, [chain?.name]);
 
   return (
     <div className="flex flex-col justify-betweeen items-center min-w-full">
@@ -52,19 +84,28 @@ const Minting = () => {
                     Select Chain{" "}
                   </label>
                   <div className="mt-2.5 relative text-gray-400 focus-within:text-gray-600">
-                    <SelectMintModal setMintNetwork={setMintNetwork} />
+                    <NetworkModal
+                      selectedNetwork={mintNetwork}
+                      onNetworkSelect={setMintNetwork}
+                      searchTerm={fromSearchTerm}
+                      onSearchChange={setFromSearchTerm}
+                      filteredChains={fromFilteredChains}
+                      onClose={onFromClose}
+                      dialogId="mintNetworkModal"
+                      title="Mint"
+                    />
                   </div>
                 </div>
 
                 <div>
-                  <CustomButtonNetwork mintNetwork={mintNetwork} />
+                  <CustomButtonNetwork mintNetwork={mintNetwork.name} />
                 </div>
               </div>
 
               <div className="mt-3 space-y-3">
                 <CustomButtonMint
                   setLastMintId={setLastMintId}
-                  mintNetwork={mintNetwork}
+                  mintNetwork={mintNetwork.name}
                   isInvited={isInvited}
                   referredBy={referredBy}
                 />
