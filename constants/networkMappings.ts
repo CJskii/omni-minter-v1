@@ -151,6 +151,7 @@ export const networkTransferMappings: { [key: string]: string[] } = {
     "Moonriver",
     "Zora",
     "opBNB",
+    "Scroll",
   ],
   "OP Mainnet": [
     "Base",
@@ -182,6 +183,7 @@ export const networkTransferMappings: { [key: string]: string[] } = {
     "Beam",
     "Zora",
     "opBNB",
+    "Scroll",
   ],
   "Arbitrum One": [
     "Base",
@@ -214,6 +216,7 @@ export const networkTransferMappings: { [key: string]: string[] } = {
     "Beam",
     "Zora",
     "opBNB",
+    "Scroll",
   ],
   "BNB Smart Chain": [
     "Base",
@@ -244,6 +247,7 @@ export const networkTransferMappings: { [key: string]: string[] } = {
     "Loot",
     "Beam",
     "opBNB",
+    "Scroll",
   ],
   Polygon: [
     "Base",
@@ -275,6 +279,7 @@ export const networkTransferMappings: { [key: string]: string[] } = {
     "Beam",
     "Zora",
     "opBNB",
+    "Scroll",
   ],
   "Polygon zkEVM": [
     "Base",
@@ -407,6 +412,7 @@ export const networkTransferMappings: { [key: string]: string[] } = {
     "Loot",
     "Beam",
     "opBNB",
+    "Scroll",
   ],
   Fantom: [
     "Base",
@@ -515,5 +521,13 @@ export const networkTransferMappings: { [key: string]: string[] } = {
     "Polygon zkEVM",
     "Avalanche",
     "Fantom",
+  ],
+  Scroll: [
+    "Base",
+    "Arbitrum One",
+    "OP Mainnet",
+    "BNB Smart Chain",
+    "Polygon",
+    "Avalanche",
   ],
 };

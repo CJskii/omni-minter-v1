@@ -28,6 +28,7 @@ import {
   avalanche,
   moonriver,
   opBNB,
+  scroll,
 } from "wagmi/chains";
 
 import { linea } from "./customChains/linea";
@@ -81,6 +82,7 @@ export const mainnetChains: ChainConfig[] = [
     ...opBNB,
     iconUrl: "/chain-icons/opbnb.svg",
   },
+  { ...scroll, iconUrl: "/chain-icons/scroll.svg" },
   {
     ...zkSync,
     iconUrl: "/chain-icons/zksync.svg",
