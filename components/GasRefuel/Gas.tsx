@@ -200,7 +200,7 @@ const Gas = () => {
               />
             ) : (
               <Preview
-                nativeCurrencySymbol={fromNetwork.nativeCurrency.symbol}
+                nativeCurrencySymbol={toNetwork.nativeCurrency.symbol}
                 networkName={toNetwork.name}
                 inputAmount={inputAmount}
                 setInputAmount={setInputAmount}
