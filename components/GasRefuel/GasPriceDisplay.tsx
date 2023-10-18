@@ -1,9 +1,4 @@
-type GasPriceProps = {
-  label: string;
-  amount: string;
-  currencySymbol: string;
-  usdValue?: string;
-};
+import { GasPriceProps } from "../../types/gas-refuel";
 
 const GasPriceDisplay: React.FC<GasPriceProps> = ({
   label,
@@ -13,11 +8,11 @@ const GasPriceDisplay: React.FC<GasPriceProps> = ({
 }) => {
   return (
     <div className="flex justify-between gap-4">
-      <p>{label}:</p>
-      <p>
-        ~{amount} {currencySymbol}
+      <p className="flex items-center">{label}:</p>
+      <p className="text-right">
+        ~{amount} {currencySymbol} <br></br>
         {usdValue && (
-          <span className="text-yellow-300"> {`($${usdValue} USD)`}</span>
+          <span className="opacity-70"> {`($${usdValue} USD)`}</span>
         )}
       </p>
     </div>

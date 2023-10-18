@@ -16,6 +16,7 @@ export const estimateGasRequest = async ({
   setGasFee,
   setErrorMessage,
   setShowGasModal,
+  recipientAddress,
 }: estimateGasParams) => {
   setIsLoading(true);
   try {
@@ -26,6 +27,7 @@ export const estimateGasRequest = async ({
       CONTRACT_ADDRESS,
       targetNetwork,
       value: inputAmount,
+      recipientAddress,
     });
 
     setGasFee(estimatedFee);
@@ -42,20 +44,22 @@ const estimateGasBridgeFee = async ({
   CONTRACT_ADDRESS,
   targetNetwork,
   value,
+  recipientAddress = "",
 }: {
   CONTRACT_ADDRESS: string;
   targetNetwork: string;
   value: string;
+  recipientAddress?: string;
 }) => {
   const signer = (await getProviderOrSigner(true)) as JsonRpcSigner;
   const ownerAddress = await signer.getAddress();
+  const refundAddress = recipientAddress || ownerAddress;
   const contract = new Contract(CONTRACT_ADDRESS, CONTRACT_ABI, signer);
   const remoteChainId = getRemoteChainId(targetNetwork);
   const gasInWei = ethers.utils.parseUnits(value, "ether");
-
   let adapterParams = ethers.utils.solidityPack(
     ["uint16", "uint", "uint", "address"],
-    [2, 200000, gasInWei.toString(), ownerAddress]
+    [2, 200000, gasInWei.toString(), refundAddress]
   );
 
   try {

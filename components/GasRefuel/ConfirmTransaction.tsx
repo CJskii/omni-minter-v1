@@ -44,14 +44,14 @@ const Confirm = ({
 
   return (
     <>
-      <div>
+      <div className="mt-4 border-[1px] border-base-100 border-opacity-70 rounded-lg p-2 flex flex-col hover:border-opacity-100">
         <GasPriceDisplay
           label={`Receive on ${toNetwork.name}`}
           amount={inputAmount}
           currencySymbol={toNetwork.nativeCurrency.symbol}
           usdValue={estimatedUSDValue ? estimatedUSDValue : undefined}
         />
-
+        <div className="divider p-0 m-0"></div>
         <GasPriceDisplay
           label="Estimated total cost"
           amount={totalCost}
