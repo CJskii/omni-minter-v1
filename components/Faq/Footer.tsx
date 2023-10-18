@@ -5,7 +5,8 @@ const Footer = () => {
     <div className="flex items-center justify-center mt-12 md:mt-20">
       <div className="px-8 py-4 text-center bg-gray-800 rounded-full">
         <p className="text-gray-50">
-          Didn&rsquo;t find the answer you are looking for? <DiscordLink />
+          Didn&rsquo;t find the answer you are looking for?{" "}
+          <DiscordLink label="Ask on discord" />
         </p>
       </div>
     </div>
