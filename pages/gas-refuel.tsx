@@ -2,6 +2,7 @@ import dynamic from "next/dynamic";
 import HeadComponent from "../components/HeadComponent";
 import { prisma } from "../prisma/client";
 import { useAccount } from "wagmi";
+import { useEffect, useState } from "react";
 
 const Gas = dynamic(() => import("../components/GasRefuel/Gas"), {
   loading: () => <span className="loading loading-dots loading-lg"></span>,
@@ -10,7 +11,18 @@ const Gas = dynamic(() => import("../components/GasRefuel/Gas"), {
 
 const GasRefuel = ({ top100Addresses }: any) => {
   const { address } = useAccount();
-  const isEligible = top100Addresses.includes(address?.toLowerCase());
+  const [isMounted, setIsMounted] = useState(false);
+  const [isEligible, setIsEligible] = useState(false);
+
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
+
+  useEffect(() => {
+    if (isMounted) {
+      setIsEligible(top100Addresses.includes(address?.toLowerCase()));
+    }
+  }, [isMounted, address, top100Addresses]);
 
   return (
     <>
