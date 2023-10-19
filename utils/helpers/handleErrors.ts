@@ -5,7 +5,6 @@ export const handleErrors = ({
   e: any;
   setErrorMessage: (message: string) => void;
 }) => {
-  console.log(e);
   const dataMessage = (e as any).data?.message;
   const genericMessage = (e as any)?.message;
   if (dataMessage) {
@@ -64,6 +63,10 @@ export const handleErrors = ({
     } else if (genericMessage.includes("dstNativeAmt too large")) {
       return setErrorMessage(
         "The amount you are trying to transfer is too large. Please try again with a smaller amount."
+      );
+    } else if (genericMessage.includes("invalid arrayify value")) {
+      return setErrorMessage(
+        "Invalid address provided. Please check and try again."
       );
     } else {
       return setErrorMessage("An error occurred");

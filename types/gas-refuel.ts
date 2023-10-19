@@ -10,6 +10,7 @@ export interface GasTransferParams {
   setTxHash: (txHash: string) => void;
   setTransactionBlockNumber: (transactionBlockNumber: number) => void;
   gasFee: string;
+  recipientAddress: string;
 }
 
 export interface GasModalProps {
@@ -25,6 +26,7 @@ export interface GasModalProps {
     inputAmount: string;
     transactionBlockNumber: number;
   };
+  recipentAddress: string;
 }
 
 export interface estimateGasParams {
@@ -35,6 +37,7 @@ export interface estimateGasParams {
   setGasFee: (gasFee: string) => void;
   setErrorMessage: (errorMessage: string) => void;
   setShowGasModal: (showGasModal: boolean) => void;
+  recipientAddress: string;
 }
 
 export interface IPreview {
@@ -54,4 +57,11 @@ export interface IConfirm {
   setGasFee: (value: string) => void;
   handleConfirmButton: () => void;
   isLoading: boolean;
+}
+
+export interface GasPriceProps {
+  label: string;
+  amount: string;
+  currencySymbol: string;
+  usdValue?: string;
 }

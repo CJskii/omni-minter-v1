@@ -140,6 +140,9 @@ export const transformNetworkName = (networkName: string) => {
     case "opbnb":
       networkName = "opbnb";
       break;
+    case "scroll":
+      networkName = "scroll";
+      break;
     default:
       break;
   }
@@ -188,6 +191,8 @@ const getEnvVarName = (key: string): string | undefined => {
       return process.env.NEXT_PUBLIC_ZKSYNC_CONTRACT_ADDRESS;
     case "OPBNB":
       return process.env.NEXT_PUBLIC_OPBNB_CONTRACT_ADDRESS;
+    case "SCROLL":
+      return process.env.NEXT_PUBLIC_SCROLL_CONTRACT_ADDRESS;
     default:
       return undefined;
   }

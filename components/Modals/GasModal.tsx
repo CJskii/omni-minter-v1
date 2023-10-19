@@ -10,6 +10,7 @@ const GasModal = (props: GasModalProps) => {
     setTxHash,
     errorMessage,
     setErrorMessage,
+    recipentAddress,
   } = props;
 
   const { toNetwork, inputAmount, transactionBlockNumber } = props.data;
@@ -30,8 +31,8 @@ const GasModal = (props: GasModalProps) => {
         <div className="card-body">
           <h2 className="card-title">Successful Bridging</h2>
           <p className="text-lg">
-            You will receive {inputAmount} ${toNetwork.nativeCurrency.symbol}{" "}
-            shortly.
+            {recipentAddress ? "Your friend" : "You"} will receive {inputAmount}{" "}
+            ${toNetwork.nativeCurrency.symbol} shortly.
           </p>
           <p className="text-[sm]">
             Transaction will be included in block{" "}

@@ -38,6 +38,7 @@ const Gas = () => {
   const [errorMessage, setErrorMessage] = useState("");
   const [transactionBlockNumber, setTransactionBlockNumber] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
+  const [recipientAddress, setRecipientAddress] = useState("");
 
   const isValidToNetwork = (toNetwork: Network) => {
     const validToNetworks = getValidToNetworks(fromNetwork);
@@ -92,6 +93,7 @@ const Gas = () => {
       setTxHash,
       setTransactionBlockNumber,
       gasFee,
+      recipientAddress,
     });
   };
 
@@ -116,6 +118,7 @@ const Gas = () => {
         setGasFee,
         setErrorMessage,
         setShowGasModal,
+        recipientAddress,
       });
     } catch (e) {
       console.error(e);
@@ -144,6 +147,7 @@ const Gas = () => {
                 toNetwork,
                 transactionBlockNumber,
               }}
+              recipentAddress={recipientAddress}
             />
             <h2 className="text-xl font-bold leading-tight sm:text-4xl text-content-focus text-center">
               Gas Refuel
@@ -188,6 +192,22 @@ const Gas = () => {
               />
             </div>
 
+            {gasFee === "" && (
+              <div className="flex flex-col gap-2">
+                <label htmlFor="recipientAddress">
+                  Sending to a friend? (optional):
+                </label>
+                <input
+                  type="text"
+                  id="recipientAddress"
+                  placeholder="Enter recipient's Ethereum address"
+                  value={recipientAddress}
+                  onChange={(e) => setRecipientAddress(e.target.value)}
+                  className="input input-bordered flex-grow"
+                />
+              </div>
+            )}
+
             {gasFee != "" ? (
               <Confirm
                 toNetwork={toNetwork}
@@ -200,7 +220,7 @@ const Gas = () => {
               />
             ) : (
               <Preview
-                nativeCurrencySymbol={fromNetwork.nativeCurrency.symbol}
+                nativeCurrencySymbol={toNetwork.nativeCurrency.symbol}
                 networkName={toNetwork.name}
                 inputAmount={inputAmount}
                 setInputAmount={setInputAmount}
