@@ -1,8 +1,6 @@
 import CustomButton from "./Buttons/CustomButton";
 import CustomButtonMobile from "./Buttons/CustomButtonMobile";
-import { ConnectButton } from "@rainbow-me/rainbowkit";
 import { useState } from "react";
-import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/router";
 
@@ -19,7 +17,7 @@ const Navbar = () => {
           </Link>
         </div>
       </div>
-      <div className="navbar-center flex gap-8 text-xl max-sm:hidden">
+      <div className="navbar-center flex gap-8 text-xl max-lg:hidden">
         <div className="btn-group">
           <Link
             href="/"
@@ -33,7 +31,15 @@ const Navbar = () => {
               router.pathname === "/onft-bridge" ? "btn-active" : ""
             }`}
           >
-            ONFT Bridge
+            Bridge
+          </Link>
+          <Link
+            href="/gas-refuel"
+            className={`btn ${
+              router.pathname === "/gas-refuel" ? "btn-active" : ""
+            }`}
+          >
+            Gas Refuel
           </Link>
           <Link
             href="/leaderboard"
@@ -51,11 +57,11 @@ const Navbar = () => {
           </Link>
         </div>
       </div>
-      <div className="navbar-end max-sm:hidden">
+      <div className="navbar-end max-lg:hidden">
         <CustomButton />
       </div>
       <div className="dropdown dropdown-end">
-        <label className="btn btn-circle swap swap-rotate md:hidden">
+        <label className="btn btn-circle swap swap-rotate lg:hidden">
           <input type="checkbox" />
 
           {/* hamburger icon */}
@@ -93,6 +99,9 @@ const Navbar = () => {
             </li>
             <li onClick={() => setExpanded(false)}>
               <Link href="/onft-bridge">Bridge</Link>
+            </li>
+            <li onClick={() => setExpanded(false)}>
+              <Link href="/gas-refuel">Gas Refuel</Link>
             </li>
             <li onClick={() => setExpanded(false)}>
               <Link href="/leaderboard">Leaderboard</Link>
