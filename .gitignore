@@ -37,3 +37,9 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 .env
+
+# local
+chainMappings.json
+pages/api/handleNetworks.ts
+pages/api/wireUp.ts
+pages/testing.tsx
