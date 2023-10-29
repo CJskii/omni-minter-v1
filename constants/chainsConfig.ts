@@ -90,12 +90,12 @@ export const mainnetChains: ChainConfig[] = [
     remoteChainId: 110,
     lzEndpointAddress: "0x3c2269811836af69497E5F486A85D7316753cf62",
   },
-  {
-    ...arbitrumNova,
-    iconUrl: "/chain-icons/arb-nova.svg",
-    remoteChainId: 175,
-    lzEndpointAddress: "0x4EE2F9B7cf3A68966c370F3eb2C16613d3235245",
-  },
+  // {
+  //   ...arbitrumNova,
+  //   iconUrl: "/chain-icons/arb-nova.svg",
+  //   remoteChainId: 175,
+  //   lzEndpointAddress: "0x4EE2F9B7cf3A68966c370F3eb2C16613d3235245",
+  // },
   {
     ...optimism,
     iconUrl: "/chain-icons/optimism.svg",
@@ -204,52 +204,52 @@ export const mainnetChains: ChainConfig[] = [
     remoteChainId: 116,
     lzEndpointAddress: "0x9740FF91F1985D8d2B71494aE1A2f723bb3Ed9E4",
   },
-  {
-    ...aurora,
-    iconUrl: "/chain-icons/aurora.svg",
-    remoteChainId: 211,
-    lzEndpointAddress: "0xb6319cC6c8c27A8F5dAF0dD3DF91EA35C4720dd7",
-  },
-  {
-    ...astar,
-    iconUrl: "/chain-icons/astar.svg",
-    remoteChainId: 210,
-    lzEndpointAddress: "0xb6319cC6c8c27A8F5dAF0dD3DF91EA35C4720dd7",
-  },
-  {
-    ...fuse,
-    iconUrl: "/chain-icons/fuse.svg",
-    remoteChainId: 138,
-    lzEndpointAddress: "0x9740FF91F1985D8d2B71494aE1A2f723bb3Ed9E4",
-  },
-  {
-    ...meter,
-    iconUrl: "/chain-icons/meter.svg",
-    remoteChainId: 176,
-    lzEndpointAddress: "0xa3a8e19253Ab400acDac1cB0eA36B88664D8DedF",
-  },
-  {
-    ...tenet,
-    iconUrl: "/chain-icons/tenet.svg",
-    remoteChainId: 173,
-    lzEndpointAddress: "0x2D61DCDD36F10b22176E0433B86F74567d529aAa",
-  },
-  {
-    ...kava,
-    iconUrl: "/chain-icons/kava.svg",
-    remoteChainId: 177,
-    lzEndpointAddress: "0xb6319cC6c8c27A8F5dAF0dD3DF91EA35C4720dd7",
-  },
-  {
-    ...klaytn,
-    iconUrl: "/chain-icons/klaytn.svg",
-    remoteChainId: 150,
-    lzEndpointAddress: "0x9740FF91F1985D8d2B71494aE1A2f723bb3Ed9E4",
-    rpcUrls: {
-      public: { http: ["https://klaytn.drpc.org"] },
-      default: { http: ["https://klaytn.drpc.org"] },
-    },
-  },
+  // {
+  //   ...aurora,
+  //   iconUrl: "/chain-icons/aurora.svg",
+  //   remoteChainId: 211,
+  //   lzEndpointAddress: "0xb6319cC6c8c27A8F5dAF0dD3DF91EA35C4720dd7",
+  // },
+  // {
+  //   ...astar,
+  //   iconUrl: "/chain-icons/astar.svg",
+  //   remoteChainId: 210,
+  //   lzEndpointAddress: "0xb6319cC6c8c27A8F5dAF0dD3DF91EA35C4720dd7",
+  // },
+  // {
+  //   ...fuse,
+  //   iconUrl: "/chain-icons/fuse.svg",
+  //   remoteChainId: 138,
+  //   lzEndpointAddress: "0x9740FF91F1985D8d2B71494aE1A2f723bb3Ed9E4",
+  // },
+  // {
+  //   ...meter,
+  //   iconUrl: "/chain-icons/meter.svg",
+  //   remoteChainId: 176,
+  //   lzEndpointAddress: "0xa3a8e19253Ab400acDac1cB0eA36B88664D8DedF",
+  // },
+  // {
+  //   ...tenet,
+  //   iconUrl: "/chain-icons/tenet.svg",
+  //   remoteChainId: 173,
+  //   lzEndpointAddress: "0x2D61DCDD36F10b22176E0433B86F74567d529aAa",
+  // },
+  // {
+  //   ...kava,
+  //   iconUrl: "/chain-icons/kava.svg",
+  //   remoteChainId: 177,
+  //   lzEndpointAddress: "0xb6319cC6c8c27A8F5dAF0dD3DF91EA35C4720dd7",
+  // },
+  // {
+  //   ...klaytn,
+  //   iconUrl: "/chain-icons/klaytn.svg",
+  //   remoteChainId: 150,
+  //   lzEndpointAddress: "0x9740FF91F1985D8d2B71494aE1A2f723bb3Ed9E4",
+  //   rpcUrls: {
+  //     public: { http: ["https://klaytn.drpc.org"] },
+  //     default: { http: ["https://klaytn.drpc.org"] },
+  //   },
+  // },
 ];
 
 //   {

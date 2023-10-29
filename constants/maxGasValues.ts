@@ -63,7 +63,7 @@ export const maxGasValues: MaxGasValues = {
     adapterParamMaxGas: 0.05,
   },
   scroll: {
-    adapterParamMaxGas: 0.05,
+    adapterParamMaxGas: 0.02,
   },
   opbnb: {
     adapterParamMaxGas: 0.05,
