@@ -28,4 +28,10 @@ export const coingeckoMapping: TokenMapping = {
   metis: "metis-token",
   core: "coredaoorg",
   canto: "canto",
+  kava: "kava",
+  astr: "astar",
+  fuse: "fuse-network-token",
+  mtr: "meter-stable",
+  tenet: "tenet-1b000f7b-59cb-4e06-89ce-d62b32d362b9",
+  klay: "klay-token",
 };
