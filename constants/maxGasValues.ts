@@ -68,6 +68,31 @@ export const maxGasValues: MaxGasValues = {
   opbnb: {
     adapterParamMaxGas: 0.05,
   },
+  tenet: {
+    adapterParamMaxGas: 0.05,
+  },
+  fuse: {
+    adapterParamMaxGas: 0.05,
+  },
+  meter: {
+    adapterParamMaxGas: 0.05,
+  },
+  klaytn: {
+    adapterParamMaxGas: 0.05,
+  },
+  "arbitrum-nova": {
+    adapterParamMaxGas: 0.05,
+  },
+  kava: {
+    adapterParamMaxGas: 1,
+  },
+  aurora: {
+    adapterParamMaxGas: 0.05,
+  },
+  astar: {
+    adapterParamMaxGas: 0.05,
+  },
+
   "arbitrum-goerli": {
     adapterParamMaxGas: 0.1,
   },

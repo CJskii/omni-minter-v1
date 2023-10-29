@@ -143,6 +143,30 @@ export const transformNetworkName = (networkName: string) => {
     case "scroll":
       networkName = "scroll";
       break;
+    case "fuse":
+      networkName = "fuse";
+      break;
+    case "tenet":
+      networkName = "tenet";
+      break;
+    case "meter":
+      networkName = "meter";
+      break;
+    case "klaytn":
+      networkName = "klaytn";
+      break;
+    case "arbitrum nova":
+      networkName = "arbitrum-nova";
+      break;
+    case "astar":
+      networkName = "astar";
+      break;
+    case "kava":
+      networkName = "kava";
+      break;
+    case "aurora":
+      networkName = "aurora";
+      break;
     default:
       break;
   }
@@ -193,6 +217,22 @@ const getEnvVarName = (key: string): string | undefined => {
       return process.env.NEXT_PUBLIC_OPBNB_CONTRACT_ADDRESS;
     case "SCROLL":
       return process.env.NEXT_PUBLIC_SCROLL_CONTRACT_ADDRESS;
+    case "FUSE":
+      return process.env.NEXT_PUBLIC_FUSE_CONTRACT_ADDRESS;
+    case "TENET":
+      return process.env.NEXT_PUBLIC_TENET_CONTRACT_ADDRESS;
+    case "METER":
+      return process.env.NEXT_PUBLIC_METER_CONTRACT_ADDRESS;
+    case "KLAYTN":
+      return process.env.NEXT_PUBLIC_KLAYTN_CONTRACT_ADDRESS;
+    case "ARBITRUM-NOVA":
+      return process.env.NEXT_PUBLIC_ARBITRUM_NOVA_CONTRACT_ADDRESS;
+    case "ASTAR":
+      return process.env.NEXT_PUBLIC_ASTAR_CONTRACT_ADDRESS;
+    case "KAVA":
+      return process.env.NEXT_PUBLIC_KAVA_CONTRACT_ADDRESS;
+    case "AURORA":
+      return process.env.NEXT_PUBLIC_AURORA_CONTRACT_ADDRESS;
     default:
       return undefined;
   }
