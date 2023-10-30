@@ -90,12 +90,12 @@ export const mainnetChains: ChainConfig[] = [
     remoteChainId: 110,
     lzEndpointAddress: "0x3c2269811836af69497E5F486A85D7316753cf62",
   },
-  // {
-  //   ...arbitrumNova,
-  //   iconUrl: "/chain-icons/arb-nova.svg",
-  //   remoteChainId: 175,
-  //   lzEndpointAddress: "0x4EE2F9B7cf3A68966c370F3eb2C16613d3235245",
-  // },
+  {
+    ...arbitrumNova,
+    iconUrl: "/chain-icons/arb-nova.svg",
+    remoteChainId: 175,
+    lzEndpointAddress: "0x4EE2F9B7cf3A68966c370F3eb2C16613d3235245",
+  },
   {
     ...optimism,
     iconUrl: "/chain-icons/optimism.svg",
@@ -222,12 +222,12 @@ export const mainnetChains: ChainConfig[] = [
   //   remoteChainId: 138,
   //   lzEndpointAddress: "0x9740FF91F1985D8d2B71494aE1A2f723bb3Ed9E4",
   // },
-  // {
-  //   ...meter,
-  //   iconUrl: "/chain-icons/meter.svg",
-  //   remoteChainId: 176,
-  //   lzEndpointAddress: "0xa3a8e19253Ab400acDac1cB0eA36B88664D8DedF",
-  // },
+  {
+    ...meter,
+    iconUrl: "/chain-icons/meter.svg",
+    remoteChainId: 176,
+    lzEndpointAddress: "0xa3a8e19253Ab400acDac1cB0eA36B88664D8DedF",
+  },
   // {
   //   ...tenet,
   //   iconUrl: "/chain-icons/tenet.svg",
