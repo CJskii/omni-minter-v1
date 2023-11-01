@@ -41,6 +41,10 @@ import { coreDao } from "./customChains/coreDao";
 import { tenet } from "./customChains/tenet";
 import { astar } from "./customChains/astar";
 import { kava } from "./customChains/kava";
+import { getContractAddress } from "../utils/getConstants";
+import { getRemoteChainId } from "../utils/getConstants";
+import { getMaxGasValue } from "../utils/getMaxGasValue";
+import { CONTRACT_ABI } from "./contractABI";
 
 type RpcUrls = {
   http: readonly string[];
@@ -67,8 +71,16 @@ type ChainConfig = {
     [key: string]: any;
   };
   testnet?: boolean;
-  remoteChainId?: number;
-  lzEndpointAddress?: string;
+  deployedContracts?: {
+    [key: string]: {
+      address: string;
+      ABI: any;
+    };
+  };
+  lzParams?: {
+    lzEndpointAddress?: string;
+    remoteChainId?: number;
+  };
 };
 
 export const mainnetChains: ChainConfig[] = [
@@ -250,7 +262,20 @@ export const mainnetChains: ChainConfig[] = [
   //     default: { http: ["https://klaytn.drpc.org"] },
   //   },
   // },
-];
+].map((chain) => ({
+  ...chain,
+  deployedContracts: {
+    ONFT: {
+      address: getContractAddress(chain.name),
+      ABI: CONTRACT_ABI,
+    },
+  },
+  lzParams: {
+    lzEndpointAddress: chain.lzEndpointAddress,
+    remoteChainId: getRemoteChainId(chain.name),
+    maxGas: getMaxGasValue(chain.name),
+  },
+}));
 
 export const testnetChains: ChainConfig[] = [
   {
