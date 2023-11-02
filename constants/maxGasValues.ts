@@ -20,9 +20,6 @@ export const maxGasValues: MaxGasValues = {
   optimism: {
     adapterParamMaxGas: 0.2,
   },
-  sepolia: {
-    adapterParamMaxGas: 0.1,
-  },
   celo: {
     adapterParamMaxGas: 0.05,
   },
@@ -92,38 +89,45 @@ export const maxGasValues: MaxGasValues = {
   astar: {
     adapterParamMaxGas: 0.05,
   },
+  zkevm: {
+    adapterParamMaxGas: 0.02,
+  },
 
-  "arbitrum-goerli": {
-    adapterParamMaxGas: 0.1,
-  },
-  "bsc-testnet": {
-    adapterParamMaxGas: 0.1,
-  },
-  "linea-testnet": {
-    adapterParamMaxGas: 0.1,
+  // Testnets
+  mumbai: {
+    adapterParamMaxGas: 0.05,
   },
   "optimism-goerli": {
-    adapterParamMaxGas: 0.1,
+    adapterParamMaxGas: 0.05,
   },
-  mumbai: {
-    adapterParamMaxGas: 0.1,
+  "arbitrum-goerli": {
+    adapterParamMaxGas: 0.05,
+  },
+  "base-testnet": {
+    adapterParamMaxGas: 0.05,
+  },
+  "linea-testnet": {
+    adapterParamMaxGas: 0.05,
+  },
+  "bsc-testnet": {
+    adapterParamMaxGas: 0.05,
   },
   "zkevm-testnet": {
-    adapterParamMaxGas: 0.1,
+    adapterParamMaxGas: 0.05,
   },
   "mantle-testnet": {
-    adapterParamMaxGas: 0.1,
+    adapterParamMaxGas: 0.05,
   },
   "metis-testnet": {
-    adapterParamMaxGas: 0.1,
+    adapterParamMaxGas: 0.05,
   },
   "coreDao-testnet": {
+    adapterParamMaxGas: 0.05,
+  },
+  sepolia: {
     adapterParamMaxGas: 0.1,
   },
   goerli: {
-    adapterParamMaxGas: 0.1,
-  },
-  zkevm: {
-    adapterParamMaxGas: 0.02,
+    adapterParamMaxGas: 0.05,
   },
 };
