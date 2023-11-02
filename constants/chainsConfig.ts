@@ -45,45 +45,9 @@ import { getContractAddress } from "../utils/getConstants";
 import { getRemoteChainId } from "../utils/getConstants";
 import { getMaxGasValue } from "../utils/getMaxGasValue";
 import { CONTRACT_ABI } from "./contractABI";
+import { Network } from "../types/network";
 
-type RpcUrls = {
-  http: readonly string[];
-  webSocket?: readonly string[];
-};
-
-type ChainConfig = {
-  id: number;
-  network: string;
-  name: string;
-  nativeCurrency: {
-    name: string;
-    symbol: string;
-    decimals: number;
-  };
-  rpcUrls: {
-    [key: string]: RpcUrls;
-    default: RpcUrls;
-    public: RpcUrls;
-  };
-  iconUrl?: string;
-  blockExplorers?: any;
-  contracts?: {
-    [key: string]: any;
-  };
-  testnet?: boolean;
-  deployedContracts?: {
-    [key: string]: {
-      address: string;
-      ABI: any;
-    };
-  };
-  lzParams?: {
-    lzEndpointAddress?: string;
-    remoteChainId?: number;
-  };
-};
-
-export const mainnetChains: ChainConfig[] = [
+export const mainnetChains: Network[] = [
   {
     ...base,
     iconUrl: "/chain-icons/base.svg",
@@ -262,59 +226,55 @@ export const mainnetChains: ChainConfig[] = [
   //     default: { http: ["https://klaytn.drpc.org"] },
   //   },
   // },
-].map((chain) => ({
-  ...chain,
-  deployedContracts: {
-    ONFT: {
-      address: getContractAddress(chain.name),
-      ABI: CONTRACT_ABI,
-    },
-  },
-  lzParams: {
-    lzEndpointAddress: chain.lzEndpointAddress,
-    remoteChainId: getRemoteChainId(chain.name),
-    maxGas: getMaxGasValue(chain.name),
-  },
-}));
+];
 
-export const testnetChains: ChainConfig[] = [
+export const testnetChains: Network[] = [
   {
     ...goerli,
     iconUrl: "/chain-icons/eth-logo.svg",
     name: "Goerli",
+    remoteChainId: 10121,
   },
   {
     ...sepolia,
     iconUrl: "/chain-icons/eth-logo.svg",
+    remoteChainId: 10161,
   },
   {
     ...arbitrumGoerli,
     iconUrl: "/chain-icons/arbitrum.svg",
+    remoteChainId: 10143,
   },
   {
     ...optimismGoerli,
     iconUrl: "/chain-icons/optimism.svg",
+    remoteChainId: 10132,
   },
   {
     ...baseGoerli,
     iconUrl: "/chain-icons/base.svg",
+    remoteChainId: 10160,
   },
   {
     ...lineaTestnet,
     iconUrl: "/chain-icons/linea.svg",
+    remoteChainId: 10157,
   },
   {
     ...bscTestnet,
     iconUrl: "/chain-icons/bsc.svg",
+    remoteChainId: 10102,
   },
 
   {
     ...polygonZkEvmTestnet,
     iconUrl: "/chain-icons/polygon-zkevm.svg",
+    remoteChainId: 10158,
   },
   {
     ...polygonMumbai,
     iconUrl: "/chain-icons/polygon.svg",
+    remoteChainId: 10109,
     rpcUrls: {
       public: { http: ["https://rpc.ankr.com/polygon_mumbai"] },
       default: { http: ["https://rpc.ankr.com/polygon_mumbai"] },
@@ -323,20 +283,48 @@ export const testnetChains: ChainConfig[] = [
   {
     ...mantleTestnet,
     iconUrl: "/chain-icons/mantle.svg",
+    remoteChainId: 10181,
   },
   {
     ...metisGoerli,
     iconUrl: "/chain-icons/metis.svg",
+    remoteChainId: 10151,
   },
 ];
 
-export const getSupportedChains = (): ChainConfig[] => {
+export const getSupportedChains = (): Network[] => {
   const env = process.env.NEXT_PUBLIC_ENVIRONMENT;
   switch (env) {
     case "mainnet":
-      return mainnetChains;
+      return mainnetChains.map((chain) => ({
+        ...chain,
+        deployedContracts: {
+          ONFT: {
+            address: getContractAddress(chain.name),
+            ABI: CONTRACT_ABI,
+          },
+        },
+        lzParams: {
+          lzEndpointAddress: chain.lzEndpointAddress,
+          remoteChainId: getRemoteChainId(chain.name),
+          maxGas: getMaxGasValue(chain.name),
+        },
+      }));
     case "testnet":
-      return testnetChains;
+      return testnetChains.map((chain) => ({
+        ...chain,
+        deployedContracts: {
+          ONFT: {
+            address: getContractAddress(chain.name),
+            ABI: CONTRACT_ABI,
+          },
+        },
+        lzParams: {
+          lzEndpointAddress: "",
+          remoteChainId: getRemoteChainId(chain.name),
+          maxGas: getMaxGasValue(chain.name),
+        },
+      }));
     default:
       console.error(`Unsupported ENVIRONMENT value: ${env}`);
       return [];
