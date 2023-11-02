@@ -121,8 +121,8 @@ const Bridging = (props: BridgeProps) => {
 
       const result = await handleBridging({
         TOKEN_ID,
-        CONTRACT_ADDRESS,
-        targetNetwork,
+        fromNetwork,
+        toNetwork,
       });
 
       const { txHash } = result;

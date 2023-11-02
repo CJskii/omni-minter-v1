@@ -1,26 +1,33 @@
 import { ethers } from "ethers";
 import { JsonRpcSigner } from "@ethersproject/providers";
 import { Contract } from "@ethersproject/contracts";
-import { CONTRACT_ABI } from "../../constants/contractABI";
-import { getRemoteChainId } from "../../utils/getConstants";
 import getProviderOrSigner from "../../utils/getProviderOrSigner";
+import { Network } from "../../types/network";
 
 export const handleBridging = async ({
-  CONTRACT_ADDRESS,
   TOKEN_ID,
-  targetNetwork,
+  fromNetwork,
+  toNetwork,
 }: {
-  CONTRACT_ADDRESS: string;
   TOKEN_ID: string;
-  targetNetwork: string;
+  fromNetwork: Network;
+  toNetwork: Network;
 }) => {
   const signer = await getProviderOrSigner(true);
   const ownerAddress = await (signer as JsonRpcSigner).getAddress();
-  const contract = new Contract(CONTRACT_ADDRESS, CONTRACT_ABI, signer);
+
+  if (!fromNetwork.deployedContracts)
+    throw new Error(`No deployed contracts found for ${fromNetwork.name}`);
+
+  const contract = new Contract(
+    fromNetwork.deployedContracts.ONFT.address,
+    fromNetwork.deployedContracts.ONFT.ABI,
+    signer
+  );
 
   // REMOTE CHAIN ID IS THE CHAIN OF THE RECEIVING NETWORK
   // ex. if you are sending from Ethereum to Polygon, the remote chain id is the Polygon chain id
-  const remoteChainId = getRemoteChainId(targetNetwork);
+  const remoteChainId = toNetwork.lzParams?.remoteChainId;
 
   const adapterParams = ethers.utils.solidityPack(
     ["uint16", "uint256"],
