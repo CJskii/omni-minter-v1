@@ -34,7 +34,6 @@ const CustomButtonNetwork = dynamic(
 
 const Minting = () => {
   const [lastMintId, setLastMintId] = useState(0);
-
   const [isInvited, setIsInvited] = useState(false);
   const [referredBy, setReferredBy] = useState("");
   const { chain } = useNetwork();
@@ -107,7 +106,7 @@ const Minting = () => {
               <div className="mt-3 space-y-3">
                 <CustomButtonMint
                   setLastMintId={setLastMintId}
-                  mintNetwork={mintNetwork.name}
+                  mintNetwork={mintNetwork}
                   isInvited={isInvited}
                   referredBy={referredBy}
                 />
