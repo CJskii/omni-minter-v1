@@ -1,15 +1,10 @@
 import { ethers } from "ethers";
 import { Contract } from "@ethersproject/contracts";
-import { CONTRACT_ABI } from "../../constants/contractABI";
 import getProviderOrSigner from "../getProviderOrSigner";
+import { Network } from "../../types/network";
+import { getTokenId } from "../getTokenId";
 
-export const handleMinting = async ({
-  CONTRACT_ADDRESS,
-  currentlyConnectedChain,
-}: {
-  CONTRACT_ADDRESS: string;
-  currentlyConnectedChain: string;
-}) => {
+export const handleMinting = async (mintNetwork: Network) => {
   // Initiate provider and signer
   const provider = await getProviderOrSigner();
   const signer = await getProviderOrSigner(true);
@@ -19,8 +14,15 @@ export const handleMinting = async ({
     return;
   }
 
+  if (!mintNetwork.deployedContracts)
+    throw new Error(`No deployed contracts found for ${mintNetwork.name}`);
+
   // Initiate contract instance and get fee
-  const contract = new Contract(CONTRACT_ADDRESS, CONTRACT_ABI, signer);
+  const contract = new Contract(
+    mintNetwork.deployedContracts.ONFT.address,
+    mintNetwork.deployedContracts.ONFT.ABI,
+    signer
+  );
   const contractFeeInWei = await contract.fee();
   const feeInEther = ethers.utils.formatEther(contractFeeInWei);
   console.log(`Fee: ${feeInEther}`);
@@ -32,28 +34,12 @@ export const handleMinting = async ({
   let tx = await (
     await contract.mint({
       value: ethers.utils.parseEther(feeInEther),
-      gasLimit:
-        currentlyConnectedChain.toLowerCase() == "mantle" ? 100000 : null,
+      gasLimit: mintNetwork.name.toLowerCase() == "mantle" ? 100000 : null,
     })
   ).wait();
 
-  let transactionReceipt = await provider.getTransactionReceipt(
-    tx.transactionHash
-  );
-
   const txHash: string = tx.transactionHash;
-  let mintedID: number;
-
-  if (currentlyConnectedChain.toLowerCase() === "zksync era") {
-    mintedID = parseInt(transactionReceipt.logs[3].topics[3], 16);
-  } else if (
-    currentlyConnectedChain.toLowerCase() != "polygon" &&
-    currentlyConnectedChain.toLowerCase() != "polygon mumbai"
-  ) {
-    mintedID = parseInt(transactionReceipt.logs[0].topics[3], 16);
-  } else {
-    mintedID = parseInt(transactionReceipt.logs[1].topics[3], 16);
-  }
+  let mintedID = await getTokenId({ txHash, mintNetwork, provider });
 
   return { mintedID, txHash };
 };
