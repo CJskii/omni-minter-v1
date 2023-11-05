@@ -292,7 +292,7 @@ export const testnetChains: Network[] = [
   },
 ];
 
-export const getSupportedChains = (): Network[] => {
+export const getSupportedChains = () => {
   const env = process.env.NEXT_PUBLIC_ENVIRONMENT;
   switch (env) {
     case "mainnet":
