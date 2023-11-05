@@ -52,7 +52,7 @@ const Gas = () => {
     onSearchChange: setFromSearchTerm,
     filteredChains: fromFilteredChains,
     onClose: onFromClose,
-  } = useNetworkSelection(activeChains[0]);
+  } = useNetworkSelection(activeChains[0] as Network);
 
   const {
     selectedNetwork: toNetwork,
@@ -61,7 +61,7 @@ const Gas = () => {
     onSearchChange: setToSearchTerm,
     filteredChains: toFilteredChains,
     onClose: onToClose,
-  } = useNetworkSelection(activeChains[1], isValidToNetwork);
+  } = useNetworkSelection(activeChains[1] as Network, isValidToNetwork);
 
   useEffect(() => {
     // If the currently selected "To" network is not valid after the "From" network changes, reset it.
@@ -71,8 +71,8 @@ const Gas = () => {
         (chain) => chain.name === validNetworks[0]
       );
       defaultNetwork
-        ? setToNetwork(defaultNetwork)
-        : setToNetwork(activeChains[0]);
+        ? setToNetwork(defaultNetwork as Network)
+        : setToNetwork(activeChains[0] as Network);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [fromNetwork, toNetwork, setToNetwork]);
