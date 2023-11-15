@@ -167,7 +167,7 @@ export const transformNetworkName = (networkName: string) => {
     case "astar":
       networkName = "astar";
       break;
-    case "kava":
+    case "kava evm":
       networkName = "kava";
       break;
     case "aurora":
