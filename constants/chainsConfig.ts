@@ -34,6 +34,7 @@ import {
   meter,
   aurora,
   klaytn,
+  manta,
 } from "wagmi/chains";
 
 import { linea } from "./customChains/linea";
@@ -124,6 +125,13 @@ export const mainnetChains: Network[] = [
     ...mantle,
     iconUrl: "/chain-icons/mantle.svg",
     remoteChainId: 181,
+    lzEndpointAddress: "0xb6319cC6c8c27A8F5dAF0dD3DF91EA35C4720dd7",
+  },
+  {
+    ...manta,
+    name: "Manta Pacific",
+    iconUrl: "/chain-icons/manta.svg",
+    remoteChainId: 217,
     lzEndpointAddress: "0xb6319cC6c8c27A8F5dAF0dD3DF91EA35C4720dd7",
   },
   {

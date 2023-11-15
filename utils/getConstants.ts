@@ -173,6 +173,9 @@ export const transformNetworkName = (networkName: string) => {
     case "aurora":
       networkName = "aurora";
       break;
+    case "manta pacific":
+      networkName = "manta";
+      break;
     default:
       break;
   }
@@ -239,6 +242,10 @@ const getEnvVarName = (key: string): string | undefined => {
       return process.env.NEXT_PUBLIC_KAVA_CONTRACT_ADDRESS;
     case "AURORA":
       return process.env.NEXT_PUBLIC_AURORA_CONTRACT_ADDRESS;
+    case "MANTA":
+      return process.env.NEXT_PUBLIC_MANTA_CONTRACT_ADDRESS;
+    case "PGN":
+      return process.env.NEXT_PUBLIC_PGN_CONTRACT_ADDRESS;
     default:
       return undefined;
   }

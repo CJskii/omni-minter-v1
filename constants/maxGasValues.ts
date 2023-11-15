@@ -92,6 +92,12 @@ export const maxGasValues: MaxGasValues = {
   zkevm: {
     adapterParamMaxGas: 0.02,
   },
+  manta: {
+    adapterParamMaxGas: 0.05,
+  },
+  pgn: {
+    adapterParamMaxGas: 0.05,
+  },
 
   // Testnets
   mumbai: {
