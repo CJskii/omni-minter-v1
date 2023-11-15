@@ -176,6 +176,9 @@ export const transformNetworkName = (networkName: string) => {
     case "manta pacific":
       networkName = "manta";
       break;
+    case "pgn":
+      networkName = "pgn";
+      break;
     default:
       break;
   }
