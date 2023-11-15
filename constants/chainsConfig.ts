@@ -180,52 +180,52 @@ export const mainnetChains: Network[] = [
     remoteChainId: 116,
     lzEndpointAddress: "0x9740FF91F1985D8d2B71494aE1A2f723bb3Ed9E4",
   },
-  // {
-  //   ...aurora,
-  //   iconUrl: "/chain-icons/aurora.svg",
-  //   remoteChainId: 211,
-  //   lzEndpointAddress: "0xb6319cC6c8c27A8F5dAF0dD3DF91EA35C4720dd7",
-  // },
-  // {
-  //   ...astar,
-  //   iconUrl: "/chain-icons/astar.svg",
-  //   remoteChainId: 210,
-  //   lzEndpointAddress: "0xb6319cC6c8c27A8F5dAF0dD3DF91EA35C4720dd7",
-  // },
-  // {
-  //   ...fuse,
-  //   iconUrl: "/chain-icons/fuse.svg",
-  //   remoteChainId: 138,
-  //   lzEndpointAddress: "0x9740FF91F1985D8d2B71494aE1A2f723bb3Ed9E4",
-  // },
+  {
+    ...aurora,
+    iconUrl: "/chain-icons/aurora.svg",
+    remoteChainId: 211,
+    lzEndpointAddress: "0xb6319cC6c8c27A8F5dAF0dD3DF91EA35C4720dd7",
+  },
+  {
+    ...astar,
+    iconUrl: "/chain-icons/astar.svg",
+    remoteChainId: 210,
+    lzEndpointAddress: "0xb6319cC6c8c27A8F5dAF0dD3DF91EA35C4720dd7",
+  },
+  {
+    ...fuse,
+    iconUrl: "/chain-icons/fuse.svg",
+    remoteChainId: 138,
+    lzEndpointAddress: "0x9740FF91F1985D8d2B71494aE1A2f723bb3Ed9E4",
+  },
   {
     ...meter,
     iconUrl: "/chain-icons/meter.svg",
     remoteChainId: 176,
     lzEndpointAddress: "0xa3a8e19253Ab400acDac1cB0eA36B88664D8DedF",
   },
-  // {
-  //   ...tenet,
-  //   iconUrl: "/chain-icons/tenet.svg",
-  //   remoteChainId: 173,
-  //   lzEndpointAddress: "0x2D61DCDD36F10b22176E0433B86F74567d529aAa",
-  // },
-  // {
-  //   ...kava,
-  //   iconUrl: "/chain-icons/kava.svg",
-  //   remoteChainId: 177,
-  //   lzEndpointAddress: "0xb6319cC6c8c27A8F5dAF0dD3DF91EA35C4720dd7",
-  // },
-  // {
-  //   ...klaytn,
-  //   iconUrl: "/chain-icons/klaytn.svg",
-  //   remoteChainId: 150,
-  //   lzEndpointAddress: "0x9740FF91F1985D8d2B71494aE1A2f723bb3Ed9E4",
-  //   rpcUrls: {
-  //     public: { http: ["https://klaytn.drpc.org"] },
-  //     default: { http: ["https://klaytn.drpc.org"] },
-  //   },
-  // },
+  {
+    ...tenet,
+    iconUrl: "/chain-icons/tenet.svg",
+    remoteChainId: 173,
+    lzEndpointAddress: "0x2D61DCDD36F10b22176E0433B86F74567d529aAa",
+  },
+  {
+    ...kava,
+    iconUrl: "/chain-icons/kava.svg",
+    remoteChainId: 177,
+    lzEndpointAddress: "0xb6319cC6c8c27A8F5dAF0dD3DF91EA35C4720dd7",
+  },
+  {
+    ...klaytn,
+    iconUrl: "/chain-icons/klaytn.svg",
+    remoteChainId: 150,
+    lzEndpointAddress: "0x9740FF91F1985D8d2B71494aE1A2f723bb3Ed9E4",
+    rpcUrls: {
+      public: { http: ["https://klaytn.drpc.org"] },
+      default: { http: ["https://klaytn.drpc.org"] },
+    },
+  },
 ];
 
 export const testnetChains: Network[] = [
