@@ -65,7 +65,7 @@ const Bridging = (props: BridgeProps) => {
     onSearchChange: setFromSearchTerm,
     filteredChains: fromFilteredChains,
     onClose: onFromClose,
-  } = useNetworkSelection(activeChains[0]);
+  } = useNetworkSelection(activeChains[0] as Network);
 
   const {
     selectedNetwork: toNetwork,
@@ -74,7 +74,7 @@ const Bridging = (props: BridgeProps) => {
     onSearchChange: setToSearchTerm,
     filteredChains: toFilteredChains,
     onClose: onToClose,
-  } = useNetworkSelection(activeChains[1], isValidToNetwork);
+  } = useNetworkSelection(activeChains[1] as Network, isValidToNetwork);
 
   useEffect(() => {
     // If the currently selected "To" network is not valid after the "From" network changes, reset it.
@@ -84,8 +84,8 @@ const Bridging = (props: BridgeProps) => {
         (chain) => chain.name === validNetworks[0]
       );
       defaultNetwork
-        ? setToNetwork(defaultNetwork)
-        : setToNetwork(activeChains[0]);
+        ? setToNetwork(defaultNetwork as Network)
+        : setToNetwork(activeChains[0] as Network);
     }
     checkNetwork();
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -121,8 +121,8 @@ const Bridging = (props: BridgeProps) => {
 
       const result = await handleBridging({
         TOKEN_ID,
-        CONTRACT_ADDRESS,
-        targetNetwork,
+        fromNetwork,
+        toNetwork,
       });
 
       const { txHash } = result;

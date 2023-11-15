@@ -1,15 +1,40 @@
+export type RpcUrls = {
+  http: readonly string[];
+  webSocket?: readonly string[];
+};
+
 export interface Network {
   id: number;
-  name: string;
   network: string;
-  iconUrl?: string;
-  iconBackground?: string;
+  name: string;
   nativeCurrency: {
-    decimals: number;
     name: string;
     symbol: string;
+    decimals: number;
   };
-  [key: string]: any;
+  rpcUrls: {
+    [key: string]: RpcUrls;
+    default: RpcUrls;
+    public: RpcUrls;
+  };
+  iconUrl?: string;
+  blockExplorers?: any;
+  contracts?: {
+    [key: string]: any;
+  };
+  testnet?: boolean;
+  remoteChainId?: number;
+  lzEndpointAddress?: string;
+  deployedContracts?: {
+    [key: string]: {
+      address: string;
+      ABI: any;
+    };
+  };
+  lzParams?: {
+    lzEndpointAddress?: string;
+    remoteChainId?: number;
+  };
 }
 
 export interface NetworkModalProps {

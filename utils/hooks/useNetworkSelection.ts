@@ -17,13 +17,13 @@ export const useNetworkSelection = (
     if (chain?.name) {
       const updatedNetwork =
         activeChains.find((net) => net.name === chain.name) || activeChains[0];
-      setSelectedNetwork(updatedNetwork);
+      setSelectedNetwork(updatedNetwork as Network);
     }
   }, [chain]);
 
   const filteredChains = activeChains.filter(
     (network) =>
-      filterFn(network) &&
+      filterFn(network as Network) &&
       network.name.toLowerCase().includes(searchTerm.toLowerCase())
   );
 

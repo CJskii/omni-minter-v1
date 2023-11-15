@@ -1,12 +1,11 @@
 import { ConnectButton } from "@rainbow-me/rainbowkit";
 import { useEffect, useState } from "react";
-import { useNetwork } from "wagmi";
-import { getContractAddress } from "../../utils/getConstants";
-import { useAccount } from "wagmi";
+import { useNetwork, useAccount } from "wagmi";
 import { handleErrors } from "../../utils/helpers/handleErrors";
 import { handleMinting } from "../../utils/helpers/handleMinting";
 import handleInteraction from "../../utils/helpers/handleInteraction";
 import dynamic from "next/dynamic";
+import { Network } from "../../types/network";
 
 const MintedNFTModal = dynamic(() => import("../Modals/MintedNFTModal"), {
   loading: () => <span className="loading loading-dots loading-lg"></span>,
@@ -15,14 +14,13 @@ const MintedNFTModal = dynamic(() => import("../Modals/MintedNFTModal"), {
 
 interface MintButtonProps {
   setLastMintId: (id: number) => void;
-  mintNetwork: string;
+  mintNetwork: Network;
   isInvited: boolean;
   referredBy: string;
 }
 
 export const CustomButtonMint = (props: MintButtonProps) => {
   const [isLoading, setIsLoading] = useState(false);
-  const [selectedNetwork, setSelectedNetwork] = useState("");
   const [wrongNetwork, setWrongNetwork] = useState(false);
   const [showMintModal, setShowMintModal] = useState(false);
   const [minting, setMinting] = useState(false);
@@ -35,11 +33,7 @@ export const CustomButtonMint = (props: MintButtonProps) => {
   const { setLastMintId, mintNetwork, isInvited, referredBy } = props;
 
   useEffect(() => {
-    setSelectedNetwork(mintNetwork);
-  }, [mintNetwork]);
-
-  useEffect(() => {
-    if (mintNetwork.toLowerCase() !== chain?.name.toLowerCase()) {
+    if (mintNetwork.name.toLowerCase() !== chain?.name.toLowerCase()) {
       setWrongNetwork(true);
     } else {
       setWrongNetwork(false);
@@ -47,22 +41,17 @@ export const CustomButtonMint = (props: MintButtonProps) => {
   }, [chain, mintNetwork]);
 
   const handleMint = async () => {
-    if (mintNetwork.toLowerCase() !== chain?.name.toLowerCase())
+    if (mintNetwork.name.toLowerCase() !== chain?.name.toLowerCase())
       return alert("Please change network in your wallet\n\n:)");
 
-    console.log(`Minting NFT on ${mintNetwork} network...`);
-    const CONTRACT_ADDRESS = getContractAddress(mintNetwork);
-    const currentlyConnectedChain = chain?.name ? chain.name : "";
+    console.log(`Minting NFT on ${mintNetwork.name} network...`);
 
     try {
       setIsLoading(true);
       setShowMintModal(true);
       setMinting(true);
 
-      const result = await handleMinting({
-        CONTRACT_ADDRESS,
-        currentlyConnectedChain,
-      });
+      const result = await handleMinting(mintNetwork);
 
       if (!result) {
         throw new Error("Failed to mint NFT");
@@ -162,7 +151,7 @@ export const CustomButtonMint = (props: MintButtonProps) => {
                     showMintModal={showMintModal}
                     setShowMintModal={setShowMintModal}
                     minting={minting}
-                    mintNetwork={mintNetwork}
+                    mintNetwork={mintNetwork.name}
                     txHash={txHash}
                     setTxHash={setTxHash}
                     errorMessage={errorMessage}

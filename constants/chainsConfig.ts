@@ -41,37 +41,13 @@ import { coreDao } from "./customChains/coreDao";
 import { tenet } from "./customChains/tenet";
 import { astar } from "./customChains/astar";
 import { kava } from "./customChains/kava";
+import { getContractAddress } from "../utils/getConstants";
+import { getRemoteChainId } from "../utils/getConstants";
+import { getMaxGasValue } from "../utils/getMaxGasValue";
+import { CONTRACT_ABI } from "./contractABI";
+import { Network } from "../types/network";
 
-type RpcUrls = {
-  http: readonly string[];
-  webSocket?: readonly string[];
-};
-
-type ChainConfig = {
-  id: number;
-  network: string;
-  name: string;
-  nativeCurrency: {
-    name: string;
-    symbol: string;
-    decimals: number;
-  };
-  rpcUrls: {
-    [key: string]: RpcUrls;
-    default: RpcUrls;
-    public: RpcUrls;
-  };
-  iconUrl?: string;
-  blockExplorers?: any;
-  contracts?: {
-    [key: string]: any;
-  };
-  testnet?: boolean;
-  remoteChainId?: number;
-  lzEndpointAddress?: string;
-};
-
-export const mainnetChains: ChainConfig[] = [
+export const mainnetChains: Network[] = [
   {
     ...base,
     iconUrl: "/chain-icons/base.svg",
@@ -204,224 +180,101 @@ export const mainnetChains: ChainConfig[] = [
     remoteChainId: 116,
     lzEndpointAddress: "0x9740FF91F1985D8d2B71494aE1A2f723bb3Ed9E4",
   },
-  // {
-  //   ...aurora,
-  //   iconUrl: "/chain-icons/aurora.svg",
-  //   remoteChainId: 211,
-  //   lzEndpointAddress: "0xb6319cC6c8c27A8F5dAF0dD3DF91EA35C4720dd7",
-  // },
-  // {
-  //   ...astar,
-  //   iconUrl: "/chain-icons/astar.svg",
-  //   remoteChainId: 210,
-  //   lzEndpointAddress: "0xb6319cC6c8c27A8F5dAF0dD3DF91EA35C4720dd7",
-  // },
-  // {
-  //   ...fuse,
-  //   iconUrl: "/chain-icons/fuse.svg",
-  //   remoteChainId: 138,
-  //   lzEndpointAddress: "0x9740FF91F1985D8d2B71494aE1A2f723bb3Ed9E4",
-  // },
+  {
+    ...aurora,
+    iconUrl: "/chain-icons/aurora.svg",
+    remoteChainId: 211,
+    lzEndpointAddress: "0xb6319cC6c8c27A8F5dAF0dD3DF91EA35C4720dd7",
+  },
+  {
+    ...astar,
+    iconUrl: "/chain-icons/astar.svg",
+    remoteChainId: 210,
+    lzEndpointAddress: "0xb6319cC6c8c27A8F5dAF0dD3DF91EA35C4720dd7",
+  },
+  {
+    ...fuse,
+    iconUrl: "/chain-icons/fuse.svg",
+    remoteChainId: 138,
+    lzEndpointAddress: "0x9740FF91F1985D8d2B71494aE1A2f723bb3Ed9E4",
+  },
   {
     ...meter,
     iconUrl: "/chain-icons/meter.svg",
     remoteChainId: 176,
     lzEndpointAddress: "0xa3a8e19253Ab400acDac1cB0eA36B88664D8DedF",
   },
-  // {
-  //   ...tenet,
-  //   iconUrl: "/chain-icons/tenet.svg",
-  //   remoteChainId: 173,
-  //   lzEndpointAddress: "0x2D61DCDD36F10b22176E0433B86F74567d529aAa",
-  // },
-  // {
-  //   ...kava,
-  //   iconUrl: "/chain-icons/kava.svg",
-  //   remoteChainId: 177,
-  //   lzEndpointAddress: "0xb6319cC6c8c27A8F5dAF0dD3DF91EA35C4720dd7",
-  // },
-  // {
-  //   ...klaytn,
-  //   iconUrl: "/chain-icons/klaytn.svg",
-  //   remoteChainId: 150,
-  //   lzEndpointAddress: "0x9740FF91F1985D8d2B71494aE1A2f723bb3Ed9E4",
-  //   rpcUrls: {
-  //     public: { http: ["https://klaytn.drpc.org"] },
-  //     default: { http: ["https://klaytn.drpc.org"] },
-  //   },
-  // },
+  {
+    ...tenet,
+    iconUrl: "/chain-icons/tenet.svg",
+    remoteChainId: 173,
+    lzEndpointAddress: "0x2D61DCDD36F10b22176E0433B86F74567d529aAa",
+  },
+  {
+    ...kava,
+    iconUrl: "/chain-icons/kava.svg",
+    remoteChainId: 177,
+    lzEndpointAddress: "0xb6319cC6c8c27A8F5dAF0dD3DF91EA35C4720dd7",
+  },
+  {
+    ...klaytn,
+    iconUrl: "/chain-icons/klaytn.svg",
+    remoteChainId: 150,
+    lzEndpointAddress: "0x9740FF91F1985D8d2B71494aE1A2f723bb3Ed9E4",
+    rpcUrls: {
+      public: { http: ["https://klaytn.drpc.org"] },
+      default: { http: ["https://klaytn.drpc.org"] },
+    },
+  },
 ];
 
-//   {
-//     ...base,
-//     iconUrl: "/chain-icons/base.svg",
-//     remoteChainId: 184,
-//   },
-//   {
-//     ...linea,
-//     iconUrl: "/chain-icons/linea.svg",
-//     remoteChainId: 183,
-//   },
-//   {
-//     ...arbitrum,
-//     iconUrl: "/chain-icons/arbitrum.svg",
-//     remoteChainId: 110,
-//   },
-//   {
-//     ...arbitrumNova,
-//     iconUrl: "/chain-icons/arbitrum-nova.svg",
-//     remoteChainId: 175,
-//   },
-//   {
-//     ...optimism,
-//     iconUrl: "/chain-icons/optimism.svg",
-//     remoteChainId: 111,
-//   },
-//   {
-//     ...opBNB,
-//     iconUrl: "/chain-icons/opbnb.svg",
-//     remoteChainId: 202,
-//   },
-//   {
-//     ...scroll,
-//     iconUrl: "/chain-icons/scroll.svg",
-//     remoteChainId: 214,
-//   },
-//   {
-//     ...zkSync,
-//     iconUrl: "/chain-icons/zksync.svg",
-//     remoteChainId: 165,
-//   },
-//   {
-//     ...zora,
-//     iconUrl: "/chain-icons/zora.svg",
-//     remoteChainId: 195,
-//   },
-//   {
-//     ...bsc,
-//     iconUrl: "/chain-icons/bsc.svg",
-//     remoteChainId: 102,
-//   },
-//   {
-//     ...polygon,
-//     iconUrl: "/chain-icons/polygon.svg",
-//     remoteChainId: 109,
-//   },
-//   {
-//     ...polygonZkEvm,
-//     iconUrl: "/chain-icons/polygon-zkevm.svg",
-//     remoteChainId: 158,
-//   },
-//   {
-//     ...mantle,
-//     iconUrl: "/chain-icons/mantle.svg",
-//     remoteChainId: 181,
-//   },
-//   {
-//     ...metis,
-//     iconUrl: "/chain-icons/metis.svg",
-//     remoteChainId: 151,
-//   },
-//   {
-//     ...coreDao,
-//     iconUrl: "/chain-icons/coredao.svg",
-//     remoteChainId: 153,
-//   },
-//   {
-//     ...avalanche,
-//     iconUrl: "/chain-icons/avalanche.svg",
-//     remoteChainId: 106,
-//   },
-//   {
-//     ...fantom,
-//     iconUrl: "/chain-icons/fantom.svg",
-//     remoteChainId: 112,
-//   },
-//   {
-//     ...celo,
-//     iconUrl: "/chain-icons/celo.svg",
-//     remoteChainId: 125,
-//   },
-//   {
-//     ...moonbeam,
-//     iconUrl: "/chain-icons/moonbeam.svg",
-//     remoteChainId: 126,
-//   },
-//   {
-//     ...moonriver,
-//     iconUrl: "/chain-icons/moonriver.svg",
-//     remoteChainId: 167,
-//   },
-//   {
-//     ...canto,
-//     iconUrl: "/chain-icons/canto.svg",
-//     remoteChainId: 159,
-//   },
-//   {
-//     ...harmonyOne,
-//     iconUrl: "/chain-icons/harmony.svg",
-//     remoteChainId: 116,
-//   },
-//   {
-//     ...fuse,
-//     iconUrl: "/chain-icons/fuse.svg",
-//     remoteChainId: 138,
-//   },
-//   {
-//     ...meter,
-//     iconUrl: "/chain-icons/meter.svg",
-//     remoteChainId: 176,
-//   },
-//   {
-//     ...aurora,
-//     iconUrl: "/chain-icons/aurora.svg",
-//     remoteChainId: 211,
-//   },
-//   {
-//     ...klaytn,
-//     iconUrl: "/chain-icons/klaytn.svg",
-//     remoteChainId: 150,
-//   },
-// ];
-
-export const testnetChains: ChainConfig[] = [
+export const testnetChains: Network[] = [
   {
     ...goerli,
     iconUrl: "/chain-icons/eth-logo.svg",
     name: "Goerli",
+    remoteChainId: 10121,
   },
   {
     ...sepolia,
     iconUrl: "/chain-icons/eth-logo.svg",
+    remoteChainId: 10161,
   },
   {
     ...arbitrumGoerli,
     iconUrl: "/chain-icons/arbitrum.svg",
+    remoteChainId: 10143,
   },
   {
     ...optimismGoerli,
     iconUrl: "/chain-icons/optimism.svg",
+    remoteChainId: 10132,
   },
   {
     ...baseGoerli,
     iconUrl: "/chain-icons/base.svg",
+    remoteChainId: 10160,
   },
   {
     ...lineaTestnet,
     iconUrl: "/chain-icons/linea.svg",
+    remoteChainId: 10157,
   },
   {
     ...bscTestnet,
     iconUrl: "/chain-icons/bsc.svg",
+    remoteChainId: 10102,
   },
 
   {
     ...polygonZkEvmTestnet,
     iconUrl: "/chain-icons/polygon-zkevm.svg",
+    remoteChainId: 10158,
   },
   {
     ...polygonMumbai,
     iconUrl: "/chain-icons/polygon.svg",
+    remoteChainId: 10109,
     rpcUrls: {
       public: { http: ["https://rpc.ankr.com/polygon_mumbai"] },
       default: { http: ["https://rpc.ankr.com/polygon_mumbai"] },
@@ -430,20 +283,48 @@ export const testnetChains: ChainConfig[] = [
   {
     ...mantleTestnet,
     iconUrl: "/chain-icons/mantle.svg",
+    remoteChainId: 10181,
   },
   {
     ...metisGoerli,
     iconUrl: "/chain-icons/metis.svg",
+    remoteChainId: 10151,
   },
 ];
 
-export const getSupportedChains = (): ChainConfig[] => {
+export const getSupportedChains = () => {
   const env = process.env.NEXT_PUBLIC_ENVIRONMENT;
   switch (env) {
     case "mainnet":
-      return mainnetChains;
+      return mainnetChains.map((chain) => ({
+        ...chain,
+        deployedContracts: {
+          ONFT: {
+            address: getContractAddress(chain.name),
+            ABI: CONTRACT_ABI,
+          },
+        },
+        lzParams: {
+          lzEndpointAddress: chain.lzEndpointAddress,
+          remoteChainId: getRemoteChainId(chain.name),
+          maxGas: getMaxGasValue(chain.name),
+        },
+      }));
     case "testnet":
-      return testnetChains;
+      return testnetChains.map((chain) => ({
+        ...chain,
+        deployedContracts: {
+          ONFT: {
+            address: getContractAddress(chain.name),
+            ABI: CONTRACT_ABI,
+          },
+        },
+        lzParams: {
+          lzEndpointAddress: "",
+          remoteChainId: getRemoteChainId(chain.name),
+          maxGas: getMaxGasValue(chain.name),
+        },
+      }));
     default:
       console.error(`Unsupported ENVIRONMENT value: ${env}`);
       return [];

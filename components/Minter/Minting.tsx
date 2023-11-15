@@ -4,6 +4,7 @@ import { useNetwork } from "wagmi";
 import { checkIfReferredUser } from "../../utils/helpers/checkIfReferredUser";
 import { useNetworkSelection } from "../../utils/hooks/useNetworkSelection";
 import dynamic from "next/dynamic";
+import { Network } from "../../types/network";
 
 // TODO: Can Image loading be improved?
 
@@ -34,7 +35,6 @@ const CustomButtonNetwork = dynamic(
 
 const Minting = () => {
   const [lastMintId, setLastMintId] = useState(0);
-
   const [isInvited, setIsInvited] = useState(false);
   const [referredBy, setReferredBy] = useState("");
   const { chain } = useNetwork();
@@ -46,14 +46,14 @@ const Minting = () => {
     onSearchChange: setFromSearchTerm,
     filteredChains: fromFilteredChains,
     onClose: onFromClose,
-  } = useNetworkSelection(activeChains[0]);
+  } = useNetworkSelection(activeChains[0] as Network);
 
   useEffect(() => {
     let selected = mintNetwork;
 
     if (chain?.name && !chain.unsupported) {
       const networkObject = activeChains.find((net) => net.name === chain.name);
-      selected = networkObject || activeChains[0];
+      selected = (networkObject as Network) || (activeChains[0] as Network);
     }
     const isReferredUser = checkIfReferredUser();
     const { isReferred, refLink } = isReferredUser;
@@ -107,7 +107,7 @@ const Minting = () => {
               <div className="mt-3 space-y-3">
                 <CustomButtonMint
                   setLastMintId={setLastMintId}
-                  mintNetwork={mintNetwork.name}
+                  mintNetwork={mintNetwork}
                   isInvited={isInvited}
                   referredBy={referredBy}
                 />

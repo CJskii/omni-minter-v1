@@ -1,33 +1,15 @@
-import { useNetwork } from "wagmi";
-import { ethers } from "ethers";
-import { useEffect, useState } from "react";
+import { useState, useEffect } from "react";
 import { IoSwapHorizontalSharp } from "react-icons/io5";
 import dynamic from "next/dynamic";
 import { Network } from "../../types/network";
 import { useNetworkSelection } from "../../utils/hooks/useNetworkSelection";
 import { useChainModal } from "@rainbow-me/rainbowkit";
-import { activeChains } from "../../constants/chainsConfig";
-import { estimateGasRequest } from "../../utils/helpers/estimateGas";
-import { gasTransferRequest } from "../../utils/helpers/handleGasRefuel";
 import { getValidToNetworks } from "../../utils/getValidToNetworks";
-import { getMaxGasValue } from "../../utils/getMaxGasValue";
-import { requestNetworkSwitch } from "../../utils/requestNetworkSwitch";
-import { handleErrors } from "../../utils/helpers/handleErrors";
-import Preview from "./Preview";
-import Confirm from "./ConfirmTransaction";
-import DiscordLink from "../DiscordLink";
+import { useNetwork } from "wagmi";
+import { activeChains } from "../../constants/chainsConfig";
+import NetworkModal from "../Modals/NetworkModal";
 
-const NetworkModal = dynamic(() => import("../Modals/NetworkModal"), {
-  loading: () => <span className="loading loading-dots loading-lg"></span>,
-  ssr: true,
-});
-
-const GasModal = dynamic(() => import("../Modals/GasModal"), {
-  loading: () => <span className="loading loading-dots loading-lg"></span>,
-  ssr: true,
-});
-
-const Gas = () => {
+const TokenBridge = () => {
   const { chain } = useNetwork();
   const { openChainModal } = useChainModal();
 
@@ -82,51 +64,44 @@ const Gas = () => {
   }, [fromNetwork, toNetwork]);
 
   const handleConfirmButton = async () => {
-    await gasTransferRequest({
-      fromNetwork,
-      toNetwork,
-      inputAmount,
-      setIsLoading,
-      setGasFee,
-      setErrorMessage,
-      setShowGasModal,
-      setTxHash,
-      setTransactionBlockNumber,
-      gasFee,
-      recipientAddress,
-    });
-  };
-
-  const handleMaxButton = () => {
-    const maxGas = getMaxGasValue(toNetwork.name);
-    if (maxGas) {
-      setInputAmount(maxGas.toString());
-    }
+    // await gasTransferRequest({
+    //   fromNetwork,
+    //   toNetwork,
+    //   inputAmount,
+    //   setIsLoading,
+    //   setGasFee,
+    //   setErrorMessage,
+    //   setShowGasModal,
+    //   setTxHash,
+    //   setTransactionBlockNumber,
+    //   gasFee,
+    //   recipientAddress,
+    // });
   };
 
   const handlePreviewClick = async () => {
     setIsLoading(true);
-    try {
-      if (chain?.name !== fromNetwork.name) {
-        await requestNetworkSwitch(fromNetwork.id, openChainModal);
-      }
-      await estimateGasRequest({
-        fromNetwork,
-        toNetwork,
-        inputAmount,
-        setIsLoading,
-        setGasFee,
-        setErrorMessage,
-        setShowGasModal,
-        recipientAddress,
-      });
-    } catch (e) {
-      console.error(e);
-      handleErrors({ e, setErrorMessage });
-      setShowGasModal(true);
-    } finally {
-      setIsLoading(false);
-    }
+    // try {
+    //   if (chain?.name !== fromNetwork.name) {
+    //     await requestNetworkSwitch(fromNetwork.id, openChainModal);
+    //   }
+    //   await estimateGasRequest({
+    //     fromNetwork,
+    //     toNetwork,
+    //     inputAmount,
+    //     setIsLoading,
+    //     setGasFee,
+    //     setErrorMessage,
+    //     setShowGasModal,
+    //     recipientAddress,
+    //   });
+    // } catch (e) {
+    //   console.error(e);
+    //   handleErrors({ e, setErrorMessage });
+    //   setShowGasModal(true);
+    // } finally {
+    //   setIsLoading(false);
+    // }
   };
 
   return (
@@ -134,31 +109,10 @@ const Gas = () => {
       <section className="bg-base card card-side bg-base-200 shadow-xl rounded-none">
         <div className="flex items-center justify-center px-4 py-10 sm:px-6 lg:px-8 sm:p-8">
           <div className="md:w-full xl:max-w-2xl 2xl:max-w-2xl xl:mx-auto 2xl:pl-8 h-full flex flex-col justify-between lg:p-8">
-            <GasModal
-              showGasModal={showGasModal}
-              setShowGasModal={setShowGasModal}
-              txHash={txHash}
-              setTxHash={setTxHash}
-              errorMessage={errorMessage}
-              setErrorMessage={setErrorMessage}
-              isLoading={isLoading}
-              data={{
-                inputAmount,
-                toNetwork,
-                transactionBlockNumber,
-              }}
-              recipentAddress={recipientAddress}
-            />
+            {/* Modal */}
             <h2 className="text-xl font-bold leading-tight sm:text-4xl text-content-focus text-center">
-              Gas Refuel
+              OFT
             </h2>
-            <p className="text-sm text-center p-2">
-              Note: this is experimental feature, please proceed with caution!
-            </p>
-            <p className="text-sm text-center">
-              If you run into any issues please contact us in our{" "}
-              <DiscordLink />
-            </p>
 
             <div className="grid grid-cols-[1fr,auto,1fr] items-center gap-4 py-4 px-2 mt-4 max-sm:flex max-sm:flex-col">
               <NetworkModal
@@ -192,42 +146,7 @@ const Gas = () => {
               />
             </div>
 
-            {gasFee === "" && (
-              <div className="flex flex-col gap-2">
-                <label htmlFor="recipientAddress">
-                  Sending to a friend? (optional):
-                </label>
-                <input
-                  type="text"
-                  id="recipientAddress"
-                  placeholder="Enter recipient's Ethereum address"
-                  value={recipientAddress}
-                  onChange={(e) => setRecipientAddress(e.target.value)}
-                  className="input input-bordered flex-grow"
-                />
-              </div>
-            )}
-
-            {gasFee != "" ? (
-              <Confirm
-                toNetwork={toNetwork}
-                fromNetwork={fromNetwork}
-                inputAmount={inputAmount}
-                gasFee={gasFee}
-                setGasFee={setGasFee}
-                handleConfirmButton={handleConfirmButton}
-                isLoading={isLoading}
-              />
-            ) : (
-              <Preview
-                nativeCurrencySymbol={toNetwork.nativeCurrency.symbol}
-                networkName={toNetwork.name}
-                inputAmount={inputAmount}
-                setInputAmount={setInputAmount}
-                handleMaxButton={handleMaxButton}
-                handlePreviewClick={handlePreviewClick}
-              />
-            )}
+            <button className="btn btn-disabled">Confirm</button>
           </div>
         </div>
       </section>
@@ -235,4 +154,4 @@ const Gas = () => {
   );
 };
 
-export default Gas;
+export default TokenBridge;
