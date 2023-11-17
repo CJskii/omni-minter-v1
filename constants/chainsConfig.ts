@@ -34,6 +34,7 @@ import {
   meter,
   aurora,
   klaytn,
+  manta,
 } from "wagmi/chains";
 
 import { linea } from "./customChains/linea";
@@ -41,6 +42,7 @@ import { coreDao } from "./customChains/coreDao";
 import { tenet } from "./customChains/tenet";
 import { astar } from "./customChains/astar";
 import { kava } from "./customChains/kava";
+import { pgn } from "./customChains/pgn";
 import { getContractAddress } from "../utils/getConstants";
 import { getRemoteChainId } from "../utils/getConstants";
 import { getMaxGasValue } from "../utils/getMaxGasValue";
@@ -124,6 +126,13 @@ export const mainnetChains: Network[] = [
     ...mantle,
     iconUrl: "/chain-icons/mantle.svg",
     remoteChainId: 181,
+    lzEndpointAddress: "0xb6319cC6c8c27A8F5dAF0dD3DF91EA35C4720dd7",
+  },
+  {
+    ...manta,
+    name: "Manta Pacific",
+    iconUrl: "/chain-icons/manta.svg",
+    remoteChainId: 217,
     lzEndpointAddress: "0xb6319cC6c8c27A8F5dAF0dD3DF91EA35C4720dd7",
   },
   {
@@ -225,6 +234,12 @@ export const mainnetChains: Network[] = [
       public: { http: ["https://klaytn.drpc.org"] },
       default: { http: ["https://klaytn.drpc.org"] },
     },
+  },
+  {
+    ...pgn,
+    iconUrl: "/chain-icons/pgn.svg",
+    remoteChainId: 218,
+    lzEndpointAddress: "0xb6319cC6c8c27A8F5dAF0dD3DF91EA35C4720dd7",
   },
 ];
 
