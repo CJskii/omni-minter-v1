@@ -5,15 +5,9 @@ import { checkIfReferredUser } from "../../utils/helpers/checkIfReferredUser";
 import { useNetworkSelection } from "../../utils/hooks/useNetworkSelection";
 import dynamic from "next/dynamic";
 import { Network } from "../../types/network";
+import CardImage from "./CardImage";
 
 // TODO: Can Image loading be improved?
-
-const CardImage = dynamic(() => import("./CardImage"), {
-  loading: () => (
-    <span className="loading loading-spinner place-self-center "></span>
-  ),
-  ssr: false,
-});
 
 const NetworkModal = dynamic(() => import("../Modals/NetworkModal"), {
   loading: () => <span className="loading loading-dots loading-lg"></span>,

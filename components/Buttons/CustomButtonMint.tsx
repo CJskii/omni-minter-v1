@@ -9,7 +9,7 @@ import { Network } from "../../types/network";
 
 const MintedNFTModal = dynamic(() => import("../Modals/MintedNFTModal"), {
   loading: () => <span className="loading loading-dots loading-lg"></span>,
-  ssr: true,
+  ssr: false,
 });
 
 interface MintButtonProps {
@@ -86,23 +86,11 @@ export const CustomButtonMint = (props: MintButtonProps) => {
 
   return (
     <ConnectButton.Custom>
-      {({
-        account,
-        chain,
-        openAccountModal,
-        openChainModal,
-        openConnectModal,
-        authenticationStatus,
-        mounted,
-      }) => {
+      {({ account, chain, openChainModal, openConnectModal, mounted }) => {
         // Note: If your app doesn't use authentication, you
         // can remove all 'authenticationStatus' checks
-        const ready = mounted && authenticationStatus !== "loading";
-        const connected =
-          ready &&
-          account &&
-          chain &&
-          (!authenticationStatus || authenticationStatus === "authenticated");
+        const ready = mounted;
+        const connected = ready && account && chain;
 
         return (
           <div

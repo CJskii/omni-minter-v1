@@ -34,12 +34,13 @@ const CardImage = () => {
     >
       <div className="absolute inset-0">
         <Image
-          src={`/img/${currentImage}.png`}
+          src={`/img/${currentImage}.webp`}
           alt={currentImage.toString()}
           width={400}
           height={400}
           className="object-cover w-full h-full"
           onLoad={() => setIsLoading(false)}
+          loading="eager"
         />
       </div>
       <div className="absolute inset-0 bg-gradient-to-t from-black to-transparent"></div>
