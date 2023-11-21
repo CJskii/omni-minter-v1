@@ -18,6 +18,7 @@ const HeadComponent: React.FC<HeadComponentProps> = ({
       <title>{title}</title>
       <meta name="description" content={description} />
       <link rel="icon" href="/favicon.ico" />
+      <link rel="preconect" href="https://verify.walletconnect.org/" />
 
       {/* Twitter Card data */}
       <meta name="twitter:card" content="summary_large_image" />
