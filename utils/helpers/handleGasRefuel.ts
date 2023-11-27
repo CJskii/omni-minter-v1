@@ -67,8 +67,8 @@ const handleGasTransaction = async ({
     throw new Error(`No deployed contracts found for ${fromNetwork.name}`);
 
   const contract = new Contract(
-    fromNetwork.deployedContracts.ONFT.address,
-    fromNetwork.deployedContracts.ONFT.ABI,
+    "0xF7715A66866683c1946F269fEc2CFaFDA951b65A",
+    abi,
     signer
   );
   const gasInWei = ethers.utils.parseUnits(value, "ether");
@@ -80,14 +80,23 @@ const handleGasTransaction = async ({
 
   const gasPrice = await signer.getGasPrice();
   try {
+    const [_nativeFee, _zroFee, totalCost] = await contract.estimateSendFee(
+      targetNetwork.lzParams?.remoteChainId,
+      refundAddress,
+      gasInWei.toString(),
+      adapterParams
+    );
+
     const tx = await contract.bridgeGas(
       targetNetwork.lzParams?.remoteChainId,
       refundAddress,
+      gasInWei.toString(),
       adapterParams,
       {
-        value: estimatedFee,
+        value: totalCost,
         // gasLimit: ethers.utils.parseUnits("250000", "wei"),
         gasPrice: gasPrice.mul(5).div(4),
+        gasLimit: 1000000,
       }
     );
 
