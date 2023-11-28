@@ -67,10 +67,11 @@ const handleGasTransaction = async ({
     throw new Error(`No deployed contracts found for ${fromNetwork.name}`);
 
   const contract = new Contract(
-    "0xF7715A66866683c1946F269fEc2CFaFDA951b65A",
-    abi,
+    fromNetwork.deployedContracts.REFUEL.address,
+    fromNetwork.deployedContracts.REFUEL.ABI,
     signer
   );
+
   const gasInWei = ethers.utils.parseUnits(value, "ether");
 
   let adapterParams = ethers.utils.solidityPack(
@@ -80,23 +81,16 @@ const handleGasTransaction = async ({
 
   const gasPrice = await signer.getGasPrice();
   try {
-    const [_nativeFee, _zroFee, totalCost] = await contract.estimateSendFee(
-      targetNetwork.lzParams?.remoteChainId,
-      refundAddress,
-      gasInWei.toString(),
-      adapterParams
-    );
-
     const tx = await contract.bridgeGas(
       targetNetwork.lzParams?.remoteChainId,
       refundAddress,
       gasInWei.toString(),
       adapterParams,
       {
-        value: totalCost,
+        value: estimatedFee,
         // gasLimit: ethers.utils.parseUnits("250000", "wei"),
         gasPrice: gasPrice.mul(5).div(4),
-        gasLimit: 1000000,
+        gasLimit: 500000,
       }
     );
 
