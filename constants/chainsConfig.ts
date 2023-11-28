@@ -337,6 +337,10 @@ export const getSupportedChains = () => {
             address: getContractAddress(chain.name, "ONFT"),
             ABI: CONTRACT_ABI,
           },
+          REFUEL: {
+            address: "0xF7715A66866683c1946F269fEc2CFaFDA951b65A",
+            ABI: REFUEL_CONTRACT_ABI,
+          },
         },
         lzParams: {
           lzEndpointAddress: "",
