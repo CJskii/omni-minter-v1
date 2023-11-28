@@ -81,16 +81,23 @@ const handleGasTransaction = async ({
 
   const gasPrice = await signer.getGasPrice();
   try {
+    const [_nativeFee, _zroFee, totalCost] = await contract.estimateSendFee(
+      targetNetwork.lzParams?.remoteChainId,
+      refundAddress,
+      gasInWei,
+      adapterParams
+    );
+
     const tx = await contract.bridgeGas(
       targetNetwork.lzParams?.remoteChainId,
       refundAddress,
-      gasInWei.toString(),
+      gasInWei,
       adapterParams,
       {
-        value: estimatedFee,
+        value: totalCost,
         // gasLimit: ethers.utils.parseUnits("250000", "wei"),
         gasPrice: gasPrice.mul(5).div(4),
-        gasLimit: 500000,
+        gasLimit: 1500000,
       }
     );
 
