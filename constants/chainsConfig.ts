@@ -320,7 +320,7 @@ export const getSupportedChains = () => {
           },
           REFUEL: {
             address: getContractAddress(chain.name, "REFUEL"),
-            abi: REFUEL_CONTRACT_ABI,
+            ABI: REFUEL_CONTRACT_ABI,
           },
         },
         lzParams: {
