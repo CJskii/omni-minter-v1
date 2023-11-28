@@ -146,7 +146,16 @@ const TokenBridge = () => {
               />
             </div>
 
-            <button className="btn btn-disabled">Confirm</button>
+            <input
+              type="text"
+              id="recipientAddress"
+              placeholder="Enter amount of tokens to mint"
+              value={recipientAddress}
+              onChange={(e) => setRecipientAddress(e.target.value)}
+              className="input input-bordered flex-grow"
+            />
+
+            <button className="btn btn-disabled mt-2">Confirm</button>
           </div>
         </div>
       </section>

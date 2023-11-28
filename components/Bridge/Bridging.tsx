@@ -105,8 +105,6 @@ const Bridging = (props: BridgeProps) => {
 
   const handleBridge = async () => {
     const TOKEN_ID = nftId;
-    const CONTRACT_ADDRESS = getContractAddress(fromNetwork.name);
-    let targetNetwork = toNetwork.name.toLowerCase();
     if (!nftId || nftId === "") {
       alert("Please enter a valid NFT Id");
       return;

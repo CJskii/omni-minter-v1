@@ -46,7 +46,7 @@ import { pgn } from "./customChains/pgn";
 import { getContractAddress } from "../utils/getConstants";
 import { getRemoteChainId } from "../utils/getConstants";
 import { getMaxGasValue } from "../utils/getMaxGasValue";
-import { CONTRACT_ABI } from "./contractABI";
+import { CONTRACT_ABI, REFUEL_CONTRACT_ABI } from "./contractABI";
 import { Network } from "../types/network";
 
 export const mainnetChains: Network[] = [
@@ -315,8 +315,12 @@ export const getSupportedChains = () => {
         ...chain,
         deployedContracts: {
           ONFT: {
-            address: getContractAddress(chain.name),
+            address: getContractAddress(chain.name, "ONFT"),
             ABI: CONTRACT_ABI,
+          },
+          REFUEL: {
+            address: getContractAddress(chain.name, "REFUEL"),
+            ABI: REFUEL_CONTRACT_ABI,
           },
         },
         lzParams: {
@@ -330,7 +334,7 @@ export const getSupportedChains = () => {
         ...chain,
         deployedContracts: {
           ONFT: {
-            address: getContractAddress(chain.name),
+            address: getContractAddress(chain.name, "ONFT"),
             ABI: CONTRACT_ABI,
           },
         },

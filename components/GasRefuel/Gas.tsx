@@ -105,9 +105,15 @@ const Gas = () => {
   };
 
   const handlePreviewClick = async () => {
-    if (toNetwork.name === "zkSync Era") {
+    if (toNetwork.name === "Linea" || fromNetwork.name === "Linea") {
       setErrorMessage(
-        "ZKSync Era is temporarily disabled for Gas Refuel. Please select another network."
+        "Gas Refuel is temporarily disabled for Linea. Please select another network."
+      );
+      setShowGasModal(true);
+      return;
+    } else if (fromNetwork.name === "Mantle" || toNetwork.name === "Mantle") {
+      setErrorMessage(
+        "Gas Refuel is temporarily disabled for Mantle. Please select another network."
       );
       setShowGasModal(true);
       return;

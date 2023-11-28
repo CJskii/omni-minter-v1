@@ -54,10 +54,11 @@ const estimateGasBridgeFee = async ({
     throw new Error(`No deployed contracts found for ${fromNetwork.name}`);
 
   const contract = new Contract(
-    fromNetwork.deployedContracts.ONFT.address,
-    fromNetwork.deployedContracts.ONFT.ABI,
+    fromNetwork.deployedContracts.REFUEL.address,
+    fromNetwork.deployedContracts.REFUEL.ABI,
     signer
   );
+
   const gasInWei = ethers.utils.parseUnits(value, "ether");
   let adapterParams = ethers.utils.solidityPack(
     ["uint16", "uint", "uint", "address"],
@@ -65,13 +66,14 @@ const estimateGasBridgeFee = async ({
   );
 
   try {
-    const [_nativeFee, _zroFee] = await contract.estimateGasBridgeFee(
+    const [_nativeFee, _zroFee, totalCost] = await contract.estimateSendFee(
       targetNetwork.lzParams?.remoteChainId,
-      false,
+      refundAddress,
+      gasInWei.toString(),
       adapterParams
     );
 
-    return _nativeFee; // or _zroFee depending on the use case
+    return totalCost;
   } catch (error) {
     console.error(`Error estimating gas fee: ${(error as any).message}`);
     throw error; // Propagate the error to handle it in the UI layer
