@@ -1,7 +1,45 @@
 import Headline from "./Headline";
 import { newsLetterData } from "./../../data/newsLetter";
+import { useEffect, useState } from "react";
+import { isValidEmail } from "../../utils/isValidEmail";
+import { useAccount } from "wagmi";
+import useToast from "../../utils/hooks/useToast";
+import Toast from "../Toast";
 
 const NewsLetter = () => {
+  const [email, setEmail] = useState("");
+  const { address, isConnected } = useAccount();
+  const { isToastVisible, toastMessage, hideToast, showToast } = useToast();
+
+  const handleSubscribe = () => {
+    if (!isValidEmail(email)) {
+      showToast("Invalid Email");
+      return;
+    }
+
+    if (!isConnected) {
+      showToast("Wallet not connected");
+      return;
+    }
+
+    // call API to subscribe
+
+    console.log(email);
+
+    // display toast message
+  };
+
+  let inputClass =
+    "input input-bordered flex-grow w-full rounded-full border py-3 px-4";
+
+  if (email) {
+    if (isValidEmail(email)) {
+      inputClass += " input-success";
+    } else {
+      inputClass += " input-error";
+    }
+  }
+
   return (
     <section className="dark:bg-jacarta-800 relative py-24">
       <div className="container">
@@ -9,7 +47,7 @@ const NewsLetter = () => {
           text="Explore Omnichain Capabilities with Mintly"
           classes="font-display text-jacarta-700 mb-16 text-center text-3xl dark:text-white"
         />
-
+        {isToastVisible && <Toast message={toastMessage} onClose={hideToast} />}
         <div className="grid grid-cols-1 gap-12 md:grid-cols-2 lg:grid-cols-4">
           {newsLetterData.map((item) => {
             const { id, icon, title, text } = item;
@@ -47,9 +85,13 @@ const NewsLetter = () => {
             <input
               type="email"
               placeholder="Email address"
-              className="input input-bordered flex-grow  w-full rounded-full border py-3 px-4"
+              className={inputClass}
+              onChange={(e) => setEmail(e.target.value)}
             />
-            <button className="btn-primary font-display absolute top-2 right-2 rounded-full px-6 py-2 text-sm">
+            <button
+              onClick={handleSubscribe}
+              className="btn-primary font-display absolute top-2 right-2 rounded-full px-6 py-2 text-sm"
+            >
               Subscribe
             </button>
           </form>
