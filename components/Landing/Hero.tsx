@@ -85,7 +85,7 @@ const Hero = () => {
                       <article>
                         <div className="block overflow-hidden rounded-2.5xl bg-base-200 shadow-md transition-shadow hover:shadow-lg dark:bg-jacarta-700">
                           <figure className="relative">
-                            <Link href={`/item/${itemLink}`}>
+                            <Link href={`/`}>
                               <Image
                                 width={406}
                                 height={437}
@@ -97,7 +97,7 @@ const Hero = () => {
                           </figure>
                           <div className="p-6">
                             <div className="flex">
-                              <Link href="/user/avatar_6" className="shrink-0">
+                              <Link href="/" className="shrink-0">
                                 <Image
                                   width={40}
                                   height={40}
@@ -107,18 +107,12 @@ const Hero = () => {
                                 />
                               </Link>
                               <div>
-                                <Link
-                                  href={`/item/${itemLink}`}
-                                  className="block"
-                                >
+                                <Link href={`/`} className="block">
                                   <span className="font-display text-lg leading-none text-jacarta-700 hover:text-accent dark:text-white">
                                     {title}
                                   </span>
                                 </Link>
-                                <Link
-                                  href="/user/avatar_6"
-                                  className="text-2xs text-accent"
-                                >
+                                <Link href="/" className="text-2xs text-accent">
                                   {authorName}
                                 </Link>
                               </div>
@@ -142,7 +136,7 @@ const Hero = () => {
                                 <article>
                                   <div className="block overflow-hidden rounded-2.5xl bg-base-200 shadow-md transition-shadow hover:shadow-lg dark:bg-jacarta-700">
                                     <figure className="relative">
-                                      <Link href={`/item/${itemLink}`}>
+                                      <Link href={`/`}>
                                         <Image
                                           width={234}
                                           height={234}
@@ -154,10 +148,7 @@ const Hero = () => {
                                     </figure>
                                     <div className="p-6">
                                       <div className="flex">
-                                        <Link
-                                          href="/user/avatar_6"
-                                          className="shrink-0"
-                                        >
+                                        <Link href="/" className="shrink-0">
                                           <Image
                                             width={40}
                                             height={40}
@@ -167,16 +158,13 @@ const Hero = () => {
                                           />
                                         </Link>
                                         <div>
-                                          <Link
-                                            href={`/item/${itemLink}`}
-                                            className="block"
-                                          >
+                                          <Link href={`/`} className="block">
                                             <span className="font-display text-lg leading-none text-accent hover:text-accent dark:text-white">
                                               {title}
                                             </span>
                                           </Link>
                                           <Link
-                                            href="/user/avatar_6"
+                                            href="/"
                                             className="text-2xs text-accent"
                                           >
                                             {authorName}
