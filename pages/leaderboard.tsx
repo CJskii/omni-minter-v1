@@ -13,8 +13,8 @@ const Leaderboard = () => {
   return (
     <>
       <HeadComponent
-        title="Mintly Leaderboard And User Dashboard Stats"
-        description="Explore the leaderboard and user dashboard stats on Mintly ONFTs."
+        title="Mintly: Leaderboard - Discover Top Users and Their Achievements"
+        description="Delve into Mintly's Leaderboard to discover top users and their achievements. Stay competitive and informed in the cross-chain space, tracking your own OFT and ONFT progress and that of peers."
       />
       <LeaderboardComponent />
     </>
