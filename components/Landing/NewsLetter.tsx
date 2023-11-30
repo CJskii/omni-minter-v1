@@ -5,26 +5,38 @@ import { isValidEmail } from "../../utils/isValidEmail";
 import { useAccount } from "wagmi";
 import useToast from "../../utils/hooks/useToast";
 import Toast from "../Toast";
+import { callEmailSubscribeAPI } from "../../utils/api/callEmailSubscribeAPI";
 
 const NewsLetter = () => {
-  const [email, setEmail] = useState("");
+  const [emailAddress, setEmailAddress] = useState("");
   const { address, isConnected } = useAccount();
   const { isToastVisible, toastMessage, hideToast, showToast } = useToast();
 
-  const handleSubscribe = () => {
-    if (!isValidEmail(email)) {
+  const handleSubscribeButton = async () => {
+    if (!isValidEmail(emailAddress)) {
       showToast("Invalid Email");
       return;
     }
 
-    if (!isConnected) {
-      showToast("Wallet not connected");
+    if (!isConnected || !address) {
+      showToast("Connect your wallet first");
       return;
     }
 
-    // call API to subscribe
+    const response = await callEmailSubscribeAPI({
+      emailAddress,
+      ethereumAddress: address,
+    });
 
-    console.log(email);
+    const data = await response.json();
+
+    if (response.status === 201 || response.status === 200) {
+      showToast(data.message);
+    } else {
+      showToast(data.error);
+    }
+
+    console.log(emailAddress);
 
     // display toast message
   };
@@ -32,8 +44,8 @@ const NewsLetter = () => {
   let inputClass =
     "input input-bordered flex-grow w-full rounded-full border py-3 px-4";
 
-  if (email) {
-    if (isValidEmail(email)) {
+  if (emailAddress) {
+    if (isValidEmail(emailAddress)) {
       inputClass += " input-success";
     } else {
       inputClass += " input-error";
@@ -86,10 +98,10 @@ const NewsLetter = () => {
               type="email"
               placeholder="Email address"
               className={inputClass}
-              onChange={(e) => setEmail(e.target.value)}
+              onChange={(e) => setEmailAddress(e.target.value)}
             />
             <button
-              onClick={handleSubscribe}
+              onClick={handleSubscribeButton}
               className="btn-primary font-display absolute top-2 right-2 rounded-full px-6 py-2 text-sm"
             >
               Subscribe
