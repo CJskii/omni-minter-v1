@@ -48,7 +48,7 @@ const Hero = () => {
                 <Link href="/mint" className="btn btn-primary">
                   Get Started
                 </Link>
-                <Link href="/create" className="btn glass">
+                <Link href="/chains" className="btn glass">
                   Explore Chains
                 </Link>
               </div>
