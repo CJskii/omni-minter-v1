@@ -10,8 +10,8 @@ const GasRefuel = () => {
   return (
     <>
       <HeadComponent
-        title="Mintly Gas Refuel"
-        description="Refuel your account with Mintly Gas utilising Layer Zero technology!"
+        title="Mintly: Gas Refuel Service - Refuel Your Wallet with Native Tokens"
+        description="Stay ahead in your blockchain transactions with Mintly's Gas Refuel service. Efficiently manage your gas reserves, ensuring uninterrupted cross-chain activities with LayerZero technology."
       />
       <Gas />
     </>

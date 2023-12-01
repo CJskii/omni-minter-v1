@@ -27,12 +27,6 @@ function MyApp({ Component, pageProps }: AppProps) {
   return (
     <WagmiConfig config={wagmiConfig}>
       <RainbowKitProvider chains={chains} theme={theme}>
-        <HeadComponent
-          title="Mintly"
-          description="Earn rewards and have fun!"
-          image="https://pbs.twimg.com/profile_banners/1280015719229386754/1691925867/1500x500"
-          twitterHandle="@Mintly_lol"
-        />
         <div className="flex flex-col justify-between items-center min-h-screen font-plex-mono">
           <Navbar />
           <main className="flex flex-col justify-center items-center gap-4 py-8 px-4 rounded-lg my-4 w-full min-h-full">

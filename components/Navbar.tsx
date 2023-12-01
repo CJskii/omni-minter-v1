@@ -8,6 +8,11 @@ const Navbar = () => {
   const [expanded, setExpanded] = useState(false);
   const router = useRouter();
 
+  const showConnectButton =
+    router.pathname === "/mint" ||
+    router.pathname === "/onft-bridge" ||
+    router.pathname === "/gas-refuel";
+
   return (
     <div className="navbar bg-base-200 border-orange-700 justify-between">
       <div className="navbar-start">
@@ -20,8 +25,8 @@ const Navbar = () => {
       <div className="navbar-center flex gap-8 text-xl max-lg:hidden">
         <div className="btn-group">
           <Link
-            href="/"
-            className={`btn ${router.pathname === "/" ? "btn-active" : ""}`}
+            href="/mint"
+            className={`btn ${router.pathname === "/mint" ? "btn-active" : ""}`}
           >
             Mint
           </Link>
@@ -58,7 +63,7 @@ const Navbar = () => {
         </div>
       </div>
       <div className="navbar-end max-lg:hidden">
-        <CustomButton />
+        {showConnectButton && <CustomButton />}
       </div>
       <div className="dropdown dropdown-end">
         <label className="btn btn-circle swap swap-rotate lg:hidden">
@@ -95,7 +100,7 @@ const Navbar = () => {
             className="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-64"
           >
             <li onClick={() => setExpanded(false)}>
-              <Link href="/">Mint</Link>
+              <Link href="/mint">Mint</Link>
             </li>
             <li onClick={() => setExpanded(false)}>
               <Link href="/onft-bridge">Bridge</Link>
@@ -109,9 +114,11 @@ const Navbar = () => {
             <li onClick={() => setExpanded(false)}>
               <Link href="/faq">FAQ</Link>
             </li>
-            <li onClick={() => setExpanded(false)}>
-              <CustomButtonMobile />
-            </li>
+            {showConnectButton && (
+              <li onClick={() => setExpanded(false)}>
+                <CustomButton />
+              </li>
+            )}
           </ul>
         ) : null}
       </div>

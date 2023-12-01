@@ -10,8 +10,8 @@ const FAQ = () => {
   return (
     <>
       <HeadComponent
-        title="Mintly Frequently Asked Questions"
-        description="Explore the common questions and answers about Mintly."
+        title="Mintly: FAQ - Get All Your Queries About Mintly's Omnichain Platform, ONFT Minting, and Cross-Chain Bridging Resolved."
+        description="Get all your queries about Mintly's omnichain platform, ONFT minting, and cross-chain bridging resolved. Our FAQ section provides detailed answers to help you navigate Mintly with ease."
       />
       <FaqSection />
     </>
