@@ -1,19 +1,22 @@
 import { useState, useEffect } from "react";
-import { getContractAddress } from "../../utils/getConstants";
+import { getContractAddress } from "../../common/utils/getters/getConstants";
 import { useNetwork, useAccount } from "wagmi";
-import { handleBridging } from "../../utils/helpers/handleBridging";
-import { handleErrors } from "../../utils/helpers/handleErrors";
-import handleInteraction from "../../utils/helpers/handleInteraction";
-import { useNetworkSelection } from "../../utils/hooks/useNetworkSelection";
-import { activeChains } from "../../constants/chainsConfig";
-import { getValidToNetworks } from "../../utils/getValidToNetworks";
-import { Network } from "../../types/network";
+import { handleBridging } from "../../common/utils/interaction/handlers/handleBridging";
+import { handleErrors } from "../../common/utils/interaction/handlers/handleErrors";
+import handleInteraction from "../../common/utils/interaction/handlers/handleInteraction";
+import { useNetworkSelection } from "../../common/components/hooks/useNetworkSelection";
+import { activeChains } from "../../constants/config/chainsConfig";
+import { getValidToNetworks } from "../../common/utils/getters/getValidToNetworks";
+import { Network } from "../../common/types/network";
 import dynamic from "next/dynamic";
 
-const NetworkModal = dynamic(() => import("../Modals/NetworkModal"), {
-  loading: () => <span className="loading loading-dots loading-lg"></span>,
-  ssr: true,
-});
+const NetworkModal = dynamic(
+  () => import("../../common/components/elements/modals/NetworkModal"),
+  {
+    loading: () => <span className="loading loading-dots loading-lg"></span>,
+    ssr: true,
+  }
+);
 
 const BridgingModal = dynamic(() => import("../Modals/BridgingModal"), {
   loading: () => <span className="loading loading-dots loading-lg"></span>,

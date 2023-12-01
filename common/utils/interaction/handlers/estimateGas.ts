@@ -2,9 +2,9 @@ import { handleErrors } from "./handleErrors";
 import { ethers } from "ethers";
 import { JsonRpcSigner } from "@ethersproject/providers";
 import { Contract } from "@ethersproject/contracts";
-import getProviderOrSigner from "../../utils/getProviderOrSigner";
-import { estimateGasParams } from "../../types/gas-refuel";
-import { Network } from "../../types/network";
+import getProviderOrSigner from "../../getters/getProviderOrSigner";
+import { estimateGasParams } from "../../../types/gas-refuel";
+import { Network } from "../../../types/network";
 
 export const estimateGasRequest = async ({
   fromNetwork,

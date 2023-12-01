@@ -5,16 +5,15 @@ import { RainbowKitProvider } from "@rainbow-me/rainbowkit";
 import { WagmiConfig } from "wagmi";
 import { useRouter } from "next/router";
 import dynamic from "next/dynamic";
-import HeadComponent from "../components/HeadComponent";
-import useReferalCode from "../utils/hooks/useReferalCode";
-import { wagmiConfig, theme, chains } from "../constants/wagmiConfig";
+import useReferalCode from "../common/components/hooks/useReferalCode";
+import { wagmiConfig, theme, chains } from "../constants/config/wagmiConfig";
 
-const Navbar = dynamic(() => import("../components/Navbar"), {
+const Navbar = dynamic(() => import("../common/components/elements/Navbar"), {
   loading: () => <span className="loading loading-dots loading-lg"></span>,
   ssr: true,
 });
 
-const Footer = dynamic(() => import("../components/Footer"), {
+const Footer = dynamic(() => import("../common/components/elements/Footer"), {
   loading: () => <span className="loading loading-dots loading-lg"></span>,
   ssr: false,
 });

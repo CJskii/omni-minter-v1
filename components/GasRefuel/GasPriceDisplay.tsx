@@ -1,4 +1,4 @@
-import { GasPriceProps } from "../../types/gas-refuel";
+import { GasPriceProps } from "../../common/types/gas-refuel";
 
 const GasPriceDisplay: React.FC<GasPriceProps> = ({
   label,

@@ -3,7 +3,7 @@ import { getDefaultWallets, darkTheme } from "@rainbow-me/rainbowkit";
 import { configureChains, createConfig } from "wagmi";
 import { publicProvider } from "wagmi/providers/public";
 import "@fontsource/ibm-plex-mono";
-import { getSupportedChains } from "../constants/chainsConfig";
+import { getSupportedChains } from "./chainsConfig";
 
 const customChains = getSupportedChains();
 

@@ -1,7 +1,7 @@
 import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/router";
-import { MintedNFTModalProps } from "../../types/mintedNFT";
+import { MintedNFTModalProps } from "../../common/types/mintedNFT";
 
 const MintedNFTModal = (props: MintedNFTModalProps) => {
   const {

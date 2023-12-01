@@ -1,10 +1,10 @@
 import { ethers } from "ethers";
 import { JsonRpcSigner } from "@ethersproject/providers";
 import { Contract } from "@ethersproject/contracts";
-import getProviderOrSigner from "../../utils/getProviderOrSigner";
+import getProviderOrSigner from "../../getters/getProviderOrSigner";
 import { handleErrors } from "./handleErrors";
-import { GasTransferParams } from "../../types/gas-refuel";
-import { Network } from "../../types/network";
+import { GasTransferParams } from "../../../types/gas-refuel";
+import { Network } from "../../../types/network";
 
 export const gasTransferRequest = async ({
   fromNetwork,

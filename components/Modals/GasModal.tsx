@@ -1,5 +1,5 @@
 import { useEffect, useRef } from "react";
-import { GasModalProps } from "../../types/gas-refuel";
+import { GasModalProps } from "../../common/types/gas-refuel";
 
 const GasModal = (props: GasModalProps) => {
   const {

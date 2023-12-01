@@ -1,5 +1,5 @@
-import CONTRACT_ADDRESS_JSON from "../constants/contractAddress.json";
-import CHAIN_ID_JSON from "../constants/chainId.json";
+import CONTRACT_ADDRESS_JSON from "../../../constants/contracts/contractAddress.json";
+import CHAIN_ID_JSON from "../../../constants/chainId.json";
 
 interface ContractAddressMap {
   [key: string]: string;

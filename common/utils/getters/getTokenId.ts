@@ -1,4 +1,4 @@
-import { Network } from "../types/network";
+import { Network } from "../../types/network";
 
 type TokenIdProps = {
   txHash: string;

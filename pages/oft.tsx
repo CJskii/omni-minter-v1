@@ -1,4 +1,4 @@
-import HeadComponent from "../components/HeadComponent";
+import HeadComponent from "../common/components/elements/HeadComponent";
 import TokenBridge from "../components/Token/TokenBridge";
 
 const OFT = () => {

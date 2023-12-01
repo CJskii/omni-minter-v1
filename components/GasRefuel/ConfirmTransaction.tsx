@@ -1,5 +1,5 @@
 import { ethers } from "ethers";
-import { IConfirm } from "../../types/gas-refuel";
+import { IConfirm } from "../../common/types/gas-refuel";
 import { useEffect, useState } from "react";
 import { coingeckoMapping } from "../../constants/tokenMappings";
 import GasPriceDisplay from "./GasPriceDisplay";

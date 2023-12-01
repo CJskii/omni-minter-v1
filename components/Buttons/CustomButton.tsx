@@ -1,7 +1,7 @@
 import { ConnectButton } from "@rainbow-me/rainbowkit";
 import { useEffect } from "react";
 import { useAccount } from "wagmi";
-import handleInteraction from "../../utils/helpers/handleInteraction";
+import handleInteraction from "../../common/utils/interaction/handlers/handleInteraction";
 
 export const CustomButton = () => {
   const { address, isConnected } = useAccount();

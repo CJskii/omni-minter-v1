@@ -1,8 +1,8 @@
 import { ethers } from "ethers";
 import { JsonRpcSigner } from "@ethersproject/providers";
 import { Contract } from "@ethersproject/contracts";
-import getProviderOrSigner from "../../utils/getProviderOrSigner";
-import { Network } from "../../types/network";
+import getProviderOrSigner from "../../getters/getProviderOrSigner";
+import { Network } from "../../../types/network";
 
 export const handleBridging = async ({
   TOKEN_ID,
@@ -55,7 +55,7 @@ export const handleBridging = async ({
     ownerAddress, // refund address (if too much message fee is sent, it gets refunded)
     ethers.constants.AddressZero, // address(0x0) if not paying in ZRO (LayerZero Token)
     adapterParams, // flexible bytes array to indicate messaging adapter services
-    { value: nativeFee.mul(5).div(4) }
+    { value: nativeFee.mul(5).div(4), gasLimit: 1000000 }
   );
 
   await tx.wait();

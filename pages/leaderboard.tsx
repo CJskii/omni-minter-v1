@@ -1,4 +1,4 @@
-import HeadComponent from "../components/HeadComponent";
+import HeadComponent from "../common/components/elements/HeadComponent";
 import dynamic from "next/dynamic";
 
 const LeaderboardComponent = dynamic(
