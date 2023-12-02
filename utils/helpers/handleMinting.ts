@@ -34,7 +34,7 @@ export const handleMinting = async (mintNetwork: Network) => {
   let tx = await (
     await contract.mint({
       value: ethers.utils.parseEther(feeInEther),
-      gasLimit: mintNetwork.name.toLowerCase() == "mantle" ? 100000 : null,
+      gasLimit: 1000000,
     })
   ).wait();
 

@@ -111,12 +111,6 @@ const Gas = () => {
       );
       setShowGasModal(true);
       return;
-    } else if (fromNetwork.name === "Mantle" || toNetwork.name === "Mantle") {
-      setErrorMessage(
-        "Gas Refuel is temporarily disabled for Mantle. Please select another network."
-      );
-      setShowGasModal(true);
-      return;
     }
     setIsLoading(true);
     try {
