@@ -97,7 +97,7 @@ const handleGasTransaction = async ({
         value: totalCost,
         // gasLimit: ethers.utils.parseUnits("250000", "wei"),
         gasPrice: gasPrice.mul(5).div(4),
-        gasLimit: 1500000,
+        gasLimit: targetNetwork.name === "Arbitrum One" ? 2000000 : 1500000,
       }
     );
 
