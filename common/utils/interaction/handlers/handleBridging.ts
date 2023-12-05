@@ -55,11 +55,10 @@ export const handleBridging = async ({
     ownerAddress, // refund address (if too much message fee is sent, it gets refunded)
     ethers.constants.AddressZero, // address(0x0) if not paying in ZRO (LayerZero Token)
     adapterParams, // flexible bytes array to indicate messaging adapter services
-<<<<<<< HEAD:utils/helpers/handleBridging.ts
-    { value: nativeFee.mul(5).div(4), gasLimit: 1500000 }
-=======
-    { value: nativeFee.mul(5).div(4), gasLimit: 1000000 }
->>>>>>> refs/remotes/origin/refactoring:common/utils/interaction/handlers/handleBridging.ts
+    {
+      value: nativeFee.mul(5).div(4),
+      gasLimit: fromNetwork.name == "Arbitrum One" ? 2000000 : 1500000,
+    }
   );
 
   await tx.wait();
