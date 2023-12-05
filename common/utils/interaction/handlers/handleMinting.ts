@@ -34,11 +34,7 @@ export const handleMinting = async (mintNetwork: Network) => {
   let tx = await (
     await contract.mint({
       value: ethers.utils.parseEther(feeInEther),
-<<<<<<< HEAD:utils/helpers/handleMinting.ts
       gasLimit: 1000000,
-=======
-      gasLimit: 250000,
->>>>>>> refs/remotes/origin/refactoring:common/utils/interaction/handlers/handleMinting.ts
     })
   ).wait();
 
