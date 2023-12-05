@@ -1,11 +1,11 @@
 import Headline from "./Headline";
-import { newsLetterData } from "./../../data/newsLetter";
-import { useEffect, useState } from "react";
-import { isValidEmail } from "../../utils/isValidEmail";
+import { newsLetterData } from "../../common/modules/data/newsLetter";
+import { useState } from "react";
+import { isValidEmail } from "../../common/utils/validators/isValidEmail";
 import { useAccount } from "wagmi";
-import useToast from "../../utils/hooks/useToast";
-import Toast from "../Toast";
-import { callEmailSubscribeAPI } from "../../utils/api/callEmailSubscribeAPI";
+import useToast from "../../common/components/hooks/useToast";
+import Toast from "../../common/components/elements/Toast";
+import { callEmailSubscribeAPI } from "../../common/utils/api/subscribeEmail";
 
 const NewsLetter = () => {
   const [emailAddress, setEmailAddress] = useState("");

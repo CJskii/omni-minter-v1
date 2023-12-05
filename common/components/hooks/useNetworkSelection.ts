@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { activeChains } from "../../constants/chainsConfig";
+import { activeChains } from "../../../constants/config/chainsConfig";
 import { useNetwork } from "wagmi";
 import { Network } from "../../types/network";
 

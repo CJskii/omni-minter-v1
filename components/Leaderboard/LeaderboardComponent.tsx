@@ -1,13 +1,13 @@
 import { useEffect, useState } from "react";
-import { callLeaderboardAPI } from "../../utils/api/callLeaderboardAPI";
+import { callLeaderboardAPI } from "../../common/utils/api/leaderboard";
 import LoadingSpinner from "./Loading";
 import { useAccount } from "wagmi";
 import UserStats from "./Stats/UserStats";
 import DailyReward from "./Rewards/DailyRewardCollapse";
 import InviteUsersCollapse from "./InviteUsersCollapse";
 import LeaderboardTable from "./Data/Table";
-import { callUserStats } from "../../utils/api/callUserStatsAPI";
-import { User as LeaderboardData } from "../../types/leaderboard";
+import { callUserStats } from "../../common/utils/api/userStats";
+import { User as LeaderboardData } from "../../common/types/leaderboard";
 
 // create interface for leaderboard data
 

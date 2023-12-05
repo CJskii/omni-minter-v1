@@ -1,8 +1,8 @@
-import { updateMintData } from "../api/mintAPI";
-import { updateBridgeData } from "../api/bridgeAPI";
-import { createUser } from "../api/createUserAPI";
-import { checkIfReferredUser } from "./checkIfReferredUser";
-import { callClaimRewards } from "../api/callClaimRewardsAPI";
+import { updateMintData } from "../../api/mintAPI";
+import { updateBridgeData } from "../../api/bridge";
+import { createUser } from "../../api/createUser";
+import { checkIfReferredUser } from "../../validators/checkIfReferredUser";
+import { callClaimRewards } from "../../api/claimRewards";
 
 const handleApiResponse = async (response: any, operation: string) => {
   if (response.status === 200) {

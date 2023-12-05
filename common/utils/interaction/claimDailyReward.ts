@@ -1,4 +1,4 @@
-import handleInteraction from "../handleInteraction";
+import handleInteraction from "./handlers/handleInteraction";
 
 export const claimDailyReward = async ({
   address,

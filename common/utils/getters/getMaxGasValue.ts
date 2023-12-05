@@ -1,4 +1,4 @@
-import { maxGasValues } from "../constants/maxGasValues";
+import { maxGasValues } from "../../../constants/contracts/maxGasValues";
 import { transformNetworkName } from "./getConstants";
 
 export const getMaxGasValue = (toNetwork: string) => {

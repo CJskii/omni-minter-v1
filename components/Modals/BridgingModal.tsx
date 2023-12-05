@@ -1,5 +1,5 @@
 import { useEffect, useRef } from "react";
-import { BridgingModalProps } from "../../types/bridgeModal";
+import { BridgingModalProps } from "../../common/types/bridgeModal";
 
 const BridgingModal = (props: BridgingModalProps) => {
   const {

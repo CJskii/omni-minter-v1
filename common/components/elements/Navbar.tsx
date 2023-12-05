@@ -1,5 +1,5 @@
-import CustomButton from "./Buttons/CustomButton";
-import CustomButtonMobile from "./Buttons/CustomButtonMobile";
+import CustomButton from "../../../components/Buttons/CustomButton";
+import CustomButtonMobile from "../../../components/Buttons/CustomButtonMobile";
 import { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/router";
@@ -14,7 +14,7 @@ const Navbar = () => {
     router.pathname === "/gas-refuel";
 
   return (
-    <div className="navbar bg-base-200 border-orange-700 justify-between">
+    <div className="navbar bg-base-200 border-orange-700 justify-between min-w-full">
       <div className="navbar-start">
         <div className="dropdown">
           <Link className="btn normal-case text-3xl" href="/">
@@ -116,7 +116,7 @@ const Navbar = () => {
             </li>
             {showConnectButton && (
               <li onClick={() => setExpanded(false)}>
-                <CustomButton />
+                <CustomButtonMobile />
               </li>
             )}
           </ul>

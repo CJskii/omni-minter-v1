@@ -1,18 +1,21 @@
 import { useEffect, useState } from "react";
-import { activeChains } from "../../constants/chainsConfig";
+import { activeChains } from "../../constants/config/chainsConfig";
 import { useNetwork } from "wagmi";
-import { checkIfReferredUser } from "../../utils/helpers/checkIfReferredUser";
-import { useNetworkSelection } from "../../utils/hooks/useNetworkSelection";
+import { checkIfReferredUser } from "../../common/utils/validators/checkIfReferredUser";
+import { useNetworkSelection } from "../../common/components/hooks/useNetworkSelection";
 import dynamic from "next/dynamic";
-import { Network } from "../../types/network";
+import { Network } from "../../common/types/network";
 import CardImage from "./CardImage";
 
 // TODO: Can Image loading be improved?
 
-const NetworkModal = dynamic(() => import("../Modals/NetworkModal"), {
-  loading: () => <span className="loading loading-dots loading-lg"></span>,
-  ssr: true,
-});
+const NetworkModal = dynamic(
+  () => import("../../common/components/elements/modals/NetworkModal"),
+  {
+    loading: () => <span className="loading loading-dots loading-lg"></span>,
+    ssr: true,
+  }
+);
 
 const CustomButtonMint = dynamic(() => import("../Buttons/CustomButtonMint"), {
   loading: () => <span className="loading loading-dots loading-lg"></span>,

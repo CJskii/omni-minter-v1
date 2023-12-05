@@ -1,4 +1,4 @@
-import DiscordLink from "../DiscordLink";
+import DiscordLink from "../../common/components/elements/DiscordLink";
 
 const Footer = () => {
   return (

@@ -1,5 +1,5 @@
 import Image from "next/image";
-import { NetworkModalProps } from "../../types/network";
+import { NetworkModalProps } from "../../../types/network";
 
 const NetworkModal = ({
   selectedNetwork,

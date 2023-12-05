@@ -1,13 +1,13 @@
 import { useState, useEffect } from "react";
 import { IoSwapHorizontalSharp } from "react-icons/io5";
 import dynamic from "next/dynamic";
-import { Network } from "../../types/network";
-import { useNetworkSelection } from "../../utils/hooks/useNetworkSelection";
+import { Network } from "../../common/types/network";
+import { useNetworkSelection } from "../../common/components/hooks/useNetworkSelection";
 import { useChainModal } from "@rainbow-me/rainbowkit";
-import { getValidToNetworks } from "../../utils/getValidToNetworks";
+import { getValidToNetworks } from "../../common/utils/getters/getValidToNetworks";
 import { useNetwork } from "wagmi";
-import { activeChains } from "../../constants/chainsConfig";
-import NetworkModal from "../Modals/NetworkModal";
+import { activeChains } from "../../constants/config/chainsConfig";
+import NetworkModal from "../../common/components/elements/modals/NetworkModal";
 
 const TokenBridge = () => {
   const { chain } = useNetwork();

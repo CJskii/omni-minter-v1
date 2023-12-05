@@ -1,5 +1,5 @@
 import dynamic from "next/dynamic";
-import HeadComponent from "../components/HeadComponent";
+import HeadComponent from "../common/components/elements/HeadComponent";
 
 const FaqSection = dynamic(() => import("../components/Faq/FaqSection"), {
   loading: () => <span className="loading loading-dots loading-lg"></span>,

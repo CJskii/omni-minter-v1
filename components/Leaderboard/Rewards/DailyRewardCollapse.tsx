@@ -1,12 +1,12 @@
 import { FaAward } from "react-icons/fa";
 import { useAccount } from "wagmi";
-import { claimDailyReward } from "../../../utils/helpers/rewards/claimDailyReward";
+import { claimDailyReward } from "../../../common/utils/interaction/claimDailyReward";
 import { useState, useEffect } from "react";
-import { callDailyRewardsData } from "../../../utils/api/callRewardAPI";
-import { getCurrentReward } from "../../../utils/helpers/rewards/getCurrentReward";
-import { shouldDisableClaimButton } from "../../../utils/helpers/rewards/shouldDisableClaimButton";
+import { callDailyRewardsData } from "../../../common/utils/api/dailyRewards";
+import { getCurrentReward } from "../../../common/utils/getters/getCurrentReward";
+import { shouldDisableClaimButton } from "../../../common/utils/validators/shouldDisableClaimButton";
 import UserRewardModal from "./UserRewardModal";
-import { RewardData } from "../../../types/rewards";
+import { RewardData } from "../../../common/types/rewards";
 
 const DailyRewardCollapse = (props: {
   currentRewardDay: number;

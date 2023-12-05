@@ -1,8 +1,8 @@
 import { ethers } from "ethers";
 import { Contract } from "@ethersproject/contracts";
-import getProviderOrSigner from "../getProviderOrSigner";
-import { Network } from "../../types/network";
-import { getTokenId } from "../getTokenId";
+import getProviderOrSigner from "../../getters/getProviderOrSigner";
+import { Network } from "../../../types/network";
+import { getTokenId } from "../../getters/getTokenId";
 
 export const handleMinting = async (mintNetwork: Network) => {
   // Initiate provider and signer
@@ -34,7 +34,11 @@ export const handleMinting = async (mintNetwork: Network) => {
   let tx = await (
     await contract.mint({
       value: ethers.utils.parseEther(feeInEther),
+<<<<<<< HEAD:utils/helpers/handleMinting.ts
       gasLimit: 1000000,
+=======
+      gasLimit: 250000,
+>>>>>>> refs/remotes/origin/refactoring:common/utils/interaction/handlers/handleMinting.ts
     })
   ).wait();
 

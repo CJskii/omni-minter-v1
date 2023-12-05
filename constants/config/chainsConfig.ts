@@ -37,17 +37,17 @@ import {
   manta,
 } from "wagmi/chains";
 
-import { linea } from "./customChains/linea";
-import { coreDao } from "./customChains/coreDao";
-import { tenet } from "./customChains/tenet";
-import { astar } from "./customChains/astar";
-import { kava } from "./customChains/kava";
-import { pgn } from "./customChains/pgn";
-import { getContractAddress } from "../utils/getConstants";
-import { getRemoteChainId } from "../utils/getConstants";
-import { getMaxGasValue } from "../utils/getMaxGasValue";
-import { CONTRACT_ABI, REFUEL_CONTRACT_ABI } from "./contractABI";
-import { Network } from "../types/network";
+import { linea } from "../customChains/linea";
+import { coreDao } from "../customChains/coreDao";
+import { tenet } from "../customChains/tenet";
+import { astar } from "../customChains/astar";
+import { kava } from "../customChains/kava";
+import { pgn } from "../customChains/pgn";
+import { getContractAddress } from "../../common/utils/getters/getConstants";
+import { getRemoteChainId } from "../../common/utils/getters/getConstants";
+import { getMaxGasValue } from "../../common/utils/getters/getMaxGasValue";
+import { CONTRACT_ABI, REFUEL_CONTRACT_ABI } from "../contracts/abi";
+import { Network } from "../../common/types/network";
 
 export const mainnetChains: Network[] = [
   {

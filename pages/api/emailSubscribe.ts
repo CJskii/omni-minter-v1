@@ -3,8 +3,8 @@ import { prisma } from "../../prisma/client";
 import {
   generateVerificationToken,
   generateTokenExpiration,
-} from "../../utils/emails/generateToken";
-import { sendVerificationEmail } from "../../utils/emails/sendVerificationEmail";
+} from "../../common/utils/generateToken";
+import { sendVerificationEmail } from "../../common/utils/interaction/sendVerificationEmail";
 
 export default async function handler(
   req: NextApiRequest,
