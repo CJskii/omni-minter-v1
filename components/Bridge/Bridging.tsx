@@ -9,6 +9,7 @@ import { activeChains } from "../../constants/config/chainsConfig";
 import { getValidToNetworks } from "../../common/utils/getters/getValidToNetworks";
 import { Network } from "../../common/types/network";
 import dynamic from "next/dynamic";
+import { useRouter } from "next/router";
 
 const NetworkModal = dynamic(
   () => import("../../common/components/elements/modals/NetworkModal"),
@@ -48,6 +49,7 @@ const Bridging = (props: BridgeProps) => {
   let { passedNftId } = props;
   const { chain } = useNetwork();
   const { address } = useAccount();
+  const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
 
   const [nftId, setNftId] = useState("");
@@ -124,6 +126,7 @@ const Bridging = (props: BridgeProps) => {
         TOKEN_ID,
         fromNetwork,
         toNetwork,
+        type: "bridge" as const, // TODO: replace this with params from the UI
       });
 
       const { txHash } = result;

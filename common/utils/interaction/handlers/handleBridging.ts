@@ -8,14 +8,51 @@ export const handleBridging = async ({
   TOKEN_ID,
   fromNetwork,
   toNetwork,
+  type,
 }: {
   TOKEN_ID: string;
   fromNetwork: Network;
   toNetwork: Network;
+  type: string;
 }) => {
   const signer = await getProviderOrSigner(true);
   const ownerAddress = await (signer as JsonRpcSigner).getAddress();
+  let tx = null;
 
+  if (type === "layerZero") {
+    tx = await layerZeroBridge({
+      TOKEN_ID,
+      fromNetwork,
+      toNetwork,
+      ownerAddress,
+      signer: signer as JsonRpcSigner,
+    });
+  } else if (type === "wormhole") {
+    tx = await wormholeBridge({
+      TOKEN_ID,
+      fromNetwork,
+      toNetwork,
+      ownerAddress,
+      signer: signer as JsonRpcSigner,
+    });
+  }
+
+  return { txHash: tx && tx.txHash ? tx.txHash : null };
+};
+
+const layerZeroBridge = async ({
+  TOKEN_ID,
+  fromNetwork,
+  toNetwork,
+  ownerAddress,
+  signer,
+}: {
+  TOKEN_ID: string;
+  fromNetwork: Network;
+  toNetwork: Network;
+  ownerAddress: string;
+  signer: JsonRpcSigner;
+}) => {
   if (!fromNetwork.deployedContracts)
     throw new Error(`No deployed contracts found for ${fromNetwork.name}`);
 
@@ -42,10 +79,7 @@ export const handleBridging = async ({
     adapterParams
   );
 
-  console.log(`fees: ${fees}`);
-
   const nativeFee = fees[0];
-  console.log(`native fees (wei): ${nativeFee}`);
 
   const tx = await contract.sendFrom(
     ownerAddress, // 'from' address to send tokens
@@ -64,5 +98,67 @@ export const handleBridging = async ({
   await tx.wait();
   console.log("NFT sent!");
 
-  return { txHash: tx.hash };
+  return tx;
+};
+
+const wormholeBridge = async ({
+  TOKEN_ID,
+  fromNetwork,
+  toNetwork,
+  ownerAddress,
+  signer,
+}: {
+  TOKEN_ID: string;
+  fromNetwork: Network;
+  toNetwork: Network;
+  ownerAddress: string;
+  signer: JsonRpcSigner;
+}) => {
+  if (!fromNetwork.deployedContracts || !toNetwork.deployedContracts)
+    throw new Error(
+      `No deployed contracts found for ${fromNetwork.name} or ${toNetwork.name}`
+    );
+
+  const contract = new Contract(
+    fromNetwork.deployedContracts.ONFT.address,
+    fromNetwork.deployedContracts.ONFT.ABI,
+    signer
+  );
+
+  // REMOTE CHAIN ID IS THE CHAIN OF THE RECEIVING NETWORK
+  // TODO: Implement this
+  const targetAddress = toNetwork.deployedContracts.ONFT.address; // replace this with the address of the receiving network's NFT contract
+  const targetChainId = toNetwork.deployedContracts.ONFT.address; // replace this with the chain id of the receiving network
+
+  const GAS_LIMIT = 200000; // Implement dynamic gas limit
+  const receiverValue = 0; // receiver value is 0 for NFTs
+
+  try {
+    const estimatedFee = await contract.getGas(
+      targetChainId,
+      receiverValue,
+      GAS_LIMIT
+    );
+
+    console.log(`Estimated fee: ${estimatedFee}`);
+    let tx = await contract.sendPayload(
+      targetChainId,
+      targetAddress,
+      TOKEN_ID,
+      receiverValue,
+      GAS_LIMIT,
+      targetChainId,
+      ownerAddress,
+      {
+        value: estimatedFee,
+        gasLimit: 250000,
+      }
+    );
+    await tx.wait();
+    console.log(`Transaction hash: ${tx.transactionHash}`);
+
+    return tx;
+  } catch (e) {
+    console.error(e);
+  }
 };

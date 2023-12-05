@@ -322,12 +322,14 @@ export const getSupportedChains = () => {
             address: getContractAddress(chain.name, "REFUEL"),
             ABI: REFUEL_CONTRACT_ABI,
           },
+          // TODO: Add deployed contracts for Wormhole
         },
         lzParams: {
           lzEndpointAddress: chain.lzEndpointAddress,
           remoteChainId: getRemoteChainId(chain.name),
           maxGas: getMaxGasValue(chain.name),
         },
+        // TODO: Add wormhole params
       }));
     case "testnet":
       return testnetChains.map((chain) => ({
@@ -341,12 +343,14 @@ export const getSupportedChains = () => {
             address: "0xF7715A66866683c1946F269fEc2CFaFDA951b65A",
             ABI: REFUEL_CONTRACT_ABI,
           },
+          // TODO: Add deployed contracts for Wormhole
         },
         lzParams: {
           lzEndpointAddress: "",
           remoteChainId: getRemoteChainId(chain.name),
           maxGas: getMaxGasValue(chain.name),
         },
+        // TODO: Add wormhole params
       }));
     default:
       console.error(`Unsupported ENVIRONMENT value: ${env}`);

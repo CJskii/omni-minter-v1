@@ -5,6 +5,7 @@ import { Network } from "../../../types/network";
 import { getTokenId } from "../../getters/getTokenId";
 
 export const handleMinting = async (mintNetwork: Network) => {
+  // TODO: Refactor this function to call functions for LayerZero and Wormhole
   // Initiate provider and signer
   const provider = await getProviderOrSigner();
   const signer = await getProviderOrSigner(true);
