@@ -43,10 +43,11 @@ const CustomButtonBridge = dynamic(
 interface BridgeProps {
   passedNftId: string;
   mintNetwork: string;
+  contractProvider: string;
 }
 
 const Bridging = (props: BridgeProps) => {
-  let { passedNftId } = props;
+  let { passedNftId, contractProvider } = props;
   const { chain } = useNetwork();
   const { address } = useAccount();
   const router = useRouter();
@@ -186,6 +187,7 @@ const Bridging = (props: BridgeProps) => {
                     onClose={onFromClose}
                     dialogId="fromNetworkModal"
                     title="From"
+                    contractProvider={contractProvider}
                   />
                 </div>
               </div>
@@ -205,6 +207,7 @@ const Bridging = (props: BridgeProps) => {
                     onClose={onToClose}
                     dialogId="toNetworkModal"
                     title="To"
+                    contractProvider={contractProvider}
                   />
                 </div>
               </div>

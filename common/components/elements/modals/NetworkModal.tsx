@@ -10,7 +10,9 @@ const NetworkModal = ({
   dialogId,
   onClose,
   title,
+  contractProvider,
 }: NetworkModalProps) => {
+  // TODO: Implement filtering of available networks based on contract provider
   return (
     <>
       <button

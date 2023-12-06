@@ -46,4 +46,5 @@ export interface NetworkModalProps {
   dialogId: string;
   onClose: (dialogId: string) => void;
   title: string;
+  contractProvider: string;
 }
