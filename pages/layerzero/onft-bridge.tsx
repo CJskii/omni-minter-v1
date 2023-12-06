@@ -1,9 +1,9 @@
 import { useRouter } from "next/router";
 // import Bridging from "../components/Bridge/Bridging";
 import dynamic from "next/dynamic";
-import HeadComponent from "../common/components/elements/HeadComponent";
+import HeadComponent from "../../common/components/elements/HeadComponent";
 
-const Bridging = dynamic(() => import("../components/Bridge/Bridging"), {
+const Bridging = dynamic(() => import("../../components/Bridge/Bridging"), {
   loading: () => <span className="loading loading-dots loading-lg"></span>,
   ssr: true,
 });

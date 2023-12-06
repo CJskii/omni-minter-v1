@@ -25,23 +25,25 @@ const Navbar = () => {
       <div className="navbar-center flex gap-8 text-xl max-lg:hidden">
         <div className="btn-group">
           <Link
-            href="/mint"
-            className={`btn ${router.pathname === "/mint" ? "btn-active" : ""}`}
+            href="/layerzero/onft-mint"
+            className={`btn ${
+              router.pathname === "/layerzero/onft-mint" ? "btn-active" : ""
+            }`}
           >
             Mint
           </Link>
           <Link
-            href="/onft-bridge"
+            href="/layerzero/onft-bridge"
             className={`btn ${
-              router.pathname === "/onft-bridge" ? "btn-active" : ""
+              router.pathname === "/layerzero/onft-bridge" ? "btn-active" : ""
             }`}
           >
             Bridge
           </Link>
           <Link
-            href="/gas-refuel"
+            href="/layerzero/gas-refuel"
             className={`btn ${
-              router.pathname === "/gas-refuel" ? "btn-active" : ""
+              router.pathname === "/layerzero/gas-refuel" ? "btn-active" : ""
             }`}
           >
             Gas Refuel
@@ -100,13 +102,13 @@ const Navbar = () => {
             className="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-64"
           >
             <li onClick={() => setExpanded(false)}>
-              <Link href="/mint">Mint</Link>
+              <Link href="/layerzero/onft-mint">Mint</Link>
             </li>
             <li onClick={() => setExpanded(false)}>
-              <Link href="/onft-bridge">Bridge</Link>
+              <Link href="/layerzero/onft-bridge">Bridge</Link>
             </li>
             <li onClick={() => setExpanded(false)}>
-              <Link href="/gas-refuel">Gas Refuel</Link>
+              <Link href="/layerzero/gas-refuel">Gas Refuel</Link>
             </li>
             <li onClick={() => setExpanded(false)}>
               <Link href="/leaderboard">Leaderboard</Link>

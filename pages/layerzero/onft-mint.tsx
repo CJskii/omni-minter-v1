@@ -1,7 +1,7 @@
 import type { NextPage } from "next";
 
-import Minting from "../components/Minter/Minting";
-import HeadComponent from "../common/components/elements/HeadComponent";
+import Minting from "../../components/Minter/Minting";
+import HeadComponent from "../../common/components/elements/HeadComponent";
 
 const Mint: NextPage = () => {
   return (

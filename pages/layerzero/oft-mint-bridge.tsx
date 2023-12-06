@@ -1,5 +1,5 @@
-import HeadComponent from "../common/components/elements/HeadComponent";
-import TokenBridge from "../components/Token/TokenBridge";
+import HeadComponent from "../../common/components/elements/HeadComponent";
+import TokenBridge from "../../components/Token/TokenBridge";
 
 const OFT = () => {
   return (
