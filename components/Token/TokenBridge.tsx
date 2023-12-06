@@ -9,7 +9,7 @@ import { useNetwork } from "wagmi";
 import { activeChains } from "../../constants/config/chainsConfig";
 import NetworkModal from "../../common/components/elements/modals/NetworkModal";
 
-const TokenBridge = () => {
+const TokenBridge = ({ contractProvider }: { contractProvider: string }) => {
   const { chain } = useNetwork();
   const { openChainModal } = useChainModal();
 
@@ -124,6 +124,7 @@ const TokenBridge = () => {
                 onClose={onFromClose}
                 dialogId="fromNetworkModal"
                 title="From"
+                contractProvider={contractProvider}
               />
               <div className="py-4 px-2 ">
                 <IoSwapHorizontalSharp
@@ -143,6 +144,7 @@ const TokenBridge = () => {
                 onClose={onToClose}
                 dialogId="toNetworkModal"
                 title="To"
+                contractProvider={contractProvider}
               />
             </div>
 

@@ -22,8 +22,8 @@ const ONFTBridge = () => {
       <Bridging
         passedNftId={nftId}
         mintNetwork={mintNetwork}
-        provider="LayerZero"
-      />{" "}
+        contractProvider="LayerZero"
+      />
     </>
   );
 };

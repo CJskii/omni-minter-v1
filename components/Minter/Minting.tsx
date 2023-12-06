@@ -30,7 +30,7 @@ const CustomButtonNetwork = dynamic(
   }
 );
 
-const Minting = () => {
+const Minting = ({ contractProvider }: { contractProvider: string }) => {
   const [lastMintId, setLastMintId] = useState(0);
   const [isInvited, setIsInvited] = useState(false);
   const [referredBy, setReferredBy] = useState("");
@@ -92,6 +92,7 @@ const Minting = () => {
                       onClose={onFromClose}
                       dialogId="mintNetworkModal"
                       title="Mint"
+                      contractProvider={contractProvider}
                     />
                   </div>
                 </div>

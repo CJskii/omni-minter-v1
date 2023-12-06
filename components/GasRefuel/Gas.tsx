@@ -30,7 +30,7 @@ const GasModal = dynamic(() => import("../Modals/GasModal"), {
   ssr: true,
 });
 
-const Gas = () => {
+const Gas = ({ contractProvider }: { contractProvider: string }) => {
   const { chain } = useNetwork();
   const { openChainModal } = useChainModal();
 
@@ -180,6 +180,7 @@ const Gas = () => {
                 onClose={onFromClose}
                 dialogId="fromNetworkModal"
                 title="From"
+                contractProvider={contractProvider}
               />
               <div className="py-4 px-2 ">
                 <IoSwapHorizontalSharp
@@ -199,6 +200,7 @@ const Gas = () => {
                 onClose={onToClose}
                 dialogId="toNetworkModal"
                 title="To"
+                contractProvider={contractProvider}
               />
             </div>
 
