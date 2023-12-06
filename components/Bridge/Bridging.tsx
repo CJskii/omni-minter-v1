@@ -43,7 +43,10 @@ const CustomButtonBridge = dynamic(
 interface BridgeProps {
   passedNftId: string;
   mintNetwork: string;
-  contractProvider: string;
+  contractProvider: {
+    type: string;
+    contract: string;
+  };
 }
 
 const Bridging = (props: BridgeProps) => {
@@ -63,6 +66,8 @@ const Bridging = (props: BridgeProps) => {
     const validToNetworks = getValidToNetworks(fromNetwork);
     return validToNetworks.includes(toNetwork.name);
   };
+
+  console.log(activeChains);
 
   const {
     selectedNetwork: fromNetwork,

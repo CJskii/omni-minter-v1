@@ -30,9 +30,10 @@ export const getContractAddress = (fromNetwork: string, contract: string) => {
       address = CONTRACT_ADDRESS[fromNetwork.toLowerCase()];
 
       if (!address) {
-        throw new Error(
-          `Contract address for network ${fromNetwork} is not set`
-        );
+        return null;
+        // throw new Error(
+        //   `Contract address for network ${fromNetwork} is not set`
+        // );
       }
     }
 

@@ -13,6 +13,9 @@ const NetworkModal = ({
   contractProvider,
 }: NetworkModalProps) => {
   // TODO: Implement filtering of available networks based on contract provider
+  console.log(contractProvider);
+  // {type: 'layerzero', contract: 'ONFT'}
+
   return (
     <>
       <button

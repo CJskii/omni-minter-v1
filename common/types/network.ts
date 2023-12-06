@@ -35,6 +35,7 @@ export interface Network {
     lzEndpointAddress?: string;
     remoteChainId?: number;
   };
+  providers?: string[];
 }
 
 export interface NetworkModalProps {
@@ -46,5 +47,7 @@ export interface NetworkModalProps {
   dialogId: string;
   onClose: (dialogId: string) => void;
   title: string;
-  contractProvider: string;
+  contractProvider: {
+    [key: string]: string;
+  };
 }

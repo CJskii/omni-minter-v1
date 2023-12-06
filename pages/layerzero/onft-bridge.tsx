@@ -22,7 +22,7 @@ const ONFTBridge = () => {
       <Bridging
         passedNftId={nftId}
         mintNetwork={mintNetwork}
-        contractProvider="LayerZero"
+        contractProvider={{ type: "layerzero", contract: "ONFT" }}
       />
     </>
   );

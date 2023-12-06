@@ -313,17 +313,8 @@ export const getSupportedChains = () => {
     case "mainnet":
       return mainnetChains.map((chain) => ({
         ...chain,
-        deployedContracts: {
-          ONFT: {
-            address: getContractAddress(chain.name, "ONFT"),
-            ABI: CONTRACT_ABI,
-          },
-          REFUEL: {
-            address: getContractAddress(chain.name, "REFUEL"),
-            ABI: REFUEL_CONTRACT_ABI,
-          },
-          // TODO: Add deployed contracts for Wormhole
-        },
+        deployedContracts: getDeployedContracts(chain),
+        contractProviders: getContractProviders(chain),
         lzParams: {
           lzEndpointAddress: chain.lzEndpointAddress,
           remoteChainId: getRemoteChainId(chain.name),
@@ -356,6 +347,78 @@ export const getSupportedChains = () => {
       console.error(`Unsupported ENVIRONMENT value: ${env}`);
       return [];
   }
+};
+
+const getContractProviders = (chain: Network) => {
+  const deployedContracts = getDeployedContracts(chain);
+
+  const contractProviders = {
+    layerzero: [] as string[],
+    wormhole: [] as string[],
+  };
+
+  const layerzeroContracts = deployedContracts.layerzero;
+  const wormholeContracts = deployedContracts.wormhole;
+
+  if (layerzeroContracts.OFT.address) {
+    contractProviders.layerzero.push("OFT");
+  }
+  if (layerzeroContracts.ONFT.address) {
+    contractProviders.layerzero.push("ONFT");
+  }
+  if (layerzeroContracts.REFUEL.address) {
+    contractProviders.layerzero.push("REFUEL");
+  }
+  if (wormholeContracts.NFT.address) {
+    contractProviders.wormhole.push("NFT");
+  }
+  if (wormholeContracts.ERC20.address) {
+    contractProviders.wormhole.push("ERC20");
+  }
+  if (wormholeContracts.REFUEL.address) {
+    contractProviders.wormhole.push("Refuel");
+  }
+
+  return contractProviders;
+};
+
+const getDeployedContracts = (chain: Network) => {
+  const deployedContracts = {
+    layerzero: {
+      ONFT: {
+        address: getContractAddress(chain.name, "ONFT"),
+        ABI: CONTRACT_ABI,
+      },
+      REFUEL: {
+        address: getContractAddress(chain.name, "REFUEL"),
+        ABI: REFUEL_CONTRACT_ABI,
+      },
+      OFT: {
+        address: null,
+        // getContractAddress(chain.name, "OFT"),
+        ABI: CONTRACT_ABI, // change to OFT abi
+      },
+    },
+    wormhole: {
+      NFT: {
+        address: null,
+        //getContractAddress(chain.name, "NFT"),
+        ABI: CONTRACT_ABI, // change to NFT abi
+      },
+      ERC20: {
+        address: null,
+        // getContractAddress(chain.name, "ERC20"),
+        ABI: CONTRACT_ABI, // change to ERC20 abi
+      },
+      REFUEL: {
+        address: null,
+        // getContractAddress(chain.name, "RefuelWormhole"),
+        ABI: CONTRACT_ABI, // change to Refuel abi
+      },
+    },
+  };
+
+  return deployedContracts;
 };
 
 export const activeChains = getSupportedChains();
