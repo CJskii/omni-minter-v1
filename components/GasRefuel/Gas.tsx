@@ -35,7 +35,7 @@ const Gas = ({
 }: {
   contractProvider: {
     type: string;
-    contract: any;
+    contract: string;
   };
 }) => {
   const { chain } = useNetwork();
@@ -191,7 +191,6 @@ const Gas = ({
                 onClose={onFromClose}
                 dialogId="fromNetworkModal"
                 title="From"
-                contractProvider={contractProvider}
               />
               <div className="py-4 px-2 ">
                 <IoSwapHorizontalSharp
@@ -211,7 +210,6 @@ const Gas = ({
                 onClose={onToClose}
                 dialogId="toNetworkModal"
                 title="To"
-                contractProvider={contractProvider}
               />
             </div>
 
