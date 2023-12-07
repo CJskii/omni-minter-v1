@@ -99,7 +99,6 @@ const Minting = ({
                       onClose={onFromClose}
                       dialogId="mintNetworkModal"
                       title="Mint"
-                      contractProvider={contractProvider}
                     />
                   </div>
                 </div>

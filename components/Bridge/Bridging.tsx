@@ -194,7 +194,6 @@ const Bridging = (props: BridgeProps) => {
                     onClose={onFromClose}
                     dialogId="fromNetworkModal"
                     title="From"
-                    contractProvider={contractProvider}
                   />
                 </div>
               </div>
@@ -214,7 +213,6 @@ const Bridging = (props: BridgeProps) => {
                     onClose={onToClose}
                     dialogId="toNetworkModal"
                     title="To"
-                    contractProvider={contractProvider}
                   />
                 </div>
               </div>
