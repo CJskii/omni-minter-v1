@@ -19,7 +19,11 @@ const ONFTBridge = () => {
         title="Mintly: ONFT Bridge - Seamlessly Bridge Your Omnichain Non-Fungible Tokens (ONFTs) with Mintly's Advanced ONFT Bridge"
         description="Seamlessly bridge your Omnichain Non-Fungible Tokens (ONFTs) with Mintly's advanced ONFT Bridge. Experience the ease of cross-chain transfers, enhancing your digital asset's interoperability through LayerZero."
       />
-      {/* <Bridging passedNftId={nftId} mintNetwork={mintNetwork} />{" "} */}
+      <Bridging
+        passedNftId={nftId}
+        mintNetwork={mintNetwork}
+        contractProvider={{ type: "wormhole", contract: "NFT" }}
+      />{" "}
     </>
   );
 };

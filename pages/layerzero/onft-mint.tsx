@@ -10,7 +10,7 @@ const Mint: NextPage = () => {
         title="Mintly: Mint - Mint Your ONFTs and Bridge Them Across Multiple Chains"
         description="Mintly's Mint page: Where seamless ONFT creation meets LayerZero's interoperability. Start minting and bridging your ONFTs across multiple chains effortlessly."
       />
-      <Minting contractProvider="LayerZero" />
+      <Minting contractProvider={{ type: "layerzero", contract: "ONFT" }} />
     </>
   );
 };

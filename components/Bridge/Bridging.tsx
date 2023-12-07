@@ -45,7 +45,7 @@ interface BridgeProps {
   mintNetwork: string;
   contractProvider: {
     type: string;
-    contract: string;
+    contract: any;
   };
 }
 
@@ -67,8 +67,6 @@ const Bridging = (props: BridgeProps) => {
     return validToNetworks.includes(toNetwork.name);
   };
 
-  console.log(activeChains);
-
   const {
     selectedNetwork: fromNetwork,
     onNetworkSelect: setFromNetwork,
@@ -76,7 +74,7 @@ const Bridging = (props: BridgeProps) => {
     onSearchChange: setFromSearchTerm,
     filteredChains: fromFilteredChains,
     onClose: onFromClose,
-  } = useNetworkSelection(activeChains[0] as Network);
+  } = useNetworkSelection(activeChains[0] as Network, contractProvider);
 
   const {
     selectedNetwork: toNetwork,
@@ -85,7 +83,11 @@ const Bridging = (props: BridgeProps) => {
     onSearchChange: setToSearchTerm,
     filteredChains: toFilteredChains,
     onClose: onToClose,
-  } = useNetworkSelection(activeChains[1] as Network, isValidToNetwork);
+  } = useNetworkSelection(
+    activeChains[1] as Network,
+    contractProvider,
+    isValidToNetwork
+  );
 
   useEffect(() => {
     // If the currently selected "To" network is not valid after the "From" network changes, reset it.

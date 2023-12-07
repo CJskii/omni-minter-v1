@@ -30,7 +30,14 @@ const CustomButtonNetwork = dynamic(
   }
 );
 
-const Minting = ({ contractProvider }: { contractProvider: string }) => {
+const Minting = ({
+  contractProvider,
+}: {
+  contractProvider: {
+    type: string;
+    contract: any;
+  };
+}) => {
   const [lastMintId, setLastMintId] = useState(0);
   const [isInvited, setIsInvited] = useState(false);
   const [referredBy, setReferredBy] = useState("");
@@ -43,7 +50,7 @@ const Minting = ({ contractProvider }: { contractProvider: string }) => {
     onSearchChange: setFromSearchTerm,
     filteredChains: fromFilteredChains,
     onClose: onFromClose,
-  } = useNetworkSelection(activeChains[0] as Network);
+  } = useNetworkSelection(activeChains[0] as Network, contractProvider);
 
   useEffect(() => {
     let selected = mintNetwork;

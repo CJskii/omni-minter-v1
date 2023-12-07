@@ -336,6 +336,10 @@ export const getSupportedChains = () => {
           },
           // TODO: Add deployed contracts for Wormhole
         },
+        contractProviders: {
+          layerzero: ["ONFT", "REFUEL"],
+          wormhole: [],
+        },
         lzParams: {
           lzEndpointAddress: "",
           remoteChainId: getRemoteChainId(chain.name),
@@ -394,24 +398,24 @@ const getDeployedContracts = (chain: Network) => {
         ABI: REFUEL_CONTRACT_ABI,
       },
       OFT: {
-        address: null,
+        address: "",
         // getContractAddress(chain.name, "OFT"),
         ABI: CONTRACT_ABI, // change to OFT abi
       },
     },
     wormhole: {
       NFT: {
-        address: null,
+        address: "",
         //getContractAddress(chain.name, "NFT"),
         ABI: CONTRACT_ABI, // change to NFT abi
       },
       ERC20: {
-        address: null,
+        address: "",
         // getContractAddress(chain.name, "ERC20"),
         ABI: CONTRACT_ABI, // change to ERC20 abi
       },
       REFUEL: {
-        address: null,
+        address: "",
         // getContractAddress(chain.name, "RefuelWormhole"),
         ABI: CONTRACT_ABI, // change to Refuel abi
       },

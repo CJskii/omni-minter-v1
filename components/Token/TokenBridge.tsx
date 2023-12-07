@@ -9,7 +9,14 @@ import { useNetwork } from "wagmi";
 import { activeChains } from "../../constants/config/chainsConfig";
 import NetworkModal from "../../common/components/elements/modals/NetworkModal";
 
-const TokenBridge = ({ contractProvider }: { contractProvider: string }) => {
+const TokenBridge = ({
+  contractProvider,
+}: {
+  contractProvider: {
+    type: string;
+    contract: any;
+  };
+}) => {
   const { chain } = useNetwork();
   const { openChainModal } = useChainModal();
 
@@ -34,7 +41,7 @@ const TokenBridge = ({ contractProvider }: { contractProvider: string }) => {
     onSearchChange: setFromSearchTerm,
     filteredChains: fromFilteredChains,
     onClose: onFromClose,
-  } = useNetworkSelection(activeChains[0] as Network);
+  } = useNetworkSelection(activeChains[0] as Network, contractProvider);
 
   const {
     selectedNetwork: toNetwork,
@@ -43,7 +50,13 @@ const TokenBridge = ({ contractProvider }: { contractProvider: string }) => {
     onSearchChange: setToSearchTerm,
     filteredChains: toFilteredChains,
     onClose: onToClose,
-  } = useNetworkSelection(activeChains[1] as Network, isValidToNetwork);
+  } = useNetworkSelection(
+    activeChains[1] as Network,
+    contractProvider,
+    isValidToNetwork
+  );
+
+  console.log("fromNetwork", fromNetwork);
 
   useEffect(() => {
     // If the currently selected "To" network is not valid after the "From" network changes, reset it.

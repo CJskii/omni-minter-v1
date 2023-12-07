@@ -30,7 +30,14 @@ const GasModal = dynamic(() => import("../Modals/GasModal"), {
   ssr: true,
 });
 
-const Gas = ({ contractProvider }: { contractProvider: string }) => {
+const Gas = ({
+  contractProvider,
+}: {
+  contractProvider: {
+    type: string;
+    contract: any;
+  };
+}) => {
   const { chain } = useNetwork();
   const { openChainModal } = useChainModal();
 
@@ -55,7 +62,7 @@ const Gas = ({ contractProvider }: { contractProvider: string }) => {
     onSearchChange: setFromSearchTerm,
     filteredChains: fromFilteredChains,
     onClose: onFromClose,
-  } = useNetworkSelection(activeChains[0] as Network);
+  } = useNetworkSelection(activeChains[0] as Network, contractProvider);
 
   const {
     selectedNetwork: toNetwork,
@@ -64,7 +71,11 @@ const Gas = ({ contractProvider }: { contractProvider: string }) => {
     onSearchChange: setToSearchTerm,
     filteredChains: toFilteredChains,
     onClose: onToClose,
-  } = useNetworkSelection(activeChains[1] as Network, isValidToNetwork);
+  } = useNetworkSelection(
+    activeChains[1] as Network,
+    contractProvider,
+    isValidToNetwork
+  );
 
   useEffect(() => {
     // If the currently selected "To" network is not valid after the "From" network changes, reset it.
