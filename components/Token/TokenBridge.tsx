@@ -19,6 +19,7 @@ const TokenBridge = ({
 }) => {
   const { chain } = useNetwork();
   const { openChainModal } = useChainModal();
+  const { type, contract } = contractProvider;
 
   const [inputAmount, setInputAmount] = useState("");
   const [gasFee, setGasFee] = useState("");
@@ -55,8 +56,6 @@ const TokenBridge = ({
     contractProvider,
     isValidToNetwork
   );
-
-  console.log("fromNetwork", fromNetwork);
 
   useEffect(() => {
     // If the currently selected "To" network is not valid after the "From" network changes, reset it.

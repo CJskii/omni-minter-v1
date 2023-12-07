@@ -10,6 +10,7 @@ export const useNetworkSelection = (
   filterFn: (network: Network) => boolean = () => true
 ) => {
   const { chain } = useNetwork();
+
   const [selectedNetwork, setSelectedNetwork] = useState(
     initialNetwork || activeChains[0]
   );

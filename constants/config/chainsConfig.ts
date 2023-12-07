@@ -47,7 +47,7 @@ import { getContractAddress } from "../../common/utils/getters/getConstants";
 import { getRemoteChainId } from "../../common/utils/getters/getConstants";
 import { getMaxGasValue } from "../../common/utils/getters/getMaxGasValue";
 import { CONTRACT_ABI, REFUEL_CONTRACT_ABI } from "../contracts/abi";
-import { Network } from "../../common/types/network";
+import { Network, ExtendedNetwork } from "../../common/types/network";
 
 export const mainnetChains: Network[] = [
   {
@@ -326,15 +326,38 @@ export const getSupportedChains = () => {
       return testnetChains.map((chain) => ({
         ...chain,
         deployedContracts: {
-          ONFT: {
-            address: getContractAddress(chain.name, "ONFT"),
-            ABI: CONTRACT_ABI,
+          // TODO: Change this to testnet contract as all of this will return null
+          layerzero: {
+            ONFT: {
+              address: getContractAddress(chain.name, "ONFT") as string,
+              ABI: CONTRACT_ABI,
+            },
+            REFUEL: {
+              address: getContractAddress(chain.name, "REFUEL") as string,
+              ABI: REFUEL_CONTRACT_ABI,
+            },
+            OFT: {
+              address: "" as string,
+              // getContractAddress(chain.name, "OFT"),
+              ABI: CONTRACT_ABI, // change to OFT abi
+            },
           },
-          REFUEL: {
-            address: "0xF7715A66866683c1946F269fEc2CFaFDA951b65A",
-            ABI: REFUEL_CONTRACT_ABI,
+          wormhole: {
+            NFT: {
+              address: getContractAddress(chain.name, "NFT") as string,
+              ABI: CONTRACT_ABI, // change to NFT abi
+            },
+            ERC20: {
+              address: "" as string,
+              // getContractAddress(chain.name, "ERC20"),
+              ABI: CONTRACT_ABI, // change to ERC20 abi
+            },
+            REFUEL: {
+              address: " " as string,
+              // getContractAddress(chain.name, "RefuelWormhole"),
+              ABI: CONTRACT_ABI, // change to Refuel abi
+            },
           },
-          // TODO: Add deployed contracts for Wormhole
         },
         contractProviders: {
           layerzero: ["ONFT", "REFUEL"],
@@ -390,32 +413,31 @@ const getDeployedContracts = (chain: Network) => {
   const deployedContracts = {
     layerzero: {
       ONFT: {
-        address: getContractAddress(chain.name, "ONFT"),
+        address: getContractAddress(chain.name, "ONFT") as string,
         ABI: CONTRACT_ABI,
       },
       REFUEL: {
-        address: getContractAddress(chain.name, "REFUEL"),
+        address: getContractAddress(chain.name, "REFUEL") as string,
         ABI: REFUEL_CONTRACT_ABI,
       },
       OFT: {
-        address: "",
+        address: "" as string,
         // getContractAddress(chain.name, "OFT"),
         ABI: CONTRACT_ABI, // change to OFT abi
       },
     },
     wormhole: {
       NFT: {
-        address: "",
-        //getContractAddress(chain.name, "NFT"),
+        address: getContractAddress(chain.name, "NFT") as string,
         ABI: CONTRACT_ABI, // change to NFT abi
       },
       ERC20: {
-        address: "",
+        address: "" as string,
         // getContractAddress(chain.name, "ERC20"),
         ABI: CONTRACT_ABI, // change to ERC20 abi
       },
       REFUEL: {
-        address: "",
+        address: " " as string,
         // getContractAddress(chain.name, "RefuelWormhole"),
         ABI: CONTRACT_ABI, // change to Refuel abi
       },
@@ -425,4 +447,4 @@ const getDeployedContracts = (chain: Network) => {
   return deployedContracts;
 };
 
-export const activeChains = getSupportedChains();
+export const activeChains: ExtendedNetwork[] = getSupportedChains();

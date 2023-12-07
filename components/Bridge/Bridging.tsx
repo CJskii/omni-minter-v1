@@ -45,9 +45,16 @@ interface BridgeProps {
   mintNetwork: string;
   contractProvider: {
     type: string;
-    contract: any;
+    contract: string;
   };
 }
+
+type ExtendedNetwork = Network & {
+  contractProviders: {
+    layerzero?: string[];
+    wormhole?: string[];
+  };
+};
 
 const Bridging = (props: BridgeProps) => {
   let { passedNftId, contractProvider } = props;
@@ -55,6 +62,7 @@ const Bridging = (props: BridgeProps) => {
   const { address } = useAccount();
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
+  const { type, contract } = contractProvider;
 
   const [nftId, setNftId] = useState("");
   const [showBridgingModal, setShowBridgingModal] = useState(false);
@@ -83,11 +91,7 @@ const Bridging = (props: BridgeProps) => {
     onSearchChange: setToSearchTerm,
     filteredChains: toFilteredChains,
     onClose: onToClose,
-  } = useNetworkSelection(
-    activeChains[1] as Network,
-    contractProvider,
-    isValidToNetwork
-  );
+  } = useNetworkSelection(activeChains[1] as Network, contractProvider);
 
   useEffect(() => {
     // If the currently selected "To" network is not valid after the "From" network changes, reset it.
@@ -107,6 +111,38 @@ const Bridging = (props: BridgeProps) => {
   useEffect(() => {
     passedNftId ? setNftId(passedNftId) : setNftId("");
   }, [passedNftId]);
+
+  // let's create network filter for the "To" network
+  // Filter should have following:
+
+  // 1. Filter out all networks available for given protocol type & contract
+  // 2. Filter out all valid networks for given protocol type & contract without network that is currently selected in "From" network
+
+  // this correctly checks if the network is valid for the contract type
+  const validFromChainsByContractType = activeChains.filter((chain) => {
+    if (type == "layerzero" && chain.contractProviders.layerzero) {
+      return chain.contractProviders.layerzero.includes(contract);
+    } else if (type == "wormhole" && chain.contractProviders.wormhole) {
+      return chain.contractProviders.wormhole.includes(contract);
+    }
+  });
+
+  const validToChainsByContractType = activeChains.filter((chain) => {
+    if (type == "layerzero" && chain.contractProviders.layerzero) {
+      return (
+        chain.contractProviders.layerzero.includes(contract) &&
+        chain.name !== fromNetwork.name
+      );
+    } else if (type == "wormhole" && chain.contractProviders.wormhole) {
+      return (
+        chain.contractProviders.wormhole.includes(contract) &&
+        chain.name !== fromNetwork.name
+      );
+    }
+  });
+
+  console.log(validFromChainsByContractType);
+  console.log(validToChainsByContractType);
 
   const checkNetwork = () => {
     if (chain?.name == fromNetwork.name) {

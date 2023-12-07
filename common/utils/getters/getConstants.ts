@@ -24,20 +24,21 @@ export const getContractAddress = (fromNetwork: string, contract: string) => {
       address = envVarName ? envVarName : "";
 
       if (!address) {
-        throw new Error(`Environment variable ${envVarName} is not set`);
+        // throw new Error(`Environment variable ${envVarName} is not set`);
+        return "";
       }
     } else {
       address = CONTRACT_ADDRESS[fromNetwork.toLowerCase()];
 
       if (!address) {
-        return null;
+        return "";
         // throw new Error(
         //   `Contract address for network ${fromNetwork} is not set`
         // );
       }
     }
 
-    return address;
+    return address as string;
   } catch (error) {
     console.error(`Cannot read contract for ${fromNetwork} `, error);
   }
@@ -186,15 +187,30 @@ export const transformNetworkName = (networkName: string) => {
   return networkName;
 };
 
-const getEnvVarName = (
-  fromNetwork: string,
-  contract: string
-): string | undefined => {
+const getEnvVarName = (fromNetwork: string, contract: string) => {
   if (contract === "ONFT") {
     return getONFTEnvVarName(fromNetwork);
   }
   if (contract === "REFUEL") {
     return getRefuelEnvVarName(fromNetwork);
+  }
+  if (contract === "NFT") {
+    return getNFTEnvVarName(fromNetwork);
+  }
+};
+
+const getNFTEnvVarName = (fromNetwork: string) => {
+  switch (fromNetwork) {
+    case "ZKEVM":
+      return process.env.NEXT_PUBLIC_ZKEVM_NFT_CONTRACT_ADDRESS;
+    case "OPTIMISM":
+      return process.env.NEXT_PUBLIC_OPTIMISM_NFT_CONTRACT_ADDRESS;
+    case "ARBITRUM":
+      return process.env.NEXT_PUBLIC_ARBITRUM_NFT_CONTRACT_ADDRESS;
+    case "BSC":
+      return process.env.NEXT_PUBLIC_BSC_NFT_CONTRACT_ADDRESS;
+    case "POLYGON":
+      return process.env.NEXT_PUBLIC_POLYGON_NFT_CONTRACT_ADDRESS;
   }
 };
 

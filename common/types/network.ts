@@ -25,17 +25,50 @@ export interface Network {
   testnet?: boolean;
   remoteChainId?: number;
   lzEndpointAddress?: string;
-  deployedContracts?: {
-    [key: string]: {
-      address: string;
-      ABI: any;
-    };
-  };
+  deployedContracts?: DeployedContracts;
   lzParams?: {
     lzEndpointAddress?: string;
     remoteChainId?: number;
   };
 }
+
+type DeployedContracts = {
+  layerzero: {
+    ONFT: {
+      address: string;
+      ABI: any[];
+    };
+    REFUEL: {
+      address: string;
+      ABI: any[];
+    };
+    OFT: {
+      address: string;
+      ABI: any[];
+    };
+  };
+  wormhole: {
+    NFT: {
+      address: string;
+      ABI: any[];
+    };
+    ERC20: {
+      address: string;
+      ABI: any[];
+    };
+    REFUEL: {
+      address: string;
+      ABI: any[];
+    };
+  };
+};
+
+// the key will be always there but array might be empty
+export type ExtendedNetwork = Network & {
+  contractProviders: {
+    [key: string]: string[];
+  };
+};
 
 export interface NetworkModalProps {
   selectedNetwork: Network;
