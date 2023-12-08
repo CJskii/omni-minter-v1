@@ -70,7 +70,7 @@ const Bridging = (props: BridgeProps) => {
   const [errorMessage, setErrorMessage] = useState("");
 
   const isValidToNetwork = (toNetwork: Network) => {
-    const validToNetworks = getValidToNetworks(fromNetwork);
+    const validToNetworks = getValidToNetworks({ fromNetwork, type, contract });
     return validToNetworks.includes(toNetwork.name);
   };
 
@@ -95,7 +95,7 @@ const Bridging = (props: BridgeProps) => {
   useEffect(() => {
     // If the currently selected "To" network is not valid after the "From" network changes, reset it.
     if (!isValidToNetwork(toNetwork)) {
-      const validNetworks = getValidToNetworks(fromNetwork);
+      const validNetworks = getValidToNetworks({ fromNetwork, type, contract });
       const defaultNetwork = activeChains.find(
         (chain) => chain.name === validNetworks[0]
       );
