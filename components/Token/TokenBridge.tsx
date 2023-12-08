@@ -31,7 +31,11 @@ const TokenBridge = ({
   const [recipientAddress, setRecipientAddress] = useState("");
 
   const isValidToNetwork = (toNetwork: Network) => {
-    const validToNetworks = getValidToNetworks({ fromNetwork, type, contract });
+    const validToNetworks = getValidToNetworks({
+      fromNetwork,
+      type,
+      contract,
+    }) as string[];
     return validToNetworks.includes(toNetwork.name);
   };
 
@@ -56,7 +60,11 @@ const TokenBridge = ({
   useEffect(() => {
     // If the currently selected "To" network is not valid after the "From" network changes, reset it.
     if (!isValidToNetwork(toNetwork)) {
-      const validNetworks = getValidToNetworks({ fromNetwork, type, contract });
+      const validNetworks = getValidToNetworks({
+        fromNetwork,
+        type,
+        contract,
+      }) as string[];
       const defaultNetwork = activeChains.find(
         (chain) => chain.name === validNetworks[0]
       );

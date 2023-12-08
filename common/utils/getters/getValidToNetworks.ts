@@ -11,5 +11,9 @@ export const getValidToNetworks = ({
   contract: string;
 }) => {
   // TODO: FILTER CHAINS BY CONTRACT PROVIDER (type, contract)
-  return networkTransferMappings[fromNetwork.name] || [];
+  if (type == "layerzero") {
+    return networkTransferMappings.layerzero[contract][fromNetwork.name] || [];
+  } else if (type == "wormhole") {
+    return networkTransferMappings.wormhole[contract][fromNetwork.name] || [];
+  }
 };

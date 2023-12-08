@@ -70,7 +70,12 @@ const Bridging = (props: BridgeProps) => {
   const [errorMessage, setErrorMessage] = useState("");
 
   const isValidToNetwork = (toNetwork: Network) => {
-    const validToNetworks = getValidToNetworks({ fromNetwork, type, contract });
+    const validToNetworks = getValidToNetworks({
+      fromNetwork,
+      type,
+      contract,
+    }) as string[];
+
     return validToNetworks.includes(toNetwork.name);
   };
 
@@ -95,7 +100,11 @@ const Bridging = (props: BridgeProps) => {
   useEffect(() => {
     // If the currently selected "To" network is not valid after the "From" network changes, reset it.
     if (!isValidToNetwork(toNetwork)) {
-      const validNetworks = getValidToNetworks({ fromNetwork, type, contract });
+      const validNetworks = getValidToNetworks({
+        fromNetwork,
+        type,
+        contract,
+      }) as string[];
       const defaultNetwork = activeChains.find(
         (chain) => chain.name === validNetworks[0]
       );
@@ -110,38 +119,6 @@ const Bridging = (props: BridgeProps) => {
   useEffect(() => {
     passedNftId ? setNftId(passedNftId) : setNftId("");
   }, [passedNftId]);
-
-  // let's create network filter for the "To" network
-  // Filter should have following:
-
-  // 1. Filter out all networks available for given protocol type & contract
-  // 2. Filter out all valid networks for given protocol type & contract without network that is currently selected in "From" network
-
-  // this correctly checks if the network is valid for the contract type
-  const validFromChainsByContractType = activeChains.filter((chain) => {
-    if (type == "layerzero" && chain.contractProviders.layerzero) {
-      return chain.contractProviders.layerzero.includes(contract);
-    } else if (type == "wormhole" && chain.contractProviders.wormhole) {
-      return chain.contractProviders.wormhole.includes(contract);
-    }
-  });
-
-  const validToChainsByContractType = activeChains.filter((chain) => {
-    if (type == "layerzero" && chain.contractProviders.layerzero) {
-      return (
-        chain.contractProviders.layerzero.includes(contract) &&
-        chain.name !== fromNetwork.name
-      );
-    } else if (type == "wormhole" && chain.contractProviders.wormhole) {
-      return (
-        chain.contractProviders.wormhole.includes(contract) &&
-        chain.name !== fromNetwork.name
-      );
-    }
-  });
-
-  console.log(validFromChainsByContractType);
-  console.log(validToChainsByContractType);
 
   const checkNetwork = () => {
     if (chain?.name == fromNetwork.name) {
