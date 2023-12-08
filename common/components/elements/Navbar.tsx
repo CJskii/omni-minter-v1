@@ -9,9 +9,13 @@ const Navbar = () => {
   const router = useRouter();
 
   const showConnectButton =
-    router.pathname === "/mint" ||
-    router.pathname === "/onft-bridge" ||
-    router.pathname === "/gas-refuel";
+    router.pathname === "/layerzero/onft-mint" ||
+    router.pathname === "/layerzero/onft-bridge" ||
+    router.pathname === "/layerzero/gas-refuel";
+  router.pathname === "/layerzero/oft-mint-bridge" ||
+    router.pathname === "/wormhole/nft-bridge" ||
+    router.pathname === "/wormhole/nft-mint" ||
+    router.pathname === "/wormhole/token-mint-bridge";
 
   return (
     <div className="navbar bg-base-200 border-orange-700 justify-between min-w-full">
