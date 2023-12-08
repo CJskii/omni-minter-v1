@@ -1,5 +1,4 @@
 import { useState, useEffect } from "react";
-import { getContractAddress } from "../../common/utils/getters/getConstants";
 import { useNetwork, useAccount } from "wagmi";
 import { handleBridging } from "../../common/utils/interaction/handlers/handleBridging";
 import { handleErrors } from "../../common/utils/interaction/handlers/handleErrors";
@@ -82,7 +81,7 @@ const Bridging = (props: BridgeProps) => {
     onSearchChange: setFromSearchTerm,
     filteredChains: fromFilteredChains,
     onClose: onFromClose,
-  } = useNetworkSelection(activeChains[0] as Network, contractProvider);
+  } = useNetworkSelection(contractProvider);
 
   const {
     selectedNetwork: toNetwork,
@@ -91,7 +90,7 @@ const Bridging = (props: BridgeProps) => {
     onSearchChange: setToSearchTerm,
     filteredChains: toFilteredChains,
     onClose: onToClose,
-  } = useNetworkSelection(activeChains[1] as Network, contractProvider);
+  } = useNetworkSelection(contractProvider, isValidToNetwork);
 
   useEffect(() => {
     // If the currently selected "To" network is not valid after the "From" network changes, reset it.

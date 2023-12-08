@@ -62,7 +62,7 @@ const Gas = ({
     onSearchChange: setFromSearchTerm,
     filteredChains: fromFilteredChains,
     onClose: onFromClose,
-  } = useNetworkSelection(activeChains[0] as Network, contractProvider);
+  } = useNetworkSelection(contractProvider);
 
   const {
     selectedNetwork: toNetwork,
@@ -71,11 +71,7 @@ const Gas = ({
     onSearchChange: setToSearchTerm,
     filteredChains: toFilteredChains,
     onClose: onToClose,
-  } = useNetworkSelection(
-    activeChains[1] as Network,
-    contractProvider,
-    isValidToNetwork
-  );
+  } = useNetworkSelection(contractProvider, isValidToNetwork);
 
   useEffect(() => {
     // If the currently selected "To" network is not valid after the "From" network changes, reset it.

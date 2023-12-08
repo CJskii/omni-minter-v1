@@ -4,7 +4,7 @@ import { useNetwork } from "wagmi";
 import { checkIfReferredUser } from "../../common/utils/validators/checkIfReferredUser";
 import { useNetworkSelection } from "../../common/components/hooks/useNetworkSelection";
 import dynamic from "next/dynamic";
-import { Network } from "../../common/types/network";
+import { Network, ExtendedNetwork } from "../../common/types/network";
 import CardImage from "./CardImage";
 
 // TODO: Can Image loading be improved?
@@ -50,14 +50,16 @@ const Minting = ({
     onSearchChange: setFromSearchTerm,
     filteredChains: fromFilteredChains,
     onClose: onFromClose,
-  } = useNetworkSelection(activeChains[0] as Network, contractProvider);
+  } = useNetworkSelection(contractProvider);
 
   useEffect(() => {
     let selected = mintNetwork;
 
     if (chain?.name && !chain.unsupported) {
       const networkObject = activeChains.find((net) => net.name === chain.name);
-      selected = (networkObject as Network) || (activeChains[0] as Network);
+      selected =
+        (networkObject as ExtendedNetwork) ||
+        (activeChains[0] as ExtendedNetwork);
     }
     const isReferredUser = checkIfReferredUser();
     const { isReferred, refLink } = isReferredUser;
