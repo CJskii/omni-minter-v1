@@ -1,9 +1,10 @@
 import Image from "next/image";
+import { useRouter } from "next/router";
 import { useEffect, useRef, useState } from "react";
 
 const Footer = () => {
   const iconsDivRef = useRef<HTMLDivElement>(null);
-
+  const router = useRouter();
   const [divWidth, setDivWidth] = useState(0);
 
   useEffect(() => {
@@ -11,19 +12,58 @@ const Footer = () => {
       setDivWidth(iconsDivRef.current.offsetWidth);
     }
   }, []);
+
+  const isWormhole = router.pathname.startsWith("/wormhole/");
+  const isLayerZero = router.pathname.startsWith("/layerzero/");
+  const isNotWormholeAndLayerZero =
+    !isWormhole && !router.pathname.startsWith("/layerzero/");
+
   return (
     <footer className="bg-base-200 p-4 flex justify-between items-center min-w-full">
       <div
         className=" max-sm:hidden"
         style={{ minWidth: `${divWidth}px` }}
       ></div>
-      <Image
-        src="/layerzero.svg"
-        width={200}
-        height={200}
-        alt="layerZero"
-        className="py-2 mx-auto" // mx-auto centers the image in its container
-      />
+
+      {isWormhole && (
+        <Image
+          src="/wormhole.svg"
+          width={200}
+          height={200}
+          alt="wormhole"
+          className="mx-auto"
+        />
+      )}
+
+      {isLayerZero && (
+        <Image
+          src="/layerzero.svg"
+          width={200}
+          height={200}
+          alt="layerZero"
+          className="py-2 mx-auto"
+        />
+      )}
+
+      {isNotWormholeAndLayerZero && (
+        <div className="flex justify-center items-center gap-8">
+          <Image
+            src="/layerzero.svg"
+            width={200}
+            height={200}
+            alt="layerZero"
+            className="py-2 mx-auto"
+          />
+
+          <Image
+            src="/wormhole.svg"
+            width={200}
+            height={200}
+            alt="wormhole"
+            className="mx-auto"
+          />
+        </div>
+      )}
 
       <div
         className="flex space-x-4 justify-center items-center"
