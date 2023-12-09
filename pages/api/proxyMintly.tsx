@@ -2,10 +2,16 @@ import { NextApiRequest, NextApiResponse } from "next";
 
 const proxyMintly = async (req: NextApiRequest, res: NextApiResponse) => {
   try {
+    const isWormhole = req.headers.iswormhole;
     const mintId = req.query.id;
-    const response = await fetch(
-      `https://api.cjski.xyz/api/mintly?id=${mintId}`
-    );
+    let response;
+    if (isWormhole) {
+      response = await fetch(
+        `https://api.cjski.xyz/api/mintlyWormhole?id=${mintId}`
+      );
+    } else {
+      response = await fetch(`https://api.cjski.xyz/api/mintly?id=${mintId}`);
+    }
 
     if (!response.ok) {
       throw new Error(`API responded with HTTP ${response.status}`);

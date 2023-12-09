@@ -23,6 +23,7 @@ const MintedNFTModal = (props: MintedNFTModalProps) => {
   const [imageLoaded, setImageLoaded] = useState(false);
   const dialogRef = useRef(null);
   const router = useRouter();
+  const isWormhole = router.pathname.includes("wormhole");
 
   useEffect(() => {
     if (showMintModal && dialogRef.current) {
@@ -43,7 +44,14 @@ const MintedNFTModal = (props: MintedNFTModalProps) => {
       try {
         const timestamp = new Date().getTime();
         const response = await fetch(
-          `/api/proxyMintly?id=${mintedNFT}&t=${timestamp}`
+          `/api/proxyMintly?id=${mintedNFT}&t=${timestamp}`,
+          {
+            headers: {
+              "Content-Type": "application/json",
+              Accept: "application/json",
+              isWormhole: isWormhole ? "true" : "false",
+            },
+          }
         );
 
         if (!response.ok) {
@@ -70,7 +78,13 @@ const MintedNFTModal = (props: MintedNFTModalProps) => {
 
   const handleBridgeClick = () => {
     if (mintedNFT) {
-      router.push(`/onft-bridge?nftId=${mintedNFT}&network=${mintNetwork}`);
+      !isWormhole
+        ? router.push(
+            `/layerzero/onft-bridge?nftId=${mintedNFT}&network=${mintNetwork}`
+          )
+        : router.push(
+            `/wormhole/nft-bridge?nftId=${mintedNFT}&network=${mintNetwork}`
+          );
     }
   };
 
