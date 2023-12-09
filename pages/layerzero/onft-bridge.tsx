@@ -23,6 +23,7 @@ const ONFTBridge = () => {
         passedNftId={nftId}
         mintNetwork={mintNetwork}
         contractProvider={{ type: "layerzero", contract: "ONFT" }}
+        stepDescription={"Bridge ONFT"}
       />
     </>
   );

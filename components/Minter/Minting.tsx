@@ -4,7 +4,7 @@ import { useNetwork } from "wagmi";
 import { checkIfReferredUser } from "../../common/utils/validators/checkIfReferredUser";
 import { useNetworkSelection } from "../../common/components/hooks/useNetworkSelection";
 import dynamic from "next/dynamic";
-import { Network, ExtendedNetwork } from "../../common/types/network";
+import { ExtendedNetwork } from "../../common/types/network";
 import CardImage from "./CardImage";
 
 // TODO: Can Image loading be improved?
@@ -32,11 +32,13 @@ const CustomButtonNetwork = dynamic(
 
 const Minting = ({
   contractProvider,
+  stepDescription,
 }: {
   contractProvider: {
     type: string;
     contract: any;
   };
+  stepDescription: string;
 }) => {
   const [lastMintId, setLastMintId] = useState(0);
   const [isInvited, setIsInvited] = useState(false);
@@ -79,7 +81,7 @@ const Minting = ({
           <div className="flex items-center justify-center px-4 py-10 sm:px-6 lg:px-8 sm:p-8">
             <div className="md:w-full xl:max-w-lg 2xl:max-w-xl xl:mx-auto 2xl:pl-8 h-full flex flex-col justify-between ">
               <h2 className="text-3xl font-bold leading-tight sm:text-4xl text-content-focus">
-                Step 1: Mint ONFT
+                Step 1: {stepDescription}
               </h2>
 
               <div className="space-y-5">

@@ -46,6 +46,7 @@ interface BridgeProps {
     type: string;
     contract: string;
   };
+  stepDescription: string;
 }
 
 type ExtendedNetwork = Network & {
@@ -56,7 +57,7 @@ type ExtendedNetwork = Network & {
 };
 
 const Bridging = (props: BridgeProps) => {
-  let { passedNftId, contractProvider } = props;
+  let { passedNftId, contractProvider, stepDescription } = props;
   const { chain } = useNetwork();
   const { address } = useAccount();
   const router = useRouter();
@@ -174,7 +175,7 @@ const Bridging = (props: BridgeProps) => {
         <div className="flex items-center justify-center px-4 py-10 sm:px-6 lg:px-8 sm:p-8">
           <div className="md:w-full xl:max-w-lg 2xl:max-w-xl xl:mx-auto 2xl:pl-8 h-full flex flex-col justify-between lg:p-8">
             <h2 className="text-3xl font-bold leading-tight sm:text-4xl text-content-focus">
-              Step 2: Bridge ONFT
+              Step 2: {stepDescription}
             </h2>
 
             <div className="space-y-5">

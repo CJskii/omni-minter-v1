@@ -1,8 +1,11 @@
 import Image from "next/image";
 import { useEffect, useState } from "react";
+import { useRouter } from "next/router";
 
 const CardImage = () => {
-  const imageNumbers = [1, 3, 4, 10];
+  const router = useRouter();
+  const isWormhole = router.pathname.startsWith("/wormhole/");
+  const imageNumbers = !isWormhole ? [1, 3, 4, 10] : [20, 21, 22];
   const [currentImage, setCurrentImage] = useState(imageNumbers[0]);
   const [isLoading, setIsLoading] = useState(true);
 
@@ -130,8 +133,7 @@ const CardImage = () => {
                 </svg>
               </div>
               <span className="text-lg font-medium text-white">
-                {" "}
-                LayerZero Driven{" "}
+                {isWormhole ? "Wormhole" : "LayerZero"} Driven
               </span>
             </li>
           </ul>
