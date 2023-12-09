@@ -11,8 +11,8 @@ const Navbar = () => {
   const showConnectButton =
     router.pathname === "/layerzero/onft-mint" ||
     router.pathname === "/layerzero/onft-bridge" ||
-    router.pathname === "/layerzero/gas-refuel";
-  router.pathname === "/layerzero/oft-mint-bridge" ||
+    router.pathname === "/layerzero/gas-refuel" ||
+    router.pathname === "/layerzero/oft-mint-bridge" ||
     router.pathname === "/wormhole/nft-bridge" ||
     router.pathname === "/wormhole/nft-mint" ||
     router.pathname === "/wormhole/token-mint-bridge";
@@ -28,50 +28,93 @@ const Navbar = () => {
       </div>
       <div className="navbar-center flex gap-8 text-xl max-lg:hidden">
         <div className="btn-group">
-          <Link
-            href="/layerzero/onft-mint"
-            className={`btn ${
-              router.pathname === "/layerzero/onft-mint" ? "btn-active" : ""
-            }`}
-          >
-            Mint
-          </Link>
-          <Link
-            href="/layerzero/onft-bridge"
-            className={`btn ${
-              router.pathname === "/layerzero/onft-bridge" ? "btn-active" : ""
-            }`}
-          >
-            Bridge
-          </Link>
-          <Link
-            href="/layerzero/gas-refuel"
-            className={`btn ${
-              router.pathname === "/layerzero/gas-refuel" ? "btn-active" : ""
-            }`}
-          >
-            Gas Refuel
-          </Link>
+          <div className="dropdown btn p-0 transition-none animate-none hover:bg-transparent hover:border-transparent hover:outline-0 z-[100]">
+            <div
+              tabIndex={20}
+              role="button"
+              className={`btn z-[100] m-0 p-2 hover:bg-transparent hover:border-transparent ${
+                router.pathname.startsWith("/layerzero/") ? "text-primary" : ""
+              }`}
+            >
+              LayerZero
+            </div>
+            <ul
+              tabIndex={20}
+              className="dropdown-content z-[100] menu p-2 shadow bg-base-100 rounded-box w-52"
+            >
+              <li>
+                <Link href="/layerzero/onft-mint">ONFT Mint</Link>
+              </li>
+              <li>
+                <Link href="/layerzero/onft-bridge">ONFT Bridge</Link>
+              </li>
+              <li>
+                <Link href="/layerzero/gas-refuel">Gas Refuel</Link>
+              </li>
+              <li>
+                <a href="https://layerzeroscan.com/" target="_blank">
+                  Explorer
+                </a>
+              </li>
+              <li className="disabled">
+                <Link href="">OFT Mint & Bridge</Link>
+              </li>
+            </ul>
+          </div>
+
+          <div className="dropdown btn p-0  hover:border-transparent hover:outline-0 hover:bg-transparent z-[100]">
+            <div
+              tabIndex={0}
+              role="button"
+              className={`btn m-0 p-2 hover:bg-transparent hover:border-transparent z-[100] ${
+                router.pathname.startsWith("/wormhole/") ? "text-primary" : ""
+              }`}
+            >
+              Wormhole
+            </div>
+            <ul
+              tabIndex={0}
+              className="dropdown-content menu p-2 shadow bg-base-100 rounded-box w-52 z-[100]"
+            >
+              <li>
+                <Link href="/wormhole/nft-mint">NFT Mint</Link>
+              </li>
+              <li>
+                <Link href="/wormhole/nft-bridge">NFT Bridge</Link>
+              </li>
+              <li>
+                <a href="https://wormholescan.io/" target="_blank">
+                  Explorer
+                </a>
+              </li>
+              <li className="disabled">
+                <Link href="">ERC20 Mint & Bridge</Link>
+              </li>
+            </ul>
+          </div>
+
           <Link
             href="/leaderboard"
-            className={`btn ${
-              router.pathname === "/leaderboard" ? "btn-active" : ""
+            className={`btn hover:bg-transparent hover:border-transparent ${
+              router.pathname === "/leaderboard" ? "text-primary" : ""
             }`}
           >
             Leaderboard
           </Link>
           <Link
             href="/faq"
-            className={`btn ${router.pathname === "/faq" ? "btn-active" : ""}`}
+            className={`btn hover:bg-transparent  hover:border-transparent ${
+              router.pathname === "/faq" ? "text-primary" : ""
+            }`}
           >
             FAQ
           </Link>
         </div>
       </div>
       <div className="navbar-end max-lg:hidden">
-        {showConnectButton && <CustomButton />}
+        {showConnectButton ? <CustomButton /> : <div className="btn"></div>}
       </div>
-      <div className="dropdown dropdown-end">
+      <div className="dropdown dropdown-end z-[100]">
         <label className="btn btn-circle swap swap-rotate lg:hidden">
           <input type="checkbox" />
 
@@ -102,17 +145,23 @@ const Navbar = () => {
 
         {expanded ? (
           <ul
-            tabIndex={0}
-            className="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-64"
+            tabIndex={100}
+            className="dropdown-content menu p-2 shadow bg-base-100 rounded-box w-64 z-100"
           >
             <li onClick={() => setExpanded(false)}>
-              <Link href="/layerzero/onft-mint">Mint</Link>
+              <Link href="/layerzero/onft-mint">ONFT Mint</Link>
             </li>
             <li onClick={() => setExpanded(false)}>
-              <Link href="/layerzero/onft-bridge">Bridge</Link>
+              <Link href="/layerzero/onft-bridge">ONFT Bridge</Link>
             </li>
             <li onClick={() => setExpanded(false)}>
               <Link href="/layerzero/gas-refuel">Gas Refuel</Link>
+            </li>
+            <li onClick={() => setExpanded(false)}>
+              <Link href="/wormhole/nft-mint">wNFT Mint</Link>
+            </li>
+            <li onClick={() => setExpanded(false)}>
+              <Link href="/wormhole/nft-bridge">wNFT Bridge</Link>
             </li>
             <li onClick={() => setExpanded(false)}>
               <Link href="/leaderboard">Leaderboard</Link>
