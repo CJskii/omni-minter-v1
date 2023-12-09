@@ -55,7 +55,7 @@ export const handleBridging = async ({
     ownerAddress, // refund address (if too much message fee is sent, it gets refunded)
     ethers.constants.AddressZero, // address(0x0) if not paying in ZRO (LayerZero Token)
     adapterParams, // flexible bytes array to indicate messaging adapter services
-    { value: nativeFee.mul(5).div(4), gasLimit: 1500000 }
+    { value: nativeFee.mul(5).div(4), gasLimit: 2000000 }
   );
 
   await tx.wait();
