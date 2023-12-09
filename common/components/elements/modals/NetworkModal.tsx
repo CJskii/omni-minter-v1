@@ -1,5 +1,6 @@
 import Image from "next/image";
 import { NetworkModalProps } from "../../../types/network";
+import { dummyNetwork } from "../../../../constants/customChains/dummyNetwork";
 
 const NetworkModal = ({
   selectedNetwork,
@@ -25,14 +26,20 @@ const NetworkModal = ({
         <div className="w-full">
           <a className="flex gap-[15px] py-2 justify-start px-4 items-center border-base-100 border-[1px]">
             <Image
-              src={selectedNetwork.iconUrl || ""}
+              src={
+                selectedNetwork
+                  ? (selectedNetwork.iconUrl as string)
+                  : (dummyNetwork.iconUrl as string)
+              }
               width={30}
               height={30}
-              alt={selectedNetwork.name}
+              alt={selectedNetwork ? selectedNetwork.name : dummyNetwork.name}
             />
             <div className="flex flex-col justify-start items-start text-lg">
               <span className="text-neutral">NETWORK</span>
-              <span className="font-bold">{selectedNetwork.name}</span>
+              <span className="font-bold">
+                {selectedNetwork ? selectedNetwork.name : dummyNetwork.name}
+              </span>
             </div>
           </a>
         </div>
