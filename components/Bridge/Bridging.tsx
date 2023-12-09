@@ -4,7 +4,6 @@ import { handleBridging } from "../../common/utils/interaction/handlers/handleBr
 import { handleErrors } from "../../common/utils/interaction/handlers/handleErrors";
 import handleInteraction from "../../common/utils/interaction/handlers/handleInteraction";
 import { useNetworkSelection } from "../../common/components/hooks/useNetworkSelection";
-import { activeChains } from "../../constants/config/chainsConfig";
 import { getValidToNetworks } from "../../common/utils/getters/getValidToNetworks";
 import { Network } from "../../common/types/network";
 import dynamic from "next/dynamic";
@@ -86,6 +85,7 @@ const Bridging = (props: BridgeProps) => {
     searchTerm: fromSearchTerm,
     onSearchChange: setFromSearchTerm,
     filteredChains: fromFilteredChains,
+    networksByProvider: networksByProvider,
     onClose: onFromClose,
   } = useNetworkSelection(contractProvider);
 
@@ -106,12 +106,13 @@ const Bridging = (props: BridgeProps) => {
         type,
         contract,
       }) as string[];
-      const defaultNetwork = activeChains.find(
-        (chain) => chain.name === validNetworks[0]
+      const defaultNetwork = networksByProvider.find((network) =>
+        validNetworks.includes(network.name)
       );
+
       defaultNetwork
         ? setToNetwork(defaultNetwork as Network)
-        : setToNetwork(activeChains[0] as Network);
+        : setToNetwork(networksByProvider[0] as Network);
     }
     checkNetwork();
     // eslint-disable-next-line react-hooks/exhaustive-deps

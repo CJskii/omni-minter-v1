@@ -21,6 +21,10 @@ export const useNetworkSelection = (
       return providers && providers.includes(contract);
     });
 
+  const [networksByProvider, setNetworksByProvider] = useState(
+    filterNetworksByContractProvider(activeChains)
+  );
+
   useEffect(() => {
     // Update the selected network based on user's current connection
     const validNetworks = filterNetworksByContractProvider(activeChains);
@@ -58,6 +62,7 @@ export const useNetworkSelection = (
     searchTerm,
     onSearchChange,
     filteredChains,
+    networksByProvider,
     onClose,
   };
 };

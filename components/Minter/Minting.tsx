@@ -58,10 +58,12 @@ const Minting = ({
     let selected = mintNetwork;
 
     if (chain?.name && !chain.unsupported) {
-      const networkObject = activeChains.find((net) => net.name === chain.name);
+      const networkObject = fromFilteredChains.find(
+        (net) => net.name === chain.name
+      );
       selected =
         (networkObject as ExtendedNetwork) ||
-        (activeChains[0] as ExtendedNetwork);
+        (fromFilteredChains[0] as ExtendedNetwork);
     }
     const isReferredUser = checkIfReferredUser();
     const { isReferred, refLink } = isReferredUser;
