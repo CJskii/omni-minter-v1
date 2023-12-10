@@ -191,7 +191,7 @@ const Bridging = (props: BridgeProps) => {
                 type={type}
               />
               <div className="my-8">
-                <CustomButtonNetwork mintNetwork={fromNetwork.name} />
+                <CustomButtonNetwork mintNetwork={fromNetwork} />
               </div>
 
               {/* Select From Network */}

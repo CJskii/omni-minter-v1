@@ -10,7 +10,6 @@ export const getValidToNetworks = ({
   type: string;
   contract: string;
 }) => {
-  // TODO: FILTER CHAINS BY CONTRACT PROVIDER (type, contract)
   if (type == "layerzero") {
     return networkTransferMappings.layerzero[contract][fromNetwork.name] || [];
   } else if (type == "wormhole") {

@@ -1,9 +1,11 @@
 import { ConnectButton } from "@rainbow-me/rainbowkit";
 import { useEffect, useState } from "react";
 import { useNetwork } from "wagmi";
+import { Network } from "../../common/types/network";
+import { requestNetworkSwitch } from "../../common/utils/requestNetworkSwitch";
 
 interface SwitchNetworkProps {
-  mintNetwork: string;
+  mintNetwork: Network;
   //   setWrongNetwork: (wrongNetwork: boolean) => void;
 }
 
@@ -14,12 +16,16 @@ export const CustomButtonNetwork = (props: SwitchNetworkProps) => {
 
   const { mintNetwork } = props;
 
+  const handleNetworkSwitch = async (openChainModal: any) => {
+    await requestNetworkSwitch(mintNetwork.id, openChainModal);
+  };
+
   useEffect(() => {
-    setSelectedNetwork(mintNetwork);
+    setSelectedNetwork(mintNetwork.name);
   }, [mintNetwork]);
 
   useEffect(() => {
-    if (mintNetwork.toLowerCase() !== chain?.name.toLowerCase()) {
+    if (mintNetwork.name.toLowerCase() !== chain?.name.toLowerCase()) {
       setChangeChain(true);
       //   setWrongNetwork(true);
     } else {
@@ -27,6 +33,8 @@ export const CustomButtonNetwork = (props: SwitchNetworkProps) => {
       //   setWrongNetwork(false);
     }
   }, [chain, mintNetwork]);
+
+  console.log("mintNetwork", mintNetwork);
 
   return (
     <ConnectButton.Custom>
@@ -72,7 +80,13 @@ export const CustomButtonNetwork = (props: SwitchNetworkProps) => {
                 <div className="space-y-2 text-gray-400 focus-within:text-gray-600">
                   <button
                     className="btn-square w-full"
-                    onClick={openChainModal}
+                    onClick={
+                      changeChain
+                        ? () => {
+                            handleNetworkSwitch(openChainModal);
+                          }
+                        : openChainModal
+                    }
                   >
                     <div className="w-full">
                       <a className="flex gap-[15px] py-2 justify-start px-4 items-center border-base-100 border-[1px]">

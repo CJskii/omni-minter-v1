@@ -7,8 +7,6 @@ import dynamic from "next/dynamic";
 import { ExtendedNetwork } from "../../common/types/network";
 import CardImage from "./CardImage";
 
-// TODO: Can Image loading be improved?
-
 const NetworkModal = dynamic(
   () => import("../../common/components/elements/modals/NetworkModal"),
   {
@@ -110,7 +108,7 @@ const Minting = ({
                 </div>
 
                 <div>
-                  <CustomButtonNetwork mintNetwork={mintNetwork.name} />
+                  <CustomButtonNetwork mintNetwork={mintNetwork} />
                 </div>
               </div>
 

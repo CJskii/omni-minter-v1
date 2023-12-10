@@ -3,7 +3,6 @@ import { activeChains } from "../../../constants/config/chainsConfig";
 import { useNetwork } from "wagmi";
 import { Network, ExtendedNetwork } from "../../types/network";
 
-// TODO: FILTER CHAINS BY CONTRACT PROVIDER
 export const useNetworkSelection = (
   contractProviders: { type: string; contract: string },
   filterFn: (network: Network) => boolean = () => true

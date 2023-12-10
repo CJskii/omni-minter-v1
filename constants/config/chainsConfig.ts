@@ -328,7 +328,6 @@ export const getSupportedChains = () => {
           whEndpointAddress: "",
           remoteChainId: getWormholeChainId(chain.name),
         },
-        // TODO: Add wormhole params
       }));
     case "testnet":
       return testnetChains.map((chain) => ({
