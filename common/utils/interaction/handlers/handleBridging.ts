@@ -20,28 +20,24 @@ export const handleBridging = async ({
 }) => {
   const signer = await getProviderOrSigner(true);
   const ownerAddress = await (signer as JsonRpcSigner).getAddress();
-  let tx = null;
-  console.log(contractProvider);
-
+  let tx;
   if (contractProvider.type === "layerZero") {
-    tx = await layerZeroBridge({
+    return (tx = await layerZeroBridge({
       TOKEN_ID,
       fromNetwork,
       toNetwork,
       ownerAddress,
       signer: signer as JsonRpcSigner,
-    });
+    }));
   } else if (contractProvider.type === "wormhole") {
-    tx = await wormholeBridge({
+    return (tx = await wormholeBridge({
       TOKEN_ID,
       fromNetwork,
       toNetwork,
       ownerAddress,
       signer: signer as JsonRpcSigner,
-    });
+    }));
   }
-
-  return { txHash: tx && tx.txHash ? tx.txHash : null };
 };
 
 const layerZeroBridge = async ({
@@ -129,8 +125,6 @@ const wormholeBridge = async ({
     signer
   );
 
-  // REMOTE CHAIN ID IS THE CHAIN OF THE RECEIVING NETWORK
-  // TODO: Implement this
   const targetAddress = toNetwork.deployedContracts.wormhole.NFT.address;
   const targetChainId = toNetwork.whParams?.remoteChainId;
 
@@ -138,7 +132,7 @@ const wormholeBridge = async ({
     `Target address: ${targetAddress}, Target chain ID: ${targetChainId}`
   );
 
-  const GAS_LIMIT = 300000; // Implement dynamic gas limit
+  const GAS_LIMIT = 300000; // TODO: Implement dynamic gas limit
   const receiverValue = 0; // receiver value is 0 for NFTs
 
   try {
@@ -148,7 +142,6 @@ const wormholeBridge = async ({
       GAS_LIMIT
     );
 
-    console.log(`Estimated fee: ${estimatedFee}`);
     let tx = await contract.sendPayload(
       targetChainId,
       targetAddress,
@@ -163,7 +156,10 @@ const wormholeBridge = async ({
       }
     );
     await tx.wait();
-    console.log(`Transaction hash: ${tx.transactionHash}`);
+
+    console.log("NFT sent!");
+    console.log(tx);
+    console.log(`Transaction hash: ${tx.hash}`);
 
     return tx;
   } catch (e) {

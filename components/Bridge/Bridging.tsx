@@ -151,8 +151,8 @@ const Bridging = (props: BridgeProps) => {
         contractProvider,
       });
 
-      const { txHash } = result;
-
+      const txHash = result.hash;
+      console.log(`txHash: ${txHash}`);
       if (address) {
         handleInteraction({
           address,
@@ -188,6 +188,7 @@ const Bridging = (props: BridgeProps) => {
                 setTxHash={setTxHash}
                 errorMessage={errorMessage}
                 setErrorMessage={setErrorMessage}
+                type={type}
               />
               <div className="my-8">
                 <CustomButtonNetwork mintNetwork={fromNetwork.name} />

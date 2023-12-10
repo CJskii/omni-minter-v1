@@ -6,4 +6,5 @@ export interface BridgingModalProps {
   setTxHash: (txHash: string) => void;
   errorMessage: string;
   setErrorMessage: (errorMessage: string) => void;
+  type: string;
 }
