@@ -51,7 +51,6 @@ const handleLayerZeroMinting = async ({
   );
   const contractFeeInWei = await contract.fee();
   const feeInEther = ethers.utils.formatEther(contractFeeInWei);
-  console.log(`Fee: ${feeInEther}`);
 
   let tx = await (
     await contract.mint({
@@ -93,7 +92,6 @@ const handleWormholeMinting = async ({
   );
   const contractFeeInWei = await contract.fee();
   const feeInEther = ethers.utils.formatEther(contractFeeInWei);
-  console.log(`Fee: ${feeInEther}`);
 
   let tx = await (
     await contract.mint({

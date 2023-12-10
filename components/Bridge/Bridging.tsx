@@ -152,7 +152,7 @@ const Bridging = (props: BridgeProps) => {
       });
 
       const txHash = result.hash;
-      console.log(`txHash: ${txHash}`);
+
       if (address) {
         handleInteraction({
           address,

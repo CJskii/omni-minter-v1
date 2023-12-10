@@ -34,8 +34,6 @@ export const CustomButtonNetwork = (props: SwitchNetworkProps) => {
     }
   }, [chain, mintNetwork]);
 
-  console.log("mintNetwork", mintNetwork);
-
   return (
     <ConnectButton.Custom>
       {({

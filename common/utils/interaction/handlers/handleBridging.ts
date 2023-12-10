@@ -128,10 +128,6 @@ const wormholeBridge = async ({
   const targetAddress = toNetwork.deployedContracts.wormhole.NFT.address;
   const targetChainId = toNetwork.whParams?.remoteChainId;
 
-  console.log(
-    `Target address: ${targetAddress}, Target chain ID: ${targetChainId}`
-  );
-
   const GAS_LIMIT = 300000; // TODO: Implement dynamic gas limit
   const receiverValue = 0; // receiver value is 0 for NFTs
 
@@ -158,8 +154,6 @@ const wormholeBridge = async ({
     await tx.wait();
 
     console.log("NFT sent!");
-    console.log(tx);
-    console.log(`Transaction hash: ${tx.hash}`);
 
     return tx;
   } catch (e) {
