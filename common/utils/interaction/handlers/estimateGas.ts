@@ -53,8 +53,8 @@ const estimateGasBridgeFee = async ({
   if (!fromNetwork.deployedContracts)
     throw new Error(`No deployed contracts found for ${fromNetwork.name}`);
   const contract = new Contract(
-    fromNetwork.deployedContracts.REFUEL.address,
-    fromNetwork.deployedContracts.REFUEL.ABI,
+    fromNetwork.deployedContracts.layerzero.REFUEL.address,
+    fromNetwork.deployedContracts.layerzero.REFUEL.ABI,
     signer
   );
 
