@@ -17,6 +17,10 @@ interface MintButtonProps {
   mintNetwork: Network;
   isInvited: boolean;
   referredBy: string;
+  contractProvider: {
+    type: string;
+    contract: any;
+  };
 }
 
 export const CustomButtonMint = (props: MintButtonProps) => {
@@ -51,7 +55,10 @@ export const CustomButtonMint = (props: MintButtonProps) => {
       setShowMintModal(true);
       setMinting(true);
 
-      const result = await handleMinting(mintNetwork);
+      const result = await handleMinting({
+        mintNetwork,
+        contractProvider: props.contractProvider,
+      });
 
       if (!result) {
         throw new Error("Failed to mint NFT");

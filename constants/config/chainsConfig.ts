@@ -44,9 +44,13 @@ import { astar } from "../customChains/astar";
 import { kava } from "../customChains/kava";
 import { pgn } from "../customChains/pgn";
 import { getContractAddress } from "../../common/utils/getters/getConstants";
-import { getRemoteChainId } from "../../common/utils/getters/getConstants";
+import {
+  getLayerZeroChainId,
+  getWormholeChainId,
+} from "../../common/utils/getters/getConstants";
 import { getMaxGasValue } from "../../common/utils/getters/getMaxGasValue";
 import { CONTRACT_ABI, REFUEL_CONTRACT_ABI } from "../contracts/abi";
+import { NFT_CONTRACT_ABI } from "../contracts/wormhole";
 import { Network, ExtendedNetwork } from "../../common/types/network";
 
 export const mainnetChains: Network[] = [
@@ -317,8 +321,12 @@ export const getSupportedChains = () => {
         contractProviders: getContractProviders(chain),
         lzParams: {
           lzEndpointAddress: chain.lzEndpointAddress,
-          remoteChainId: getRemoteChainId(chain.name),
+          remoteChainId: getLayerZeroChainId(chain.name),
           maxGas: getMaxGasValue(chain.name),
+        },
+        whParams: {
+          whEndpointAddress: "",
+          remoteChainId: getWormholeChainId(chain.name),
         },
         // TODO: Add wormhole params
       }));
@@ -345,7 +353,7 @@ export const getSupportedChains = () => {
           wormhole: {
             NFT: {
               address: getContractAddress(chain.name, "NFT") as string,
-              ABI: CONTRACT_ABI, // change to NFT abi
+              ABI: NFT_CONTRACT_ABI,
             },
             ERC20: {
               address: "" as string,
@@ -365,7 +373,7 @@ export const getSupportedChains = () => {
         },
         lzParams: {
           lzEndpointAddress: "",
-          remoteChainId: getRemoteChainId(chain.name),
+          remoteChainId: getLayerZeroChainId(chain.name),
           maxGas: getMaxGasValue(chain.name),
         },
         // TODO: Add wormhole params
@@ -429,7 +437,7 @@ const getDeployedContracts = (chain: Network) => {
     wormhole: {
       NFT: {
         address: getContractAddress(chain.name, "NFT") as string,
-        ABI: CONTRACT_ABI, // change to NFT abi
+        ABI: NFT_CONTRACT_ABI, // change to NFT abi
       },
       ERC20: {
         address: "" as string,

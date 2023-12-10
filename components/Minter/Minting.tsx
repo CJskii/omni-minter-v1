@@ -45,6 +45,13 @@ const Minting = ({
   const [referredBy, setReferredBy] = useState("");
   const { chain } = useNetwork();
 
+  // TODO: test wormhole minting and all functionality
+  // check all handlers and functions
+
+  // once this is done, set up minting fees from hardhat
+  // look into OFT and how to set up the sendFrom fees
+  // if this is set up deploy contracts
+
   const {
     selectedNetwork: mintNetwork,
     onNetworkSelect: setMintNetwork,
@@ -120,6 +127,7 @@ const Minting = ({
                   mintNetwork={mintNetwork}
                   isInvited={isInvited}
                   referredBy={referredBy}
+                  contractProvider={contractProvider}
                 />
               </div>
             </div>

@@ -30,6 +30,10 @@ export interface Network {
     lzEndpointAddress?: string;
     remoteChainId?: number;
   };
+  whParams?: {
+    whEndpointAddress?: string;
+    remoteChainId?: number;
+  };
 }
 
 type DeployedContracts = {

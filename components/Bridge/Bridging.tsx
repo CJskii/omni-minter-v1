@@ -148,7 +148,7 @@ const Bridging = (props: BridgeProps) => {
         TOKEN_ID,
         fromNetwork,
         toNetwork,
-        type: "bridge" as const, // TODO: replace this with params from the UI
+        contractProvider,
       });
 
       const { txHash } = result;

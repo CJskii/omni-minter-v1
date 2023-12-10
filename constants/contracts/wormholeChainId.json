@@ -1,0 +1,12 @@
+{
+  "ethereum": 2,
+  "bsc": 4,
+  "polygon": 5,
+  "avalanche": 6,
+  "fantom": 10,
+  "klaytn": 13,
+  "celo": 14,
+  "moonbeam": 16,
+  "arbitrum": 23,
+  "optimism": 24
+}

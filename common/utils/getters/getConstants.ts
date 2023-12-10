@@ -1,5 +1,6 @@
 import CONTRACT_ADDRESS_JSON from "../../../constants/contracts/contractAddress.json";
-import CHAIN_ID_JSON from "../../../constants/chainId.json";
+import CHAIN_ID_LZ from "../../../constants/contracts/layerzeroChainId.json";
+import CHAIN_ID_WH from "../../../constants/contracts/wormholeChainId.json";
 import { getNFTEnvVarName } from "./contracts/wNFT";
 import { getONFTEnvVarName } from "./contracts/onft";
 import { getRefuelEnvVarName } from "./contracts/refuel";
@@ -12,7 +13,9 @@ interface ChainIdMap {
   [key: string]: number;
 }
 
-const CHAIN_ID: ChainIdMap = CHAIN_ID_JSON as ChainIdMap;
+const LZ_CHAIN_ID: ChainIdMap = CHAIN_ID_LZ as ChainIdMap;
+const WH_CHAIN_ID: ChainIdMap = CHAIN_ID_WH as ChainIdMap;
+
 const CONTRACT_ADDRESS: ContractAddressMap =
   CONTRACT_ADDRESS_JSON as ContractAddressMap;
 
@@ -45,9 +48,15 @@ export const getContractAddress = (fromNetwork: string, contract: string) => {
   }
 };
 
-export const getRemoteChainId = (targetNetwork: string) => {
+export const getLayerZeroChainId = (targetNetwork: string) => {
   targetNetwork = transformNetworkName(targetNetwork);
-  const remoteChainId = CHAIN_ID[targetNetwork.toLowerCase()];
+  const remoteChainId = LZ_CHAIN_ID[targetNetwork.toLowerCase()];
+  return remoteChainId;
+};
+
+export const getWormholeChainId = (targetNetwork: string) => {
+  targetNetwork = transformNetworkName(targetNetwork);
+  const remoteChainId = WH_CHAIN_ID[targetNetwork.toLowerCase()];
   return remoteChainId;
 };
 
