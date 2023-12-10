@@ -46,7 +46,7 @@ const Footer = () => {
       )}
 
       {isNotWormholeAndLayerZero && (
-        <div className="flex justify-center items-center gap-8">
+        <div className="flex justify-center items-center gap-8 max-sm:hidden">
           <Image
             src="/layerzero.svg"
             width={200}
@@ -66,7 +66,7 @@ const Footer = () => {
       )}
 
       <div
-        className="flex space-x-4 justify-center items-center"
+        className="flex space-x-4 justify-center items-center max-sm:mx-auto"
         ref={iconsDivRef}
       >
         <a
