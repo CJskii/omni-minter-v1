@@ -69,10 +69,10 @@ const Process = () => {
                 </svg>
               </div>
               <h3 className="mb-4 font-display text-lg font-bold text-base-content">
-                User-Friendly ONFT Minting
+                User-Friendly NFT Minting
               </h3>
               <p className="dark:text-jacarta-300">
-                Mintly revolutionizes ONFT minting with its user-friendly
+                Mintly revolutionizes NFT minting with its user-friendly
                 interface. Dive into the creation of Omnichain Non-Fungible
                 Tokens with minimal effort, leveraging our intuitive tools for a
                 hassle-free minting experience.
@@ -107,7 +107,7 @@ const Process = () => {
               </h3>
               <p className="dark:text-jacarta-300">
                 Experience the convenience of simplified cross-chain bridging on
-                Mintly. Our platform facilitates effortless transfer of ONFTs
+                Mintly. Our platform facilitates effortless transfer of NFTs
                 across multiple blockchains, embodying the essence of
                 user-centric blockchain interaction.
               </p>

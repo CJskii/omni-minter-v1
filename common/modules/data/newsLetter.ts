@@ -27,7 +27,7 @@ export const newsLetterData = [
       svg: "icon-gallery",
     },
     title: ["ONFT ", "Minting"],
-    text: "Dive into ONFT minting with Mintly’s easy-to-use tools. Our platform, powered by the LayerZero protocol, simplifies the creation and management of Omnichain Non-Fungible Tokens.",
+    text: "Dive into NFT minting with Mintly’s easy-to-use tools. Our platform, powered by the LayerZero and Wormhole protocol, simplifies the creation and management of Omnichain Non-Fungible Tokens.",
   },
   {
     id: "4",
@@ -37,6 +37,6 @@ export const newsLetterData = [
       svg: "icon-list",
     },
     title: ["Cross-Chain ", "Bridging"],
-    text: "Bridge your ONFTs effortlessly across various blockchains using Mintly’s advanced bridging technology. Leverage the power of LayerZero for expansive and seamless digital asset transfers.",
+    text: "Bridge your NFTs effortlessly across various blockchains using Mintly’s advanced bridging technology. Leverage the power of LayerZero and Wormhole for expansive and seamless digital asset transfers.",
   },
 ];

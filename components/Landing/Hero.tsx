@@ -45,7 +45,7 @@ const Hero = () => {
                 bridging the gap between diverse blockchain networks.
               </p>
               <div className="flex space-x-4">
-                <Link href="/mint" className="btn btn-primary">
+                <Link href="/layerzero/onft-mint" className="btn btn-primary">
                   Get Started
                 </Link>
                 <Link href="/chains" className="btn glass">
