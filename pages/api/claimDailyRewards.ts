@@ -39,6 +39,10 @@ const checkIfUserClaimedRewardToday = (user: any) => {
 
 const calculateNextReward = (user: any) => {
   const today = new Date();
+  if (!user.lastRewardClaimedAt) {
+    return 1; // First reward day
+  }
+
   const lastClaimedDate = parseISO(user.lastRewardClaimedAt.toISOString());
   const daysDifference = differenceInCalendarDays(today, lastClaimedDate);
 
@@ -61,8 +65,16 @@ const calculateNextDayRewardDay = (dailyReward: any) => {
 };
 
 const isValidRewardDay = (user: any, day: number) => {
-  const mintedToday = isToday(new Date(user.mints.updatedAt));
-  const bridgedToday = isToday(new Date(user.bridges.updatedAt));
+  const hasMints = user.mints && user.mints.length > 0;
+  const hasBridges = user.bridges && user.bridges.length > 0;
+
+  const mintedToday = hasMints
+    ? isToday(new Date(user.mints[0].updatedAt))
+    : false;
+  const bridgedToday = hasBridges
+    ? isToday(new Date(user.bridges[0].updatedAt))
+    : false;
+
   if (day === 3) {
     return mintedToday
       ? { message: "Success", isValid: true }
@@ -163,7 +175,7 @@ export default async function handler(
     });
 
     // TODO: Add logic to record this in UserDailyReward table
-    console.log("Reward claimed successfully");
+    console.log(`Day ${claimRewardDay} reward claimed successfully`);
     res.status(200).json({
       status: "success",
       message: "Reward claimed successfully",
