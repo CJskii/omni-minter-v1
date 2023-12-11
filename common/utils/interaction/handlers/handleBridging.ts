@@ -92,7 +92,7 @@ const layerZeroBridge = async ({
     adapterParams, // flexible bytes array to indicate messaging adapter services
     {
       value: nativeFee.mul(5).div(4),
-      gasLimit: fromNetwork.name == "Arbitrum One" ? 2000000 : 1500000,
+      gasLimit: 2000000,
     }
   );
 
