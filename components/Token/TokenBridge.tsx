@@ -1,17 +1,25 @@
 import { useState, useEffect } from "react";
 import { IoSwapHorizontalSharp } from "react-icons/io5";
 import dynamic from "next/dynamic";
-import { Network } from "../../types/network";
-import { useNetworkSelection } from "../../utils/hooks/useNetworkSelection";
+import { Network } from "../../common/types/network";
+import { useNetworkSelection } from "../../common/components/hooks/useNetworkSelection";
 import { useChainModal } from "@rainbow-me/rainbowkit";
-import { getValidToNetworks } from "../../utils/getValidToNetworks";
+import { getValidToNetworks } from "../../common/utils/getters/getValidToNetworks";
 import { useNetwork } from "wagmi";
-import { activeChains } from "../../constants/chainsConfig";
-import NetworkModal from "../Modals/NetworkModal";
+import { activeChains } from "../../constants/config/chainsConfig";
+import NetworkModal from "../../common/components/elements/modals/NetworkModal";
 
-const TokenBridge = () => {
+const TokenBridge = ({
+  contractProvider,
+}: {
+  contractProvider: {
+    type: string;
+    contract: any;
+  };
+}) => {
   const { chain } = useNetwork();
   const { openChainModal } = useChainModal();
+  const { type, contract } = contractProvider;
 
   const [inputAmount, setInputAmount] = useState("");
   const [gasFee, setGasFee] = useState("");
@@ -23,7 +31,11 @@ const TokenBridge = () => {
   const [recipientAddress, setRecipientAddress] = useState("");
 
   const isValidToNetwork = (toNetwork: Network) => {
-    const validToNetworks = getValidToNetworks(fromNetwork);
+    const validToNetworks = getValidToNetworks({
+      fromNetwork,
+      type,
+      contract,
+    }) as string[];
     return validToNetworks.includes(toNetwork.name);
   };
 
@@ -34,7 +46,7 @@ const TokenBridge = () => {
     onSearchChange: setFromSearchTerm,
     filteredChains: fromFilteredChains,
     onClose: onFromClose,
-  } = useNetworkSelection(activeChains[0] as Network);
+  } = useNetworkSelection(contractProvider);
 
   const {
     selectedNetwork: toNetwork,
@@ -43,12 +55,16 @@ const TokenBridge = () => {
     onSearchChange: setToSearchTerm,
     filteredChains: toFilteredChains,
     onClose: onToClose,
-  } = useNetworkSelection(activeChains[1] as Network, isValidToNetwork);
+  } = useNetworkSelection(contractProvider, isValidToNetwork);
 
   useEffect(() => {
     // If the currently selected "To" network is not valid after the "From" network changes, reset it.
     if (!isValidToNetwork(toNetwork)) {
-      const validNetworks = getValidToNetworks(fromNetwork);
+      const validNetworks = getValidToNetworks({
+        fromNetwork,
+        type,
+        contract,
+      }) as string[];
       const defaultNetwork = activeChains.find(
         (chain) => chain.name === validNetworks[0]
       );

@@ -1,7 +1,7 @@
-import { activeChains } from "../constants/chainsConfig";
+import { activeChains } from "../constants/config/chainsConfig";
 import Image from "next/image";
 import { useAccount } from "wagmi";
-import HeadComponent from "../components/HeadComponent";
+import HeadComponent from "../common/components/elements/HeadComponent";
 
 const Chains = () => {
   const { address } = useAccount();
@@ -35,7 +35,9 @@ const Chains = () => {
                       width={100}
                       height={100}
                     />
-                    <h2 className="card-title pt-4">{chain.name}</h2>
+                    <h2 className="card-title pt-4 text-center">
+                      {chain.name}
+                    </h2>
                     <p>Native currency: {chain.nativeCurrency.symbol}</p>
                     <a
                       href={

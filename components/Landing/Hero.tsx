@@ -1,7 +1,7 @@
 import Link from "next/link";
 import React from "react";
 import Image from "next/image";
-import { hero_data } from "../../data/hero";
+import { hero_data } from "../../common/modules/data/hero";
 
 const Hero = () => {
   return (
@@ -12,7 +12,7 @@ const Hero = () => {
           <div className="grid h-full items-center gap-4 lg:grid-cols-12">
             <div className="col-span-6 flex h-full flex-col items-center justify-center py-10 md:items-start md:py-20 xl:col-span-5 xl:pl-[20%] xl:pr-[10%]">
               <div className="mb-10 w-full sm:flex sm:space-x-4">
-                <div className="mb-4 flex-1 rounded-2lg bg-white p-4 text-center dark:bg-white/[.15]">
+                <div className="mb-4 flex-1 rounded-md bg-white p-4 text-center dark:bg-white/[.15]">
                   <span className="block font-display text-3xl text-primary">
                     100,000+
                   </span>
@@ -20,7 +20,7 @@ const Hero = () => {
                     Transactions
                   </span>
                 </div>
-                <div className="mb-4 flex-1 rounded-2lg bg-white p-4 text-center dark:bg-white/[.15]">
+                <div className="mb-4 flex-1 rounded-md bg-white p-4 text-center dark:bg-white/[.15]">
                   <span className="block font-display text-3xl text-secondary">
                     30+
                   </span>
@@ -28,7 +28,7 @@ const Hero = () => {
                     Chains
                   </span>
                 </div>
-                <div className="mb-4 flex-1 rounded-2lg bg-white p-4 text-center dark:bg-white/[.15]">
+                <div className="mb-4 flex-1 rounded-md bg-white p-4 text-center dark:bg-white/[.15]">
                   <span className="block font-display text-3xl text-accent">
                     50,000+
                   </span>
@@ -37,7 +37,7 @@ const Hero = () => {
                   </span>
                 </div>
               </div>
-              <h1 className="mb-6 text-center font-display text-5xl text-jacarta-700 dark:text-white md:text-left lg:text-5xl xl:text-6xl">
+              <h1 className="mb-6 text-center font-display text-3xl text-jacarta-700 dark:text-white md:text-left lg:text-4xl xl:text-5xl">
                 Uniting Blockchain Ecosystems on One Platform
               </h1>
               <p className="mb-8 text-center text-lg dark:text-jacarta-200 md:text-left">
@@ -45,7 +45,7 @@ const Hero = () => {
                 bridging the gap between diverse blockchain networks.
               </p>
               <div className="flex space-x-4">
-                <Link href="/mint" className="btn btn-primary">
+                <Link href="/layerzero/onft-mint" className="btn btn-primary">
                   Get Started
                 </Link>
                 <Link href="/chains" className="btn glass">
@@ -83,7 +83,7 @@ const Hero = () => {
                       key={id}
                     >
                       <article>
-                        <div className="block overflow-hidden rounded-2.5xl bg-base-200 shadow-md transition-shadow hover:shadow-lg dark:bg-jacarta-700">
+                        <div className="block overflow-hidden rounded-2.5xl bg-base-200 shadow-md transition-shadow hover:shadow-lg dark:bg-jacarta-700 rounded-lg">
                           <figure className="relative">
                             <Link href={`/`}>
                               <Image
@@ -134,7 +134,7 @@ const Hero = () => {
                             return (
                               <div className="md:w-3/4" key={id}>
                                 <article>
-                                  <div className="block overflow-hidden rounded-2.5xl bg-base-200 shadow-md transition-shadow hover:shadow-lg dark:bg-jacarta-700">
+                                  <div className="block overflow-hidden rounded-2.5xl bg-base-200 shadow-md transition-shadow hover:shadow-lg dark:bg-jacarta-700 rounded-lg">
                                     <figure className="relative">
                                       <Link href={`/`}>
                                         <Image

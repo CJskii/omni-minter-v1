@@ -1,19 +1,21 @@
 import { useState, useEffect } from "react";
-import { getContractAddress } from "../../utils/getConstants";
 import { useNetwork, useAccount } from "wagmi";
-import { handleBridging } from "../../utils/helpers/handleBridging";
-import { handleErrors } from "../../utils/helpers/handleErrors";
-import handleInteraction from "../../utils/helpers/handleInteraction";
-import { useNetworkSelection } from "../../utils/hooks/useNetworkSelection";
-import { activeChains } from "../../constants/chainsConfig";
-import { getValidToNetworks } from "../../utils/getValidToNetworks";
-import { Network } from "../../types/network";
+import { handleBridging } from "../../common/utils/interaction/handlers/handleBridging";
+import { handleErrors } from "../../common/utils/interaction/handlers/handleErrors";
+import handleInteraction from "../../common/utils/interaction/handlers/handleInteraction";
+import { useNetworkSelection } from "../../common/components/hooks/useNetworkSelection";
+import { getValidToNetworks } from "../../common/utils/getters/getValidToNetworks";
+import { Network } from "../../common/types/network";
 import dynamic from "next/dynamic";
+import { useRouter } from "next/router";
 
-const NetworkModal = dynamic(() => import("../Modals/NetworkModal"), {
-  loading: () => <span className="loading loading-dots loading-lg"></span>,
-  ssr: true,
-});
+const NetworkModal = dynamic(
+  () => import("../../common/components/elements/modals/NetworkModal"),
+  {
+    loading: () => <span className="loading loading-dots loading-lg"></span>,
+    ssr: true,
+  }
+);
 
 const BridgingModal = dynamic(() => import("../Modals/BridgingModal"), {
   loading: () => <span className="loading loading-dots loading-lg"></span>,
@@ -39,13 +41,27 @@ const CustomButtonBridge = dynamic(
 interface BridgeProps {
   passedNftId: string;
   mintNetwork: string;
+  contractProvider: {
+    type: string;
+    contract: string;
+  };
+  stepDescription: string;
 }
 
+type ExtendedNetwork = Network & {
+  contractProviders: {
+    layerzero?: string[];
+    wormhole?: string[];
+  };
+};
+
 const Bridging = (props: BridgeProps) => {
-  let { passedNftId } = props;
+  let { passedNftId, contractProvider, stepDescription } = props;
   const { chain } = useNetwork();
   const { address } = useAccount();
+  const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
+  const { type, contract } = contractProvider;
 
   const [nftId, setNftId] = useState("");
   const [showBridgingModal, setShowBridgingModal] = useState(false);
@@ -54,7 +70,12 @@ const Bridging = (props: BridgeProps) => {
   const [errorMessage, setErrorMessage] = useState("");
 
   const isValidToNetwork = (toNetwork: Network) => {
-    const validToNetworks = getValidToNetworks(fromNetwork);
+    const validToNetworks = getValidToNetworks({
+      fromNetwork,
+      type,
+      contract,
+    }) as string[];
+
     return validToNetworks.includes(toNetwork.name);
   };
 
@@ -64,8 +85,9 @@ const Bridging = (props: BridgeProps) => {
     searchTerm: fromSearchTerm,
     onSearchChange: setFromSearchTerm,
     filteredChains: fromFilteredChains,
+    networksByProvider: networksByProvider,
     onClose: onFromClose,
-  } = useNetworkSelection(activeChains[0] as Network);
+  } = useNetworkSelection(contractProvider);
 
   const {
     selectedNetwork: toNetwork,
@@ -74,18 +96,23 @@ const Bridging = (props: BridgeProps) => {
     onSearchChange: setToSearchTerm,
     filteredChains: toFilteredChains,
     onClose: onToClose,
-  } = useNetworkSelection(activeChains[1] as Network, isValidToNetwork);
+  } = useNetworkSelection(contractProvider, isValidToNetwork);
 
   useEffect(() => {
     // If the currently selected "To" network is not valid after the "From" network changes, reset it.
     if (!isValidToNetwork(toNetwork)) {
-      const validNetworks = getValidToNetworks(fromNetwork);
-      const defaultNetwork = activeChains.find(
-        (chain) => chain.name === validNetworks[0]
+      const validNetworks = getValidToNetworks({
+        fromNetwork,
+        type,
+        contract,
+      }) as string[];
+      const defaultNetwork = networksByProvider.find((network) =>
+        validNetworks.includes(network.name)
       );
+
       defaultNetwork
         ? setToNetwork(defaultNetwork as Network)
-        : setToNetwork(activeChains[0] as Network);
+        : setToNetwork(networksByProvider[0] as Network);
     }
     checkNetwork();
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -121,9 +148,10 @@ const Bridging = (props: BridgeProps) => {
         TOKEN_ID,
         fromNetwork,
         toNetwork,
+        contractProvider,
       });
 
-      const { txHash } = result;
+      const txHash = result.hash;
 
       if (address) {
         handleInteraction({
@@ -148,7 +176,7 @@ const Bridging = (props: BridgeProps) => {
         <div className="flex items-center justify-center px-4 py-10 sm:px-6 lg:px-8 sm:p-8">
           <div className="md:w-full xl:max-w-lg 2xl:max-w-xl xl:mx-auto 2xl:pl-8 h-full flex flex-col justify-between lg:p-8">
             <h2 className="text-3xl font-bold leading-tight sm:text-4xl text-content-focus">
-              Step 2: Bridge ONFT
+              Step 2: {stepDescription}
             </h2>
 
             <div className="space-y-5">
@@ -160,9 +188,10 @@ const Bridging = (props: BridgeProps) => {
                 setTxHash={setTxHash}
                 errorMessage={errorMessage}
                 setErrorMessage={setErrorMessage}
+                type={type}
               />
               <div className="my-8">
-                <CustomButtonNetwork mintNetwork={fromNetwork.name} />
+                <CustomButtonNetwork mintNetwork={fromNetwork} />
               </div>
 
               {/* Select From Network */}

@@ -1,18 +1,19 @@
 import { useEffect, useState } from "react";
-import { activeChains } from "../../constants/chainsConfig";
+import { activeChains } from "../../constants/config/chainsConfig";
 import { useNetwork } from "wagmi";
-import { checkIfReferredUser } from "../../utils/helpers/checkIfReferredUser";
-import { useNetworkSelection } from "../../utils/hooks/useNetworkSelection";
+import { checkIfReferredUser } from "../../common/utils/validators/checkIfReferredUser";
+import { useNetworkSelection } from "../../common/components/hooks/useNetworkSelection";
 import dynamic from "next/dynamic";
-import { Network } from "../../types/network";
+import { ExtendedNetwork } from "../../common/types/network";
 import CardImage from "./CardImage";
 
-// TODO: Can Image loading be improved?
-
-const NetworkModal = dynamic(() => import("../Modals/NetworkModal"), {
-  loading: () => <span className="loading loading-dots loading-lg"></span>,
-  ssr: true,
-});
+const NetworkModal = dynamic(
+  () => import("../../common/components/elements/modals/NetworkModal"),
+  {
+    loading: () => <span className="loading loading-dots loading-lg"></span>,
+    ssr: true,
+  }
+);
 
 const CustomButtonMint = dynamic(() => import("../Buttons/CustomButtonMint"), {
   loading: () => <span className="loading loading-dots loading-lg"></span>,
@@ -27,7 +28,16 @@ const CustomButtonNetwork = dynamic(
   }
 );
 
-const Minting = () => {
+const Minting = ({
+  contractProvider,
+  stepDescription,
+}: {
+  contractProvider: {
+    type: string;
+    contract: any;
+  };
+  stepDescription: string;
+}) => {
   const [lastMintId, setLastMintId] = useState(0);
   const [isInvited, setIsInvited] = useState(false);
   const [referredBy, setReferredBy] = useState("");
@@ -40,14 +50,18 @@ const Minting = () => {
     onSearchChange: setFromSearchTerm,
     filteredChains: fromFilteredChains,
     onClose: onFromClose,
-  } = useNetworkSelection(activeChains[0] as Network);
+  } = useNetworkSelection(contractProvider);
 
   useEffect(() => {
     let selected = mintNetwork;
 
     if (chain?.name && !chain.unsupported) {
-      const networkObject = activeChains.find((net) => net.name === chain.name);
-      selected = (networkObject as Network) || (activeChains[0] as Network);
+      const networkObject = fromFilteredChains.find(
+        (net) => net.name === chain.name
+      );
+      selected =
+        (networkObject as ExtendedNetwork) ||
+        (fromFilteredChains[0] as ExtendedNetwork);
     }
     const isReferredUser = checkIfReferredUser();
     const { isReferred, refLink } = isReferredUser;
@@ -67,7 +81,7 @@ const Minting = () => {
           <div className="flex items-center justify-center px-4 py-10 sm:px-6 lg:px-8 sm:p-8">
             <div className="md:w-full xl:max-w-lg 2xl:max-w-xl xl:mx-auto 2xl:pl-8 h-full flex flex-col justify-between ">
               <h2 className="text-3xl font-bold leading-tight sm:text-4xl text-content-focus">
-                Step 1: Mint ONFT
+                Step 1: {stepDescription}
               </h2>
 
               <div className="space-y-5">
@@ -94,7 +108,7 @@ const Minting = () => {
                 </div>
 
                 <div>
-                  <CustomButtonNetwork mintNetwork={mintNetwork.name} />
+                  <CustomButtonNetwork mintNetwork={mintNetwork} />
                 </div>
               </div>
 
@@ -104,6 +118,7 @@ const Minting = () => {
                   mintNetwork={mintNetwork}
                   isInvited={isInvited}
                   referredBy={referredBy}
+                  contractProvider={contractProvider}
                 />
               </div>
             </div>

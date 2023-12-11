@@ -1,4 +1,4 @@
-import { LeaderboardRowProps } from "../../../types/leaderboard";
+import { LeaderboardRowProps } from "../../../common/types/leaderboard";
 const LeaderboardRow = (props: LeaderboardRowProps) => {
   const { user, index } = props;
 

@@ -1,5 +1,5 @@
 import { useEffect, useRef } from "react";
-import { BridgingModalProps } from "../../types/bridgeModal";
+import { BridgingModalProps } from "../../common/types/bridgeModal";
 
 const BridgingModal = (props: BridgingModalProps) => {
   const {
@@ -10,6 +10,7 @@ const BridgingModal = (props: BridgingModalProps) => {
     setTxHash,
     errorMessage,
     setErrorMessage,
+    type,
   } = props;
   const dialogRef = useRef<null | HTMLDialogElement>(null);
 
@@ -27,7 +28,10 @@ const BridgingModal = (props: BridgingModalProps) => {
       <div className="card card-compact w-full max-w-xl bg-base-100 shadow-xl">
         <div className="card-body">
           <h2 className="card-title">Successful Bridging</h2>
-          <p className="text-xl">Your ONFT has been successfully bridged!</p>
+          <p className="text-xl">
+            Your {type == "wormhole" ? "wNFT" : "ONFT"} has been successfully
+            bridged!
+          </p>
           <p className="text-clip break-words text-[10px]">TX: {txHash}</p>
           <div className="card-actions justify-end">
             <button

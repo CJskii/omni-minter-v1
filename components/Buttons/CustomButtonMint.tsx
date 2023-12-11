@@ -1,11 +1,11 @@
 import { ConnectButton } from "@rainbow-me/rainbowkit";
 import { useEffect, useState } from "react";
 import { useNetwork, useAccount } from "wagmi";
-import { handleErrors } from "../../utils/helpers/handleErrors";
-import { handleMinting } from "../../utils/helpers/handleMinting";
-import handleInteraction from "../../utils/helpers/handleInteraction";
+import { handleErrors } from "../../common/utils/interaction/handlers/handleErrors";
+import { handleMinting } from "../../common/utils/interaction/handlers/handleMinting";
+import handleInteraction from "../../common/utils/interaction/handlers/handleInteraction";
 import dynamic from "next/dynamic";
-import { Network } from "../../types/network";
+import { Network } from "../../common/types/network";
 
 const MintedNFTModal = dynamic(() => import("../Modals/MintedNFTModal"), {
   loading: () => <span className="loading loading-dots loading-lg"></span>,
@@ -17,6 +17,10 @@ interface MintButtonProps {
   mintNetwork: Network;
   isInvited: boolean;
   referredBy: string;
+  contractProvider: {
+    type: string;
+    contract: any;
+  };
 }
 
 export const CustomButtonMint = (props: MintButtonProps) => {
@@ -51,7 +55,10 @@ export const CustomButtonMint = (props: MintButtonProps) => {
       setShowMintModal(true);
       setMinting(true);
 
-      const result = await handleMinting(mintNetwork);
+      const result = await handleMinting({
+        mintNetwork,
+        contractProvider: props.contractProvider,
+      });
 
       if (!result) {
         throw new Error("Failed to mint NFT");

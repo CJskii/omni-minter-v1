@@ -1,4 +1,4 @@
-import { IPreview } from "../../types/gas-refuel";
+import { IPreview } from "../../common/types/gas-refuel";
 
 const Preview = ({
   nativeCurrencySymbol,

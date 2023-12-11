@@ -1,6 +1,6 @@
 import LeaderboardRow from "./LeaderboardRow";
 import LoadingSpinner from "../Loading";
-import { LeaderboardData, User } from "../../../types/leaderboard";
+import { LeaderboardData, User } from "../../../common/types/leaderboard";
 
 const LeaderboardTable = (props: LeaderboardData) => {
   const { leaderboard } = props;
