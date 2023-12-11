@@ -21,7 +21,8 @@ export const handleBridging = async ({
   const signer = await getProviderOrSigner(true);
   const ownerAddress = await (signer as JsonRpcSigner).getAddress();
   let tx;
-  if (contractProvider.type === "layerZero") {
+  console.log(contractProvider);
+  if (contractProvider.type == "layerzero") {
     return (tx = await layerZeroBridge({
       TOKEN_ID,
       fromNetwork,
@@ -29,7 +30,7 @@ export const handleBridging = async ({
       ownerAddress,
       signer: signer as JsonRpcSigner,
     }));
-  } else if (contractProvider.type === "wormhole") {
+  } else if (contractProvider.type == "wormhole") {
     return (tx = await wormholeBridge({
       TOKEN_ID,
       fromNetwork,
