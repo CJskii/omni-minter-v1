@@ -2,7 +2,7 @@ import { NextApiRequest, NextApiResponse } from "next";
 
 const proxyMintly = async (req: NextApiRequest, res: NextApiResponse) => {
   try {
-    const isWormhole = req.headers.iswormhole;
+    const isWormhole = req.headers.iswormhole === "true";
     const mintId = req.query.id;
     let response;
     if (isWormhole) {
