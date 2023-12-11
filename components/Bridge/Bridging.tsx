@@ -151,7 +151,7 @@ const Bridging = (props: BridgeProps) => {
         contractProvider,
       });
 
-      const txHash = result.hash;
+      const txHash = result ? result.hash : "";
 
       if (address) {
         handleInteraction({

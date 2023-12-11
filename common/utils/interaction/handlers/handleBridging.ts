@@ -18,6 +18,7 @@ export const handleBridging = async ({
     contract: string;
   };
 }) => {
+  const txGasLimit = fromNetwork.name == "Arbitrum One" ? 4000000 : 2000000;
   const signer = await getProviderOrSigner(true);
   const ownerAddress = await (signer as JsonRpcSigner).getAddress();
   let tx;
@@ -29,6 +30,7 @@ export const handleBridging = async ({
       toNetwork,
       ownerAddress,
       signer: signer as JsonRpcSigner,
+      txGasLimit,
     }));
   } else if (contractProvider.type == "wormhole") {
     return (tx = await wormholeBridge({
@@ -37,6 +39,7 @@ export const handleBridging = async ({
       toNetwork,
       ownerAddress,
       signer: signer as JsonRpcSigner,
+      txGasLimit,
     }));
   }
 };
@@ -47,12 +50,14 @@ const layerZeroBridge = async ({
   toNetwork,
   ownerAddress,
   signer,
+  txGasLimit,
 }: {
   TOKEN_ID: string;
   fromNetwork: Network;
   toNetwork: Network;
   ownerAddress: string;
   signer: JsonRpcSigner;
+  txGasLimit: number;
 }) => {
   if (!fromNetwork.deployedContracts)
     throw new Error(`No deployed contracts found for ${fromNetwork.name}`);
@@ -63,43 +68,48 @@ const layerZeroBridge = async ({
     signer
   );
 
-  // REMOTE CHAIN ID IS THE CHAIN OF THE RECEIVING NETWORK
-  // ex. if you are sending from Ethereum to Polygon, the remote chain id is the Polygon chain id
-  const remoteChainId = toNetwork.lzParams?.remoteChainId;
+  try {
+    // REMOTE CHAIN ID IS THE CHAIN OF THE RECEIVING NETWORK
+    // ex. if you are sending from Ethereum to Polygon, the remote chain id is the Polygon chain id
+    const remoteChainId = toNetwork.lzParams?.remoteChainId;
 
-  const adapterParams = ethers.utils.solidityPack(
-    ["uint16", "uint256"],
-    [1, 200000]
-  );
+    const adapterParams = ethers.utils.solidityPack(
+      ["uint16", "uint256"],
+      [1, 200000]
+    );
 
-  const fees = await contract.estimateSendFee(
-    remoteChainId,
-    ownerAddress,
-    TOKEN_ID,
-    false,
-    adapterParams
-  );
+    const fees = await contract.estimateSendFee(
+      remoteChainId,
+      ownerAddress,
+      TOKEN_ID,
+      false,
+      adapterParams
+    );
 
-  const nativeFee = fees[0];
+    const nativeFee = fees[0];
 
-  const tx = await contract.sendFrom(
-    ownerAddress, // 'from' address to send tokens
-    remoteChainId, // remote LayerZero chainId
-    ownerAddress, // 'to' address to send tokens
-    TOKEN_ID, // tokenId to send
-    ownerAddress, // refund address (if too much message fee is sent, it gets refunded)
-    ethers.constants.AddressZero, // address(0x0) if not paying in ZRO (LayerZero Token)
-    adapterParams, // flexible bytes array to indicate messaging adapter services
-    {
-      value: nativeFee.mul(5).div(4),
-      gasLimit: 2000000,
-    }
-  );
+    const tx = await contract.sendFrom(
+      ownerAddress, // 'from' address to send tokens
+      remoteChainId, // remote LayerZero chainId
+      ownerAddress, // 'to' address to send tokens
+      TOKEN_ID, // tokenId to send
+      ownerAddress, // refund address (if too much message fee is sent, it gets refunded)
+      ethers.constants.AddressZero, // address(0x0) if not paying in ZRO (LayerZero Token)
+      adapterParams, // flexible bytes array to indicate messaging adapter services
+      {
+        value: nativeFee.mul(5).div(4),
+        gasLimit: txGasLimit,
+      }
+    );
 
-  await tx.wait();
-  console.log("NFT sent!");
+    await tx.wait();
+    console.log("NFT sent!");
 
-  return tx;
+    return tx;
+  } catch (e) {
+    console.error(e);
+    throw new Error((e as any).data?.message || (e as any)?.message);
+  }
 };
 
 const wormholeBridge = async ({
@@ -108,12 +118,14 @@ const wormholeBridge = async ({
   toNetwork,
   ownerAddress,
   signer,
+  txGasLimit,
 }: {
   TOKEN_ID: string;
   fromNetwork: Network;
   toNetwork: Network;
   ownerAddress: string;
   signer: JsonRpcSigner;
+  txGasLimit: number;
 }) => {
   if (!fromNetwork.deployedContracts || !toNetwork.deployedContracts)
     throw new Error(
@@ -149,7 +161,7 @@ const wormholeBridge = async ({
       ownerAddress,
       {
         value: totalCost,
-        gasLimit: 2000000,
+        gasLimit: txGasLimit,
       }
     );
     await tx.wait();
@@ -158,6 +170,6 @@ const wormholeBridge = async ({
 
     return tx;
   } catch (e) {
-    console.error(e);
+    throw new Error((e as any).data?.message || (e as any)?.message);
   }
 };

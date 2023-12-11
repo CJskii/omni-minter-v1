@@ -22,6 +22,14 @@ export const handleErrors = ({
       return setErrorMessage(
         "Invalid ERC721 token ID provided. Please check and try again."
       );
+    } else if (dataMessage.includes("send caller is not owner nor approved")) {
+      return setErrorMessage(
+        "You are not the owner of this token. Please check your NFT ID and try again."
+      );
+    } else if (dataMessage.includes("gas too low")) {
+      return setErrorMessage(
+        "Gas too low. Please try again with a higher gas limit."
+      );
     } else if (
       dataMessage.includes(
         "execution reverted: Relayer: dstNativeAmt too large"
@@ -42,6 +50,10 @@ export const handleErrors = ({
       return setErrorMessage(
         "You have insufficient funds to complete this transaction."
       );
+    } else if (genericMessage.includes("gas too low")) {
+      return setErrorMessage(
+        "Gas too low. Please try again with a higher gas limit."
+      );
     } else if (genericMessage.includes("ERC721: invalid token ID")) {
       return setErrorMessage(
         "Invalid ERC721 token ID provided. Please check and try again."
@@ -51,6 +63,10 @@ export const handleErrors = ({
     ) {
       return setErrorMessage(
         "You are not the owner of this token. Please check your NFT ID and try again."
+      );
+    } else if (genericMessage.includes("user rejected")) {
+      return setErrorMessage(
+        "Transaction rejected. Please check your wallet and try again."
       );
     } else if (genericMessage.includes("execution reverted")) {
       return setErrorMessage(
