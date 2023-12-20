@@ -51,6 +51,8 @@ model Bridges {
   createdAt       DateTime @default(now())
   updatedAt       DateTime @updatedAt
   count           Int      @default(0)
+  layerzeroCount  Int      @default(0)
+  wormholeCount   Int      @default(0)
   user            User     @relation(fields: [ethereumAddress], references: [ethereumAddress])
 }
 
@@ -103,4 +105,62 @@ model VerificationToken {
   User       User      @relation(fields: [user_email], references: [email])
 
   @@unique([identifier, token])
+}
+
+model DiscordEvent {
+  id             Int      @id @default(autoincrement())
+  discordEventId String   @unique
+  scheduledStart DateTime
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime
+  name           String?
+}
+
+model DiscordSupportTicket {
+  id            Int                      @id @default(autoincrement())
+  channelId     String?
+  guildId       String
+  type          DiscordSupportTicketType
+  discordUserId String
+  createdAt     DateTime                 @default(now()) @db.Timestamptz(6)
+  closedAt      DateTime?                @db.Timestamptz(6)
+  DiscordUser   DiscordUser              @relation(fields: [discordUserId], references: [id])
+}
+
+model DiscordUser {
+  id                   String                 @id
+  username             String
+  createdAt            DateTime               @default(now()) @db.Timestamptz(6)
+  updatedAt            DateTime               @db.Timestamptz(6)
+  DiscordSupportTicket DiscordSupportTicket[]
+  GmStreak             GmStreak?
+  GnStreak             GnStreak?
+}
+
+model GmStreak {
+  id            Int         @id @default(autoincrement())
+  streak        Int         @default(0)
+  highestStreak Int         @default(0)
+  totalCount    Int         @default(0)
+  lastGmDate    DateTime    @db.Timestamptz(6)
+  discordUserId String      @unique
+  DiscordUser   DiscordUser @relation(fields: [discordUserId], references: [id])
+}
+
+model GnStreak {
+  id            Int         @id @default(autoincrement())
+  streak        Int         @default(0)
+  highestStreak Int         @default(0)
+  totalCount    Int         @default(0)
+  lastGnDate    DateTime    @db.Timestamptz(6)
+  discordUserId String      @unique
+  DiscordUser   DiscordUser @relation(fields: [discordUserId], references: [id])
+}
+
+enum DiscordSupportTicketType {
+  VERIFICATION
+  PARTNERSHIPS
+  BUGS
+  SCAM
+  OTHER
 }

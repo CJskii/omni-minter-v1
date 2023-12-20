@@ -13,7 +13,13 @@ const fetchUserData = async (ethereumAddress: string) => {
       ethereumAddress: true,
       totalPoints: true,
       bridges: {
-        select: { id: true, count: true, updatedAt: true },
+        select: {
+          id: true,
+          count: true,
+          updatedAt: true,
+          wormholeCount: true,
+          layerzeroCount: true,
+        },
       },
       interactions: {
         select: { id: true, updatedAt: true, count: true },
@@ -72,10 +78,14 @@ export default async function handler(
     return res.status(405).end();
   }
 
-  const { ethereumAddress } = req.body;
+  const { ethereumAddress, bridgeType } = req.body;
+
+  if (!ethereumAddress || !bridgeType) {
+    console.error("Missing parameters");
+    return res.status(400).json({ message: "Missing parameters" });
+  }
 
   try {
-    // Fetch the user and related data
     const user = await fetchUserData(ethereumAddress);
     if (!user) {
       console.error("User not found");
@@ -85,7 +95,6 @@ export default async function handler(
     const streak = handleStreaks(user);
     const pointsToAdd = calculatePoints(user, streak);
 
-    // Update user points, bridge counter, interactions, and streaks
     const updateData: any = {
       totalPoints: user.totalPoints + pointsToAdd,
     };
@@ -94,12 +103,16 @@ export default async function handler(
       updateData.bridges = {
         update: {
           where: { id: user.bridges[0].id },
-          data: { updatedAt: new Date(), count: user.bridges[0].count + 1 },
+          data: {
+            updatedAt: new Date(),
+            count: user.bridges[0].count + 1,
+            [`${bridgeType}Count`]: user.bridges[0][`${bridgeType}Count`] + 1,
+          },
         },
       };
     } else {
       updateData.bridges = {
-        create: { updatedAt: new Date(), count: 1 },
+        create: { updatedAt: new Date(), count: 1, [`${bridgeType}Count`]: 1 },
       };
     }
 
