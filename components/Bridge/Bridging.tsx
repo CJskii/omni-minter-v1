@@ -149,16 +149,10 @@ const Bridging = (props: BridgeProps) => {
         fromNetwork,
         toNetwork,
         contractProvider,
+        address: address ? address : "",
       });
 
       const txHash = result ? result.hash : "";
-
-      if (address) {
-        handleInteraction({
-          address,
-          operation: "new_bridge",
-        });
-      }
 
       setNftId("");
       setIsLoading(false);

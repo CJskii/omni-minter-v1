@@ -3,12 +3,14 @@ import { JsonRpcSigner } from "@ethersproject/providers";
 import { Contract } from "@ethersproject/contracts";
 import getProviderOrSigner from "../../getters/getProviderOrSigner";
 import { Network } from "../../../types/network";
+import handleInteraction from "./handleInteraction";
 
 export const handleBridging = async ({
   TOKEN_ID,
   fromNetwork,
   toNetwork,
   contractProvider,
+  address,
 }: {
   TOKEN_ID: string;
   fromNetwork: Network;
@@ -17,30 +19,50 @@ export const handleBridging = async ({
     type: string;
     contract: string;
   };
+  address: string;
 }) => {
   const txGasLimit = fromNetwork.name == "Arbitrum One" ? 4000000 : 2000000;
   const signer = await getProviderOrSigner(true);
   const ownerAddress = await (signer as JsonRpcSigner).getAddress();
   let tx;
-  console.log(contractProvider);
   if (contractProvider.type == "layerzero") {
-    return (tx = await layerZeroBridge({
+    tx = await layerZeroBridge({
       TOKEN_ID,
       fromNetwork,
       toNetwork,
       ownerAddress,
       signer: signer as JsonRpcSigner,
       txGasLimit,
-    }));
+    });
+
+    if (tx.hash) {
+      await handleInteraction({
+        address,
+        operation: "new_bridge",
+        type: contractProvider.type,
+      });
+    }
+
+    return tx;
   } else if (contractProvider.type == "wormhole") {
-    return (tx = await wormholeBridge({
+    tx = await wormholeBridge({
       TOKEN_ID,
       fromNetwork,
       toNetwork,
       ownerAddress,
       signer: signer as JsonRpcSigner,
       txGasLimit,
-    }));
+    });
+
+    if (tx.hash) {
+      await handleInteraction({
+        address,
+        operation: "new_bridge",
+        type: contractProvider.type,
+      });
+    }
+
+    return tx;
   }
 };
 

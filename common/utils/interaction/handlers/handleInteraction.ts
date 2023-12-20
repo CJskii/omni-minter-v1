@@ -17,11 +17,13 @@ const handleInteraction = async ({
   isInvited = false,
   referredBy = "",
   operation,
+  type = "",
 }: {
   address: string;
   isInvited?: boolean;
   referredBy?: string;
   operation: string;
+  type?: string;
 }) => {
   let response;
   switch (operation) {
@@ -30,7 +32,7 @@ const handleInteraction = async ({
       response = await updateMintData({ user });
       return handleApiResponse(response, "Mint");
     case "new_bridge":
-      response = await updateBridgeData(address);
+      response = await updateBridgeData({ address, type });
       return handleApiResponse(response, "Bridge");
     case "new_user":
       const { refLink } = checkIfReferredUser();
