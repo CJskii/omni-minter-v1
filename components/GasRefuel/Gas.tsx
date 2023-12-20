@@ -124,13 +124,6 @@ const Gas = ({
   };
 
   const handlePreviewClick = async () => {
-    if (toNetwork.name === "Linea" || fromNetwork.name === "Linea") {
-      setErrorMessage(
-        "Gas Refuel is temporarily disabled for Linea. Please select another network."
-      );
-      setShowGasModal(true);
-      return;
-    }
     setIsLoading(true);
     try {
       if (chain?.name !== fromNetwork.name) {
