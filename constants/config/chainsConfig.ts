@@ -49,7 +49,11 @@ import {
   getWormholeChainId,
 } from "../../common/utils/getters/getConstants";
 import { getMaxGasValue } from "../../common/utils/getters/getMaxGasValue";
-import { CONTRACT_ABI, REFUEL_CONTRACT_ABI } from "../contracts/abi";
+import {
+  CONTRACT_ABI,
+  REFUEL_CONTRACT_ABI,
+  OFT_CONTRACT_ABI,
+} from "../contracts/abi";
 import { NFT_CONTRACT_ABI } from "../contracts/wormhole";
 import { Network, ExtendedNetwork } from "../../common/types/network";
 
@@ -428,9 +432,8 @@ const getDeployedContracts = (chain: Network) => {
         ABI: REFUEL_CONTRACT_ABI,
       },
       OFT: {
-        address: "" as string,
-        // getContractAddress(chain.name, "OFT"),
-        ABI: CONTRACT_ABI, // change to OFT abi
+        address: getContractAddress(chain.name, "OFT") as string,
+        ABI: OFT_CONTRACT_ABI,
       },
     },
     wormhole: {

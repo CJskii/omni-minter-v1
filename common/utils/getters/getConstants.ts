@@ -4,6 +4,7 @@ import CHAIN_ID_WH from "../../../constants/contracts/wormholeChainId.json";
 import { getNFTEnvVarName } from "./contracts/wNFT";
 import { getONFTEnvVarName } from "./contracts/onft";
 import { getRefuelEnvVarName } from "./contracts/refuel";
+import { getOFTEnvVarName } from "./contracts/oft";
 
 interface ContractAddressMap {
   [key: string]: string;
@@ -69,6 +70,9 @@ const getEnvVarName = (fromNetwork: string, contract: string) => {
   }
   if (contract === "NFT") {
     return getNFTEnvVarName(fromNetwork);
+  }
+  if (contract === "OFT") {
+    return getOFTEnvVarName(fromNetwork);
   }
 };
 
