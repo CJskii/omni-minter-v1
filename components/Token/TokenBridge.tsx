@@ -10,6 +10,9 @@ import { activeChains } from "../../constants/config/chainsConfig";
 import NetworkModal from "../../common/components/elements/modals/NetworkModal";
 import { handleMinting } from "../../common/utils/interaction/handlers/handleMinting";
 import { handleErrors } from "../../common/utils/interaction/handlers/handleErrors";
+import getProviderOrSigner from "../../common/utils/getters/getProviderOrSigner";
+import { Contract, ethers } from "ethers";
+import { requestNetworkSwitch } from "../../common/utils/requestNetworkSwitch";
 
 const TokenBridge = ({
   contractProvider,
@@ -31,6 +34,8 @@ const TokenBridge = ({
   const [mintAmount, setMintAmount] = useState("");
   const [bridgeAmount, setBridgeAmount] = useState("");
   const [isMinting, setIsMinting] = useState(false);
+  const [userBalance, setUserBalance] = useState(0);
+  const [isPageLoaded, setIsPageLoaded] = useState(false);
 
   const isValidToNetwork = (toNetwork: Network) => {
     const validToNetworks = getValidToNetworks({
@@ -74,77 +79,103 @@ const TokenBridge = ({
         ? setToNetwork(defaultNetwork as Network)
         : setToNetwork(activeChains[0] as Network);
     }
-    fetchUserBalance();
+    setIsPageLoaded(true);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [fromNetwork, toNetwork, setToNetwork]);
 
+  useEffect(() => {
+    if (isPageLoaded && fromNetwork.name == chain?.name) {
+      console.log("fetching user balance");
+      fetchUserBalance();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isPageLoaded, fromNetwork, toNetwork, setToNetwork]);
+
   const fetchUserBalance = async () => {
-    // const balance = await getBalance({
-    //   network: fromNetwork,
-    //   type,
-    //   contract,
-    // });
-    // setBalance(balance);
+    if (!fromNetwork.deployedContracts || !address) return;
+    try {
+      const balanceInWei = await getBalance({
+        abi: fromNetwork.deployedContracts.layerzero.OFT.ABI,
+        walletAddress: address,
+        contractAddress: fromNetwork.deployedContracts.layerzero.OFT.address,
+      });
+      console.log("balanceInWei", balanceInWei);
+      setUserBalance(Number(balanceInWei)); // Assuming you want to display balance in Ether
+    } catch (e) {
+      console.error(e);
+    }
   };
 
   const getBalance = async ({
-    network,
-    type,
-    contract,
+    abi,
+    walletAddress,
+    contractAddress,
   }: {
-    network: Network;
-    type: string;
-    contract: any;
+    abi: any;
+    walletAddress: string;
+    contractAddress: string;
   }) => {
-    // const provider = getProvider(network);
-    // const contractAddress = getContractAddress(type, network);
-    // const contractInstance = getContractInstance(contract, provider);
-    // const balance = await contractInstance.balanceOf(contractAddress);
-    // return balance;
-  };
-
-  const handleConfirmButton = async () => {
-    // await gasTransferRequest({
-    //   fromNetwork,
-    //   toNetwork,
-    //   inputAmount,
-    //   setIsLoading,
-    //   setGasFee,
-    //   setErrorMessage,
-    //   setShowGasModal,
-    //   setTxHash,
-    //   setTransactionBlockNumber,
-    //   gasFee,
-    //   recipientAddress,
-    // });
-  };
-
-  const handlePreviewClick = async () => {
-    setIsLoading(true);
-    // try {
-    //   if (chain?.name !== fromNetwork.name) {
-    //     await requestNetworkSwitch(fromNetwork.id, openChainModal);
-    //   }
-    //   await estimateGasRequest({
-    //     fromNetwork,
-    //     toNetwork,
-    //     inputAmount,
-    //     setIsLoading,
-    //     setGasFee,
-    //     setErrorMessage,
-    //     setShowGasModal,
-    //     recipientAddress,
-    //   });
-    // } catch (e) {
-    //   console.error(e);
-    //   handleErrors({ e, setErrorMessage });
-    //   setShowGasModal(true);
-    // } finally {
-    //   setIsLoading(false);
-    // }
+    try {
+      const provider = await getProviderOrSigner();
+      const contractInstance = new Contract(contractAddress, abi, provider);
+      const balance = await contractInstance.balanceOf(walletAddress);
+      return balance.toString();
+    } catch (e) {
+      console.error(e);
+    }
   };
 
   const handleMintButton = async () => {
+    if (fromNetwork.name.toLowerCase() !== chain?.name.toLowerCase())
+      return requestNetworkSwitch(fromNetwork.id, openChainModal);
+
+    console.log(
+      `Minting ${mintAmount} tokens on ${fromNetwork.name} network...`
+    );
+
+    try {
+      setIsLoading(true);
+      setShowMintModal(true);
+
+      const result = await handleMinting({
+        mintNetwork: fromNetwork,
+        contractProvider,
+        mintQuantity: mintAmount as any,
+      });
+
+      if (!result) {
+        throw new Error("Failed to mint NFT");
+      }
+
+      const { mintedID, txHash } = result;
+
+      setIsMinting(false);
+      setIsLoading(false);
+      const newBalance = userBalance > 0 ? userBalance + mintedID : mintedID;
+      setUserBalance(Number(newBalance));
+
+      // TODO: Add interaction with the database
+
+      // if (address) {
+      //   await handleInteraction({
+      //     address,
+      //     isInvited,
+      //     referredBy,
+      //     operation: "new_mint",
+      //   });
+      // }
+
+      setTxHash(txHash);
+    } catch (e) {
+      console.error(e);
+      handleErrors({ e, setErrorMessage });
+      setShowMintModal(true);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const handleBridgeButton = async () => {
     if (fromNetwork.name.toLowerCase() !== chain?.name.toLowerCase())
       return alert("Please change network in your wallet\n\n:)");
 
@@ -170,6 +201,8 @@ const TokenBridge = ({
 
       setIsMinting(false);
       setIsLoading(false);
+      const newBalance = userBalance > 0 ? userBalance + mintedID : mintedID;
+      setUserBalance(Number(newBalance));
 
       // TODO: Add interaction with the database
 
@@ -192,28 +225,8 @@ const TokenBridge = ({
     }
   };
 
-  const handleBridgeButton = async () => {
-    console.log("Bridging");
-    // await bridgeRequest({
-    //   fromNetwork,
-    //   toNetwork,
-    //   inputAmount,
-    //   setIsLoading,
-    //   setGasFee,
-    //   setErrorMessage,
-    //   setShowGasModal,
-    //   setTxHash,
-    //   setTransactionBlockNumber,
-    //   recipientAddress,
-    // });
-  };
-
-  const handleMaxButton = async () => {
-    console.log("Maxing");
-  };
-
   const handleRefreshButton = async () => {
-    console.log("Refreshing");
+    await fetchUserBalance();
   };
 
   return (
@@ -226,7 +239,7 @@ const TokenBridge = ({
               OFT Bridge
             </h2>
             <div className="flex justify-center items-center flex-col">
-              <p className="text-center py-2">Your Balance: 0</p>
+              <p className="text-center py-2">Your Balance: {userBalance}</p>
               <IoIosRefresh
                 className="hover:cursor-pointer hover:animate-spin"
                 onClick={handleRefreshButton}
@@ -302,7 +315,7 @@ const TokenBridge = ({
                 />
                 <button
                   className="btn btn-primary w-[20%]"
-                  onClick={handleMaxButton}
+                  onClick={() => setBridgeAmount(userBalance.toString())}
                 >
                   Max
                 </button>

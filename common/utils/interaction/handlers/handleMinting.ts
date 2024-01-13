@@ -60,11 +60,15 @@ const handleOFTMint = async ({
       signer
     );
 
+    console.log(mintNetwork.deployedContracts.layerzero.OFT.address);
+
     const contractFeeInWei = await contract.fee();
     console.log("contractFeeInWei", contractFeeInWei);
 
     const totalFeeInWei = contractFeeInWei.mul(quantity);
     console.log("totalFeeInWei", totalFeeInWei.toString());
+
+    console.log(ethers.utils.formatEther(totalFeeInWei));
 
     // TODO: Test out minting with gas limit
     // check if args are correct
