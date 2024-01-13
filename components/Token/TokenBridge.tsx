@@ -239,12 +239,25 @@ const TokenBridge = ({
     await fetchUserBalance();
   };
 
+  const mintModalProps = {
+    setShowMintModal,
+    showMintModal,
+    txHash,
+    setTxHash,
+    errorMessage,
+    setErrorMessage,
+    isLoading,
+    isMinting,
+    handleMintButton,
+  };
+
   return (
     <div className="flex flex-col justify-between items-center min-w-full ">
       <section className="bg-base card card-side bg-base-200 shadow-xl rounded-none">
         <div className="flex items-center justify-center px-4 py-10 sm:px-6 lg:px-8 sm:p-8">
           <div className="md:w-full xl:max-w-2xl 2xl:max-w-2xl xl:mx-auto 2xl:pl-8 h-full flex flex-col justify-between lg:p-8">
             {/* Modal */}
+            <MintedOFTModal {...mintModalProps} />
             <h2 className="text-xl font-bold leading-tight sm:text-4xl text-content-focus text-center">
               OFT Bridge
             </h2>
