@@ -5,10 +5,11 @@ import { Network } from "../../common/types/network";
 import { useNetworkSelection } from "../../common/components/hooks/useNetworkSelection";
 import { useChainModal } from "@rainbow-me/rainbowkit";
 import { getValidToNetworks } from "../../common/utils/getters/getValidToNetworks";
-import { useNetwork } from "wagmi";
+import { useNetwork, useAccount } from "wagmi";
 import { activeChains } from "../../constants/config/chainsConfig";
 import NetworkModal from "../../common/components/elements/modals/NetworkModal";
 import { handleMinting } from "../../common/utils/interaction/handlers/handleMinting";
+import { handleErrors } from "../../common/utils/interaction/handlers/handleErrors";
 
 const TokenBridge = ({
   contractProvider,
@@ -19,16 +20,17 @@ const TokenBridge = ({
   };
 }) => {
   const { chain } = useNetwork();
+  const { address } = useAccount();
   const { openChainModal } = useChainModal();
   const { type, contract } = contractProvider;
 
-  const [showGasModal, setShowGasModal] = useState(false);
+  const [showMintModal, setShowMintModal] = useState(false);
   const [txHash, setTxHash] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
-  const [transactionBlockNumber, setTransactionBlockNumber] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
   const [mintAmount, setMintAmount] = useState("");
   const [bridgeAmount, setBridgeAmount] = useState("");
+  const [isMinting, setIsMinting] = useState(false);
 
   const isValidToNetwork = (toNetwork: Network) => {
     const validToNetworks = getValidToNetworks({
@@ -143,25 +145,51 @@ const TokenBridge = ({
   };
 
   const handleMintButton = async () => {
-    console.log("Minting");
-    // const { mintedID, txHash } = await handleMinting({
-    //   mintNetwork: fromNetwork,
-    //   contractProvider,
-    //   mintQuantity: mintAmount as any,
-    // });
+    if (fromNetwork.name.toLowerCase() !== chain?.name.toLowerCase())
+      return alert("Please change network in your wallet\n\n:)");
 
-    // await mintRequest({
-    //   fromNetwork,
-    //   toNetwork,
-    //   inputAmount,
-    //   setIsLoading,
-    //   setGasFee,
-    //   setErrorMessage,
-    //   setShowGasModal,
-    //   setTxHash,
-    //   setTransactionBlockNumber,
-    //   recipientAddress,
-    // });
+    console.log(
+      `Minting ${mintAmount} tokens on ${fromNetwork.name} network...`
+    );
+
+    try {
+      setIsLoading(true);
+      setShowMintModal(true);
+
+      const result = await handleMinting({
+        mintNetwork: fromNetwork,
+        contractProvider,
+        mintQuantity: mintAmount as any,
+      });
+
+      if (!result) {
+        throw new Error("Failed to mint NFT");
+      }
+
+      const { mintedID, txHash } = result;
+
+      setIsMinting(false);
+      setIsLoading(false);
+
+      // TODO: Add interaction with the database
+
+      // if (address) {
+      //   await handleInteraction({
+      //     address,
+      //     isInvited,
+      //     referredBy,
+      //     operation: "new_mint",
+      //   });
+      // }
+
+      setTxHash(txHash);
+    } catch (e) {
+      console.error(e);
+      handleErrors({ e, setErrorMessage });
+      setShowMintModal(true);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   const handleBridgeButton = async () => {

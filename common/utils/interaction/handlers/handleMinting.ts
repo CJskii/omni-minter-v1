@@ -18,7 +18,6 @@ export const handleMinting = async ({
 }) => {
   // TODO: Refactor this function with dynamic gas limit
   const mintGasLimit = mintNetwork.name == "Arbitrum One" ? 2000000 : 1000000;
-  console.log("handle minting");
   if (
     contractProvider.type == "layerzero" &&
     contractProvider.contract == "ONFT"
@@ -37,15 +36,13 @@ export const handleMinting = async ({
 const handleOFTMint = async ({
   mintNetwork,
   mintGasLimit,
-  quantity,
+  quantity = 1,
 }: {
   mintNetwork: Network;
   mintGasLimit: number;
   quantity?: number;
 }) => {
-  console.log("handleOFTMint");
   try {
-    // Initiate provider and signer
     const provider = await getProviderOrSigner();
     const signer = await getProviderOrSigner(true);
 
@@ -57,7 +54,6 @@ const handleOFTMint = async ({
     if (!mintNetwork.deployedContracts)
       throw new Error(`No deployed contracts found for ${mintNetwork.name}`);
 
-    // Initiate contract instance and get fee
     const contract = new Contract(
       mintNetwork.deployedContracts.layerzero.OFT.address,
       mintNetwork.deployedContracts.layerzero.OFT.ABI,
@@ -65,22 +61,23 @@ const handleOFTMint = async ({
     );
 
     const contractFeeInWei = await contract.fee();
-    const feeInEther = ethers.utils.formatEther(
-      ethers.BigNumber.from(quantity).mul(contractFeeInWei)
-    );
+    console.log("contractFeeInWei", contractFeeInWei);
 
-    console.log("feeInEther", feeInEther);
-    let tx = await (
-      await contract.mint({
-        value: ethers.utils.parseEther(feeInEther),
+    const totalFeeInWei = contractFeeInWei.mul(quantity);
+    console.log("totalFeeInWei", totalFeeInWei.toString());
+
+    // TODO: Test out minting with gas limit
+    // check if args are correct
+    const tx = await (
+      await contract.mint(quantity, {
+        value: totalFeeInWei,
         gasLimit: mintGasLimit,
       })
     ).wait();
 
-    const txHash: string = tx.transactionHash;
-    const mintedID = quantity ? quantity : 1;
+    const txHash = tx.transactionHash;
 
-    return { mintedID, txHash };
+    return { mintedID: quantity, txHash };
   } catch (e) {
     console.log(e);
     throw new Error((e as any).data?.message || (e as any)?.message);
