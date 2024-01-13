@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { IoSwapHorizontalSharp } from "react-icons/io5";
-import dynamic from "next/dynamic";
+import { IoIosRefresh } from "react-icons/io";
 import { Network } from "../../common/types/network";
 import { useNetworkSelection } from "../../common/components/hooks/useNetworkSelection";
 import { useChainModal } from "@rainbow-me/rainbowkit";
@@ -8,6 +8,7 @@ import { getValidToNetworks } from "../../common/utils/getters/getValidToNetwork
 import { useNetwork } from "wagmi";
 import { activeChains } from "../../constants/config/chainsConfig";
 import NetworkModal from "../../common/components/elements/modals/NetworkModal";
+import { handleMinting } from "../../common/utils/interaction/handlers/handleMinting";
 
 const TokenBridge = ({
   contractProvider,
@@ -21,14 +22,13 @@ const TokenBridge = ({
   const { openChainModal } = useChainModal();
   const { type, contract } = contractProvider;
 
-  const [inputAmount, setInputAmount] = useState("");
-  const [gasFee, setGasFee] = useState("");
   const [showGasModal, setShowGasModal] = useState(false);
   const [txHash, setTxHash] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
   const [transactionBlockNumber, setTransactionBlockNumber] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
-  const [recipientAddress, setRecipientAddress] = useState("");
+  const [mintAmount, setMintAmount] = useState("");
+  const [bridgeAmount, setBridgeAmount] = useState("");
 
   const isValidToNetwork = (toNetwork: Network) => {
     const validToNetworks = getValidToNetworks({
@@ -72,12 +72,34 @@ const TokenBridge = ({
         ? setToNetwork(defaultNetwork as Network)
         : setToNetwork(activeChains[0] as Network);
     }
+    fetchUserBalance();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [fromNetwork, toNetwork, setToNetwork]);
 
-  useEffect(() => {
-    setGasFee("");
-  }, [fromNetwork, toNetwork]);
+  const fetchUserBalance = async () => {
+    // const balance = await getBalance({
+    //   network: fromNetwork,
+    //   type,
+    //   contract,
+    // });
+    // setBalance(balance);
+  };
+
+  const getBalance = async ({
+    network,
+    type,
+    contract,
+  }: {
+    network: Network;
+    type: string;
+    contract: any;
+  }) => {
+    // const provider = getProvider(network);
+    // const contractAddress = getContractAddress(type, network);
+    // const contractInstance = getContractInstance(contract, provider);
+    // const balance = await contractInstance.balanceOf(contractAddress);
+    // return balance;
+  };
 
   const handleConfirmButton = async () => {
     // await gasTransferRequest({
@@ -120,15 +142,68 @@ const TokenBridge = ({
     // }
   };
 
+  const handleMintButton = async () => {
+    console.log("Minting");
+    // const { mintedID, txHash } = await handleMinting({
+    //   mintNetwork: fromNetwork,
+    //   contractProvider,
+    //   mintQuantity: mintAmount as any,
+    // });
+
+    // await mintRequest({
+    //   fromNetwork,
+    //   toNetwork,
+    //   inputAmount,
+    //   setIsLoading,
+    //   setGasFee,
+    //   setErrorMessage,
+    //   setShowGasModal,
+    //   setTxHash,
+    //   setTransactionBlockNumber,
+    //   recipientAddress,
+    // });
+  };
+
+  const handleBridgeButton = async () => {
+    console.log("Bridging");
+    // await bridgeRequest({
+    //   fromNetwork,
+    //   toNetwork,
+    //   inputAmount,
+    //   setIsLoading,
+    //   setGasFee,
+    //   setErrorMessage,
+    //   setShowGasModal,
+    //   setTxHash,
+    //   setTransactionBlockNumber,
+    //   recipientAddress,
+    // });
+  };
+
+  const handleMaxButton = async () => {
+    console.log("Maxing");
+  };
+
+  const handleRefreshButton = async () => {
+    console.log("Refreshing");
+  };
+
   return (
-    <div className="flex flex-col justify-between items-center min-w-full">
+    <div className="flex flex-col justify-between items-center min-w-full ">
       <section className="bg-base card card-side bg-base-200 shadow-xl rounded-none">
         <div className="flex items-center justify-center px-4 py-10 sm:px-6 lg:px-8 sm:p-8">
           <div className="md:w-full xl:max-w-2xl 2xl:max-w-2xl xl:mx-auto 2xl:pl-8 h-full flex flex-col justify-between lg:p-8">
             {/* Modal */}
             <h2 className="text-xl font-bold leading-tight sm:text-4xl text-content-focus text-center">
-              OFT
+              OFT Bridge
             </h2>
+            <div className="flex justify-center items-center flex-col">
+              <p className="text-center py-2">Your Balance: 0</p>
+              <IoIosRefresh
+                className="hover:cursor-pointer hover:animate-spin"
+                onClick={handleRefreshButton}
+              />
+            </div>
 
             <div className="grid grid-cols-[1fr,auto,1fr] items-center gap-4 py-4 px-2 mt-4 max-sm:flex max-sm:flex-col">
               <NetworkModal
@@ -161,17 +236,57 @@ const TokenBridge = ({
                 title="To"
               />
             </div>
+            <div className="flex justify-center items-start flex-col py-2">
+              <label htmlFor="receipentAddress" className="pb-1">
+                Step 1: Mint
+              </label>{" "}
+              <div className="flex justify-center items-center gap-2 w-full">
+                <input
+                  type="number"
+                  id="recipientAddress"
+                  placeholder="Enter amount to mint"
+                  value={mintAmount}
+                  onChange={(e) => setMintAmount(e.target.value)}
+                  className="input input-bordered flex-grow"
+                />
+                <button
+                  className="btn btn-primary w-[20%]"
+                  onClick={handleMintButton}
+                >
+                  Mint
+                </button>
+              </div>
+            </div>
 
-            <input
-              type="text"
-              id="recipientAddress"
-              placeholder="Enter amount of tokens to mint"
-              value={recipientAddress}
-              onChange={(e) => setRecipientAddress(e.target.value)}
-              className="input input-bordered flex-grow"
-            />
+            <div className="flex justify-center items-start flex-col py-2">
+              <label htmlFor="receipentAddress" className="pb-1">
+                Step 2: Bridge
+              </label>
 
-            <button className="btn btn-disabled mt-2">Confirm</button>
+              <div className="flex justify-center items-center gap-2 w-full">
+                <input
+                  type="number"
+                  id="recipientAddress"
+                  placeholder="Enter amount to bridge"
+                  value={bridgeAmount}
+                  onChange={(e) => setBridgeAmount(e.target.value)}
+                  className="input input-bordered flex-grow"
+                />
+                <button
+                  className="btn btn-primary w-[20%]"
+                  onClick={handleMaxButton}
+                >
+                  Max
+                </button>
+              </div>
+            </div>
+
+            <button
+              className="btn btn-primary mt-2"
+              onClick={handleBridgeButton}
+            >
+              Send it
+            </button>
           </div>
         </div>
       </section>
