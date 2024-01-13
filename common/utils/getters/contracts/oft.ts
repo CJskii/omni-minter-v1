@@ -1,67 +1,67 @@
 export const getOFTEnvVarName = (fromNetwork: string): string | undefined => {
   switch (fromNetwork) {
     case "ZKEVM":
-      return process.env.NEXT_PUBLIC_ZKEVM_REFUEL_CONTRACT;
+      return process.env.NEXT_PUBLIC_ZKEVM_OFT_CONTRACT_ADDRESS;
     case "OPTIMISM":
       return process.env.NEXT_PUBLIC_OPTIMISM_OFT_CONTRACT_ADDRESS;
     case "ARBITRUM":
-      return process.env.NEXT_PUBLIC_ARBITRUM_REFUEL_CONTRACT;
+      return process.env.NEXT_PUBLIC_ARBITRUM_OFT_CONTRACT_ADDRESS;
     case "BSC":
-      return process.env.NEXT_PUBLIC_BSC_REFUEL_CONTRACT;
+      return process.env.NEXT_PUBLIC_BSC_OFT_CONTRACT_ADDRESS;
     case "POLYGON":
-      return process.env.NEXT_PUBLIC_POLYGON_REFUEL_CONTRACT;
+      return process.env.NEXT_PUBLIC_POLYGON_OFT_CONTRACT_ADDRESS;
     case "BASE":
-      return process.env.NEXT_PUBLIC_BASE_REFUEL_CONTRACT;
+      return process.env.NEXT_PUBLIC_BASE_OFT_CONTRACT_ADDRESS;
     case "LINEA":
-      return process.env.NEXT_PUBLIC_LINEA_REFUEL_CONTRACT;
+      return process.env.NEXT_PUBLIC_LINEA_OFT_CONTRACT_ADDRESS;
     case "METIS":
-      return process.env.NEXT_PUBLIC_METIS_REFUEL_CONTRACT;
+      return process.env.NEXT_PUBLIC_METIS_OFT_CONTRACT_ADDRESS;
     case "COREDAO":
-      return process.env.NEXT_PUBLIC_COREDAO_REFUEL_CONTRACT;
+      return process.env.NEXT_PUBLIC_COREDAO_OFT_CONTRACT_ADDRESS;
     case "MANTLE":
-      return process.env.NEXT_PUBLIC_MANTLE_REFUEL_CONTRACT;
+      return process.env.NEXT_PUBLIC_MANTLE_OFT_CONTRACT_ADDRESS;
     case "AVALANCHE":
-      return process.env.NEXT_PUBLIC_AVALANCHE_REFUEL_CONTRACT;
+      return process.env.NEXT_PUBLIC_AVALANCHE_OFT_CONTRACT_ADDRESS;
     case "FANTOM":
-      return process.env.NEXT_PUBLIC_FANTOM_REFUEL_CONTRACT;
+      return process.env.NEXT_PUBLIC_FANTOM_OFT_CONTRACT_ADDRESS;
     case "CELO":
-      return process.env.NEXT_PUBLIC_CELO_REFUEL_CONTRACT;
+      return process.env.NEXT_PUBLIC_CELO_OFT_CONTRACT_ADDRESS;
     case "MOONBEAM":
-      return process.env.NEXT_PUBLIC_MOONBEAM_REFUEL_CONTRACT;
+      return process.env.NEXT_PUBLIC_MOONBEAM_OFT_CONTRACT_ADDRESS;
     case "MOONRIVER":
-      return process.env.NEXT_PUBLIC_MOONRIVER_REFUEL_CONTRACT;
+      return process.env.NEXT_PUBLIC_MOONRIVER_OFT_CONTRACT_ADDRESS;
     case "ZORA":
-      return process.env.NEXT_PUBLIC_ZORA_REFUEL_CONTRACT;
+      return process.env.NEXT_PUBLIC_ZORA_OFT_CONTRACT_ADDRESS;
     case "CANTO":
-      return process.env.NEXT_PUBLIC_CANTO_REFUEL_CONTRACT;
+      return process.env.NEXT_PUBLIC_CANTO_OFT_CONTRACT_ADDRESS;
     case "HARMONY":
-      return process.env.NEXT_PUBLIC_HARMONY_REFUEL_CONTRACT;
+      return process.env.NEXT_PUBLIC_HARMONY_OFT_CONTRACT_ADDRESS;
     case "ZKSYNC":
-      return process.env.NEXT_PUBLIC_ZKSYNC_REFUEL_CONTRACT;
+      return process.env.NEXT_PUBLIC_ZKSYNC_OFT_CONTRACT_ADDRESS;
     case "OPBNB":
-      return process.env.NEXT_PUBLIC_OPBNB_REFUEL_CONTRACT;
+      return process.env.NEXT_PUBLIC_OPBNB_OFT_CONTRACT_ADDRESS;
     case "SCROLL":
-      return process.env.NEXT_PUBLIC_SCROLL_REFUEL_CONTRACT;
+      return process.env.NEXT_PUBLIC_SCROLL_OFT_CONTRACT_ADDRESS;
     case "FUSE":
-      return process.env.NEXT_PUBLIC_FUSE_REFUEL_CONTRACT;
+      return process.env.NEXT_PUBLIC_FUSE_OFT_CONTRACT_ADDRESS;
     case "TENET":
-      return process.env.NEXT_PUBLIC_TENET_REFUEL_CONTRACT;
+      return process.env.NEXT_PUBLIC_TENET_OFT_CONTRACT_ADDRESS;
     case "METER":
-      return process.env.NEXT_PUBLIC_METER_REFUEL_CONTRACT;
+      return process.env.NEXT_PUBLIC_METER_OFT_CONTRACT_ADDRESS;
     case "KLAYTN":
-      return process.env.NEXT_PUBLIC_KLAYTN_REFUEL_CONTRACT;
+      return process.env.NEXT_PUBLIC_KLAYTN_OFT_CONTRACT_ADDRESS;
     case "ARBITRUM-NOVA":
-      return process.env.NEXT_PUBLIC_ARBITRUM_NOVA_REFUEL_CONTRACT;
+      return process.env.NEXT_PUBLIC_ARBITRUM_NOVA_OFT_CONTRACT_ADDRESS;
     case "ASTAR":
-      return process.env.NEXT_PUBLIC_ASTAR_REFUEL_CONTRACT;
+      return process.env.NEXT_PUBLIC_ASTAR_OFT_CONTRACT_ADDRESS;
     case "KAVA":
-      return process.env.NEXT_PUBLIC_KAVA_REFUEL_CONTRACT;
+      return process.env.NEXT_PUBLIC_KAVA_OFT_CONTRACT_ADDRESS;
     case "AURORA":
-      return process.env.NEXT_PUBLIC_AURORA_REFUEL_CONTRACT;
+      return process.env.NEXT_PUBLIC_AURORA_OFT_CONTRACT_ADDRESS;
     case "MANTA":
-      return process.env.NEXT_PUBLIC_MANTA_REFUEL_CONTRACT;
+      return process.env.NEXT_PUBLIC_MANTA_OFT_CONTRACT_ADDRESS;
     case "PGN":
-      return process.env.NEXT_PUBLIC_PGN_REFUEL_CONTRACT;
+      return process.env.NEXT_PUBLIC_PGN_OFT_CONTRACT_ADDRESS;
     default:
       return undefined;
   }
