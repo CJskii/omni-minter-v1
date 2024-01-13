@@ -15,6 +15,7 @@ import getProviderOrSigner from "../../common/utils/getters/getProviderOrSigner"
 import { Contract, ethers } from "ethers";
 import { requestNetworkSwitch } from "../../common/utils/requestNetworkSwitch";
 import MintedOFTModal from "../Modals/MintedOFTModal";
+import BridgeOFTModal from "../Modals/BridgeOFTModal";
 
 const TokenBridge = ({
   contractProvider,
@@ -30,7 +31,7 @@ const TokenBridge = ({
   const { type, contract } = contractProvider;
 
   const [showMintModal, setShowMintModal] = useState(false);
-  const [showBridgeModal, setShowBridgeModal] = useState(false);
+  const [showBridgingModal, setShowBridgingModal] = useState(false);
   const [txHash, setTxHash] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
   const [isLoading, setIsLoading] = useState(false);
@@ -192,7 +193,7 @@ const TokenBridge = ({
 
     try {
       setIsLoading(true);
-      setShowBridgeModal(true);
+      setShowBridgingModal(true);
       setIsBridging(true);
 
       const result = await handleBridging({
@@ -229,7 +230,7 @@ const TokenBridge = ({
     } catch (e) {
       console.error(e);
       handleErrors({ e, setErrorMessage });
-      setShowBridgeModal(true);
+      setShowBridgingModal(true);
     } finally {
       setIsLoading(false);
     }
@@ -251,6 +252,17 @@ const TokenBridge = ({
     handleMintButton,
   };
 
+  const bridgeModalProps = {
+    setShowBridgingModal,
+    showBridgingModal,
+    txHash,
+    setTxHash,
+    errorMessage,
+    setErrorMessage,
+    isLoading,
+    isBridging,
+  };
+
   return (
     <div className="flex flex-col justify-between items-center min-w-full ">
       <section className="bg-base card card-side bg-base-200 shadow-xl rounded-none">
@@ -258,6 +270,7 @@ const TokenBridge = ({
           <div className="md:w-full xl:max-w-2xl 2xl:max-w-2xl xl:mx-auto 2xl:pl-8 h-full flex flex-col justify-between lg:p-8">
             {/* Modal */}
             <MintedOFTModal {...mintModalProps} />
+            <BridgeOFTModal {...bridgeModalProps} />
             <h2 className="text-xl font-bold leading-tight sm:text-4xl text-content-focus text-center">
               OFT Bridge
             </h2>
