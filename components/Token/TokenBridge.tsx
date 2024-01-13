@@ -9,10 +9,12 @@ import { useNetwork, useAccount } from "wagmi";
 import { activeChains } from "../../constants/config/chainsConfig";
 import NetworkModal from "../../common/components/elements/modals/NetworkModal";
 import { handleMinting } from "../../common/utils/interaction/handlers/handleMinting";
+import { handleBridging } from "../../common/utils/interaction/handlers/handleBridging";
 import { handleErrors } from "../../common/utils/interaction/handlers/handleErrors";
 import getProviderOrSigner from "../../common/utils/getters/getProviderOrSigner";
 import { Contract, ethers } from "ethers";
 import { requestNetworkSwitch } from "../../common/utils/requestNetworkSwitch";
+import MintedOFTModal from "../Modals/MintedOFTModal";
 
 const TokenBridge = ({
   contractProvider,
@@ -28,12 +30,14 @@ const TokenBridge = ({
   const { type, contract } = contractProvider;
 
   const [showMintModal, setShowMintModal] = useState(false);
+  const [showBridgeModal, setShowBridgeModal] = useState(false);
   const [txHash, setTxHash] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [mintAmount, setMintAmount] = useState("");
   const [bridgeAmount, setBridgeAmount] = useState("");
   const [isMinting, setIsMinting] = useState(false);
+  const [isBridging, setIsBridging] = useState(false);
   const [userBalance, setUserBalance] = useState(0);
   const [isPageLoaded, setIsPageLoaded] = useState(false);
 
@@ -99,8 +103,8 @@ const TokenBridge = ({
         walletAddress: address,
         contractAddress: fromNetwork.deployedContracts.layerzero.OFT.address,
       });
-      console.log("balanceInWei", balanceInWei);
-      setUserBalance(Number(balanceInWei)); // Assuming you want to display balance in Ether
+
+      setUserBalance(Number(balanceInWei));
     } catch (e) {
       console.error(e);
     }
@@ -136,6 +140,7 @@ const TokenBridge = ({
     try {
       setIsLoading(true);
       setShowMintModal(true);
+      setIsMinting(true);
 
       const result = await handleMinting({
         mintNetwork: fromNetwork,
@@ -177,32 +182,37 @@ const TokenBridge = ({
 
   const handleBridgeButton = async () => {
     if (fromNetwork.name.toLowerCase() !== chain?.name.toLowerCase())
-      return alert("Please change network in your wallet\n\n:)");
+      return requestNetworkSwitch(fromNetwork.id, openChainModal);
+
+    if (!address) return alert("Please connect your wallet\n\n:)");
 
     console.log(
-      `Minting ${mintAmount} tokens on ${fromNetwork.name} network...`
+      `Bridging ${bridgeAmount} tokens on ${fromNetwork.name} network...`
     );
 
     try {
       setIsLoading(true);
-      setShowMintModal(true);
+      setShowBridgeModal(true);
+      setIsBridging(true);
 
-      const result = await handleMinting({
-        mintNetwork: fromNetwork,
+      const result = await handleBridging({
+        TOKEN_ID: bridgeAmount,
+        fromNetwork,
+        toNetwork,
         contractProvider,
-        mintQuantity: mintAmount as any,
+        address,
       });
 
       if (!result) {
         throw new Error("Failed to mint NFT");
       }
 
-      const { mintedID, txHash } = result;
+      const { txHash } = result;
 
-      setIsMinting(false);
+      setIsBridging(false);
       setIsLoading(false);
-      const newBalance = userBalance > 0 ? userBalance + mintedID : mintedID;
-      setUserBalance(Number(newBalance));
+      const newBalance = userBalance - Number(bridgeAmount);
+      setUserBalance(newBalance > 0 ? newBalance : 0);
 
       // TODO: Add interaction with the database
 
@@ -219,7 +229,7 @@ const TokenBridge = ({
     } catch (e) {
       console.error(e);
       handleErrors({ e, setErrorMessage });
-      setShowMintModal(true);
+      setShowBridgeModal(true);
     } finally {
       setIsLoading(false);
     }
