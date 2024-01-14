@@ -1,0 +1,16 @@
+{
+  "functions": {
+    "api/mint.ts": {
+      "maxDuration": 30
+    },
+    "api/bridge.ts": {
+      "maxDuration": 30
+    },
+    "api/createUser.ts": {
+      "maxDuration": 30
+    },
+    "api/*.ts": {
+      "maxDuration": 15
+    }
+  }
+}
