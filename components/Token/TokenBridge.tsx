@@ -1,21 +1,22 @@
 import { useState, useEffect } from "react";
 import { IoSwapHorizontalSharp } from "react-icons/io5";
-import { IoIosRefresh } from "react-icons/io";
 import { Network } from "../../common/types/network";
 import { useNetworkSelection } from "../../common/components/hooks/useNetworkSelection";
 import { useChainModal } from "@rainbow-me/rainbowkit";
 import { getValidToNetworks } from "../../common/utils/getters/getValidToNetworks";
 import { useNetwork, useAccount } from "wagmi";
 import { activeChains } from "../../constants/config/chainsConfig";
-import NetworkModal from "../../common/components/elements/modals/NetworkModal";
 import { handleMinting } from "../../common/utils/interaction/handlers/handleMinting";
 import { handleBridging } from "../../common/utils/interaction/handlers/handleBridging";
 import { handleErrors } from "../../common/utils/interaction/handlers/handleErrors";
-import getProviderOrSigner from "../../common/utils/getters/getProviderOrSigner";
-import { Contract, ethers } from "ethers";
+import { ethers } from "ethers";
 import { requestNetworkSwitch } from "../../common/utils/requestNetworkSwitch";
+import NetworkModal from "../../common/components/elements/modals/NetworkModal";
 import MintedOFTModal from "../Modals/MintedOFTModal";
 import BridgeOFTModal from "../Modals/BridgeOFTModal";
+import Step from "./Step";
+import BridgeOFTButton from "../Buttons/CustomButtonOFTBridge";
+import { getBalance } from "../../common/utils/getters/getBalance";
 
 const TokenBridge = ({
   contractProvider,
@@ -90,12 +91,12 @@ const TokenBridge = ({
 
   useEffect(() => {
     if (isPageLoaded && fromNetwork.name == chain?.name) {
-      fetchUserBalance();
+      getUserBalance();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isPageLoaded, fromNetwork, toNetwork, setToNetwork]);
 
-  const fetchUserBalance = async () => {
+  const getUserBalance = async () => {
     if (!fromNetwork.deployedContracts || !address) return;
     try {
       const balanceInWei = await getBalance({
@@ -107,25 +108,6 @@ const TokenBridge = ({
       const balanceInEther = ethers.utils.formatEther(balanceInWei);
 
       setUserBalance(Number(balanceInEther));
-    } catch (e) {
-      console.error(e);
-    }
-  };
-
-  const getBalance = async ({
-    abi,
-    walletAddress,
-    contractAddress,
-  }: {
-    abi: any;
-    walletAddress: string;
-    contractAddress: string;
-  }) => {
-    try {
-      const provider = await getProviderOrSigner();
-      const contractInstance = new Contract(contractAddress, abi, provider);
-      const balance = await contractInstance.balanceOf(walletAddress);
-      return balance.toString();
     } catch (e) {
       console.error(e);
     }
@@ -163,6 +145,7 @@ const TokenBridge = ({
       console.error(e);
       handleErrors({ e, setErrorMessage });
       setShowMintModal(true);
+      setIsMinting(false);
     } finally {
       setIsLoading(false);
     }
@@ -206,13 +189,10 @@ const TokenBridge = ({
       console.error(e);
       handleErrors({ e, setErrorMessage });
       setShowBridgingModal(true);
+      setIsBridging(false);
     } finally {
       setIsLoading(false);
     }
-  };
-
-  const handleRefreshButton = async () => {
-    await fetchUserBalance();
   };
 
   const mintModalProps = {
@@ -241,6 +221,36 @@ const TokenBridge = ({
     toNetwork: toNetwork.name,
   };
 
+  const step1Props = {
+    label: "Step 1: Mint",
+    placeholder: "Enter amount to mint",
+    value: mintAmount,
+    onChange: setMintAmount,
+    buttonLabel: "Mint",
+    onClick: handleMintButton,
+    disabled: !mintAmount,
+    isLoading: isMinting,
+  };
+
+  const step2Props = {
+    label: "Step 2: Bridge",
+    placeholder: "Enter amount to bridge",
+    value: bridgeAmount,
+    onChange: setBridgeAmount,
+    buttonLabel: "Max",
+    onClick: () => setBridgeAmount(userBalance.toString()),
+    disabled: !userBalance,
+    isLoading: isBridging,
+  };
+
+  const bridgeButtonProps = {
+    onClick: handleBridgeButton,
+    disabled: userBalance < Number(bridgeAmount) || !bridgeAmount,
+    isBridging: isBridging,
+    fromNetwork: fromNetwork.name,
+    chain: chain?.name,
+  };
+
   return (
     <div className="flex flex-col justify-between items-center min-w-full ">
       <section className="bg-base card card-side bg-base-200 shadow-xl rounded-none">
@@ -253,10 +263,6 @@ const TokenBridge = ({
             </h2>
             <div className="flex justify-center items-center flex-col">
               <p className="text-center py-2">Your Balance: {userBalance}</p>
-              <IoIosRefresh
-                className="hover:cursor-pointer hover:animate-spin"
-                onClick={handleRefreshButton}
-              />
             </div>
 
             <div className="grid grid-cols-[1fr,auto,1fr] items-center gap-4 py-4 px-2 mt-4 max-sm:flex max-sm:flex-col">
@@ -290,57 +296,10 @@ const TokenBridge = ({
                 title="To"
               />
             </div>
-            <div className="flex justify-center items-start flex-col py-2">
-              <label htmlFor="receipentAddress" className="pb-1">
-                Step 1: Mint
-              </label>{" "}
-              <div className="flex justify-center items-center gap-2 w-full">
-                <input
-                  type="number"
-                  id="recipientAddress"
-                  placeholder="Enter amount to mint"
-                  value={mintAmount}
-                  onChange={(e) => setMintAmount(e.target.value)}
-                  className="input input-bordered flex-grow"
-                />
-                <button
-                  className="btn btn-primary w-[20%]"
-                  onClick={handleMintButton}
-                >
-                  Mint
-                </button>
-              </div>
-            </div>
 
-            <div className="flex justify-center items-start flex-col py-2">
-              <label htmlFor="receipentAddress" className="pb-1">
-                Step 2: Bridge
-              </label>
-
-              <div className="flex justify-center items-center gap-2 w-full">
-                <input
-                  type="number"
-                  id="recipientAddress"
-                  placeholder="Enter amount to bridge"
-                  value={bridgeAmount}
-                  onChange={(e) => setBridgeAmount(e.target.value)}
-                  className="input input-bordered flex-grow"
-                />
-                <button
-                  className="btn btn-primary w-[20%]"
-                  onClick={() => setBridgeAmount(userBalance.toString())}
-                >
-                  Max
-                </button>
-              </div>
-            </div>
-
-            <button
-              className="btn btn-primary mt-2"
-              onClick={handleBridgeButton}
-            >
-              Send it
-            </button>
+            <Step {...step1Props} />
+            <Step {...step2Props} />
+            <BridgeOFTButton {...bridgeButtonProps} />
           </div>
         </div>
       </section>
