@@ -165,6 +165,8 @@ const TokenBridge = ({
       setIsLoading(true);
       setShowBridgingModal(true);
       setIsBridging(true);
+      if (Number(bridgeAmount) > userBalance)
+        throw new Error("insufficient OFT balance for transfer");
 
       const result = await handleBridging({
         TOKEN_ID: bridgeAmount,
@@ -245,7 +247,7 @@ const TokenBridge = ({
 
   const bridgeButtonProps = {
     onClick: handleBridgeButton,
-    disabled: userBalance < Number(bridgeAmount) || !bridgeAmount,
+    disabled: !bridgeAmount,
     isBridging: isBridging,
     fromNetwork: fromNetwork.name,
     chain: chain?.name,

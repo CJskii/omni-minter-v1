@@ -50,6 +50,12 @@ export const handleErrors = ({
       return setErrorMessage(
         "You have insufficient funds to complete this transaction."
       );
+    } else if (
+      genericMessage.includes("insufficient OFT balance for transfer")
+    ) {
+      return setErrorMessage(
+        "You have insufficient amount of tokens to complete this transaction. Please check your balance and try again."
+      );
     } else if (genericMessage.includes("gas too low")) {
       return setErrorMessage(
         "Gas too low. Please try again with a higher gas limit."
@@ -85,7 +91,9 @@ export const handleErrors = ({
         "Invalid address provided. Please check and try again."
       );
     } else {
-      return setErrorMessage("An error occurred");
+      return setErrorMessage(
+        `An error occurred: ${dataMessage ? dataMessage : genericMessage}`
+      );
     }
   } else {
     return setErrorMessage("An unknown error occurred.");
