@@ -44,7 +44,11 @@ const handleOFTMint = async ({
 }) => {
   try {
     const provider = await getProviderOrSigner();
-    const signer = await getProviderOrSigner(true);
+    const signer = (await getProviderOrSigner(
+      true
+    )) as ethers.providers.JsonRpcSigner;
+
+    const address = await signer.getAddress();
 
     if (!(provider instanceof ethers.providers.Web3Provider)) {
       console.error("Provider is not an instance of Web3Provider");
@@ -59,21 +63,11 @@ const handleOFTMint = async ({
       mintNetwork.deployedContracts.layerzero.OFT.ABI,
       signer
     );
-
-    console.log(mintNetwork.deployedContracts.layerzero.OFT.address);
-
     const contractFeeInWei = await contract.fee();
-    console.log("contractFeeInWei", contractFeeInWei);
-
     const totalFeeInWei = contractFeeInWei.mul(quantity);
-    console.log("totalFeeInWei", totalFeeInWei.toString());
 
-    console.log(ethers.utils.formatEther(totalFeeInWei));
-
-    // TODO: Test out minting with gas limit
-    // check if args are correct
     const tx = await (
-      await contract.mint(quantity, {
+      await contract.mint(address, quantity, {
         value: totalFeeInWei,
         gasLimit: mintGasLimit,
       })

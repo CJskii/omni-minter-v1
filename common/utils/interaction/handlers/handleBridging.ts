@@ -116,36 +116,41 @@ const oftBridge = async ({
   );
 
   try {
-    // REMOTE CHAIN ID IS THE CHAIN OF THE RECEIVING NETWORK
-    // ex. if you are sending from Ethereum to Polygon, the remote chain id is the Polygon chain id
     const remoteChainId = toNetwork.lzParams?.remoteChainId;
 
     const adapterParams = ethers.utils.solidityPack(
       ["uint16", "uint256"],
-      [0, 300000]
+      [1, 300000]
     );
 
-    // TODO: Read fees from the contract
-    // const fees = await contract.estimateSendFee(
-    //   remoteChainId,
-    //   ownerAddress,
-    //   TOKEN_ID,
-    //   false,
-    //   adapterParams
-    // );
+    console.log("contract", contract.address);
+    console.log("remoteChainId", remoteChainId);
+    console.log("ownerAddress", ownerAddress);
+    console.log("TOKEN_ID", TOKEN_ID);
+    console.log("adapterParams", adapterParams);
 
-    // const nativeFee = fees[0];
+    // conver TOKEN_ID from ether to wei
+    const quantityInWei = ethers.utils.parseEther("1").toString();
+
+    // TODO: Read fees from the contract
+    let [nativeFee, transferFee, totalCost] = await contract.getSendGas(
+      remoteChainId,
+      ownerAddress,
+      TOKEN_ID,
+      false,
+      adapterParams
+    );
 
     const tx = await contract.sendFrom(
       ownerAddress, // 'from' address to send tokens
       remoteChainId, // remote LayerZero chainId
       ownerAddress, // 'to' address to send tokens
-      TOKEN_ID, // tokenId to send
+      quantityInWei, // quantity to send
       ownerAddress, // refund address (if too much message fee is sent, it gets refunded)
       ethers.constants.AddressZero, // address(0x0) if not paying in ZRO (LayerZero Token)
-      adapterParams, // flexible bytes array to indicate messaging adapter services
+      "0x", // flexible bytes array to indicate messaging adapter services
       {
-        // value: nativeFee.mul(5).div(4),
+        value: totalCost,
         gasLimit: txGasLimit,
       }
     );
@@ -185,8 +190,6 @@ const onftBridge = async ({
   );
 
   try {
-    // REMOTE CHAIN ID IS THE CHAIN OF THE RECEIVING NETWORK
-    // ex. if you are sending from Ethereum to Polygon, the remote chain id is the Polygon chain id
     const remoteChainId = toNetwork.lzParams?.remoteChainId;
 
     const adapterParams = ethers.utils.solidityPack(
