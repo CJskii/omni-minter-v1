@@ -13,13 +13,7 @@ const BridgeOFTButton = (props: {
       onClick={onClick}
       disabled={disabled}
     >
-      {fromNetwork != chain ? (
-        "Switch"
-      ) : isBridging ? (
-        <span className="loading loading-infinity"></span>
-      ) : (
-        "Send"
-      )}
+      {isBridging ? <span className="loading loading-infinity"></span> : "Send"}
     </button>
   );
 };

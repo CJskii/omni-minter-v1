@@ -123,12 +123,6 @@ const oftBridge = async ({
       [1, 300000]
     );
 
-    console.log("contract", contract.address);
-    console.log("remoteChainId", remoteChainId);
-    console.log("ownerAddress", ownerAddress);
-    console.log("TOKEN_ID", TOKEN_ID);
-    console.log("adapterParams", adapterParams);
-
     // conver TOKEN_ID from ether to wei
     const quantityInWei = ethers.utils.parseEther("1").toString();
 
@@ -194,7 +188,7 @@ const onftBridge = async ({
 
     const adapterParams = ethers.utils.solidityPack(
       ["uint16", "uint256"],
-      [1, 200000]
+      [1, 300000]
     );
 
     const fees = await contract.estimateSendFee(
