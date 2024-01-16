@@ -90,7 +90,6 @@ const TokenBridge = ({
 
   useEffect(() => {
     if (isPageLoaded && fromNetwork.name == chain?.name) {
-      console.log("fetching user balance");
       fetchUserBalance();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -105,7 +104,9 @@ const TokenBridge = ({
         contractAddress: fromNetwork.deployedContracts.layerzero.OFT.address,
       });
 
-      setUserBalance(Number(balanceInWei));
+      const balanceInEther = ethers.utils.formatEther(balanceInWei);
+
+      setUserBalance(Number(balanceInEther));
     } catch (e) {
       console.error(e);
     }
@@ -134,9 +135,7 @@ const TokenBridge = ({
     if (fromNetwork.name.toLowerCase() !== chain?.name.toLowerCase())
       return requestNetworkSwitch(fromNetwork.id, openChainModal);
 
-    console.log(
-      `Minting ${mintAmount} tokens on ${fromNetwork.name} network...`
-    );
+    console.log(`Minting ${mintAmount} MIN on ${fromNetwork.name} network...`);
 
     try {
       setIsLoading(true);
@@ -154,24 +153,12 @@ const TokenBridge = ({
       }
 
       const { mintedID, txHash } = result;
-
-      setIsMinting(false);
-      setIsLoading(false);
       const newBalance = userBalance > 0 ? userBalance + mintedID : mintedID;
-      setUserBalance(Number(newBalance));
-
-      // TODO: Add interaction with the database
-
-      // if (address) {
-      //   await handleInteraction({
-      //     address,
-      //     isInvited,
-      //     referredBy,
-      //     operation: "new_mint",
-      //   });
-      // }
 
       setTxHash(txHash);
+      setUserBalance(Number(newBalance));
+      setIsMinting(false);
+      setIsLoading(false);
     } catch (e) {
       console.error(e);
       handleErrors({ e, setErrorMessage });
@@ -188,7 +175,7 @@ const TokenBridge = ({
     if (!address) return alert("Please connect your wallet\n\n:)");
 
     console.log(
-      `Bridging ${bridgeAmount} tokens on ${fromNetwork.name} network...`
+      `Bridging ${bridgeAmount} MIN on ${fromNetwork.name} network...`
     );
 
     try {
@@ -208,25 +195,13 @@ const TokenBridge = ({
         throw new Error("Failed to mint NFT");
       }
 
-      const { txHash } = result;
+      const { hash } = result;
+      const newBalance = userBalance - Number(bridgeAmount);
 
+      setTxHash(hash);
+      setUserBalance(newBalance > 0 ? newBalance : 0);
       setIsBridging(false);
       setIsLoading(false);
-      const newBalance = userBalance - Number(bridgeAmount);
-      setUserBalance(newBalance > 0 ? newBalance : 0);
-
-      // TODO: Add interaction with the database
-
-      // if (address) {
-      //   await handleInteraction({
-      //     address,
-      //     isInvited,
-      //     referredBy,
-      //     operation: "new_mint",
-      //   });
-      // }
-
-      setTxHash(txHash);
     } catch (e) {
       console.error(e);
       handleErrors({ e, setErrorMessage });
@@ -250,6 +225,7 @@ const TokenBridge = ({
     isLoading,
     isMinting,
     handleMintButton,
+    userBalance,
   };
 
   const bridgeModalProps = {
@@ -261,6 +237,8 @@ const TokenBridge = ({
     setErrorMessage,
     isLoading,
     isBridging,
+    quantity: bridgeAmount,
+    toNetwork: toNetwork.name,
   };
 
   return (
@@ -268,7 +246,6 @@ const TokenBridge = ({
       <section className="bg-base card card-side bg-base-200 shadow-xl rounded-none">
         <div className="flex items-center justify-center px-4 py-10 sm:px-6 lg:px-8 sm:p-8">
           <div className="md:w-full xl:max-w-2xl 2xl:max-w-2xl xl:mx-auto 2xl:pl-8 h-full flex flex-col justify-between lg:p-8">
-            {/* Modal */}
             <MintedOFTModal {...mintModalProps} />
             <BridgeOFTModal {...bridgeModalProps} />
             <h2 className="text-xl font-bold leading-tight sm:text-4xl text-content-focus text-center">

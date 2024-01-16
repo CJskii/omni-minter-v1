@@ -1,5 +1,4 @@
 import { useEffect, useRef } from "react";
-import { BridgingModalProps } from "../../common/types/bridgeModal";
 
 type BridgeOFTModalProps = {
   setShowBridgingModal: (show: boolean) => void;
@@ -10,6 +9,8 @@ type BridgeOFTModalProps = {
   setErrorMessage: (message: string) => void;
   isLoading: boolean;
   isBridging: boolean;
+  quantity: string;
+  toNetwork: string;
 };
 
 const BridgeOFTModal = (props: BridgeOFTModalProps) => {
@@ -21,6 +22,8 @@ const BridgeOFTModal = (props: BridgeOFTModalProps) => {
     setTxHash,
     errorMessage,
     setErrorMessage,
+    quantity,
+    toNetwork,
   } = props;
   const dialogRef = useRef<null | HTMLDialogElement>(null);
 
@@ -39,8 +42,9 @@ const BridgeOFTModal = (props: BridgeOFTModalProps) => {
         <div className="card-body">
           <h2 className="card-title">Successful Bridging</h2>
           <p className="text-xl">
-            {/* Your {type == "wormhole" ? "wNFT" : "ONFT"} has been successfully */}
-            bridged!
+            {`Your ${quantity} MIN ${
+              Number(quantity) === 1 ? "token is" : "tokens are"
+            } on the way to ${toNetwork}!`}
           </p>
           <p className="text-clip break-words text-[10px]">TX: {txHash}</p>
           <div className="card-actions justify-end">

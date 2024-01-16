@@ -1,5 +1,4 @@
 import { useEffect, useRef } from "react";
-import { GasModalProps } from "../../common/types/gas-refuel";
 
 type MintedOFTModalProps = {
   setShowMintModal: (show: boolean) => void;
@@ -10,6 +9,7 @@ type MintedOFTModalProps = {
   setErrorMessage: (message: string) => void;
   isLoading: boolean;
   isMinting: boolean;
+  userBalance: number;
 };
 
 const MintedOFTModal = (props: MintedOFTModalProps) => {
@@ -22,18 +22,8 @@ const MintedOFTModal = (props: MintedOFTModalProps) => {
     setErrorMessage,
     isLoading,
     isMinting,
+    userBalance,
   } = props;
-
-  //   const {
-  //     showMintModal,
-  //     setShowGasModal,
-  //     isLoading,
-  //     txHash,
-  //     setTxHash,
-  //     errorMessage,
-  //     setErrorMessage,
-  //     recipentAddress,
-  //   } = props;
 
   const dialogRef = useRef<null | HTMLDialogElement>(null);
 
@@ -50,15 +40,17 @@ const MintedOFTModal = (props: MintedOFTModalProps) => {
     return (
       <div className="card card-compact w-full max-w-xl bg-base-100 shadow-xl">
         <div className="card-body">
-          <h2 className="card-title">Successful Bridging</h2>
+          <h2 className="card-title">Successful Mint</h2>
           <p className="text-lg">
-            {/* {"You"} will receive {inputAmount}{" "}
-            ${toNetwork.nativeCurrency.symbol} shortly. */}
+            {`Your new balance is ${
+              isMinting ? (
+                <span className="loading loading-ring loading-xs"></span>
+              ) : (
+                userBalance
+              )
+            } MIN`}
           </p>
-          <p className="text-[sm]">
-            {/* Transaction will be included in block{" "}
-            <strong>{transactionBlockNumber}</strong> */}
-          </p>
+          <p className="text-[sm]"></p>
           <p className="text-clip break-words text-[10px]">TX: {txHash}</p>
 
           <div className="card-actions justify-end">
