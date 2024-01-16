@@ -52,12 +52,12 @@ const Navbar = () => {
                 <Link href="/layerzero/gas-refuel">Gas Refuel</Link>
               </li>
               <li>
+                <Link href="/layerzero/oft-mint-bridge">OFT Mint & Bridge</Link>
+              </li>
+              <li>
                 <a href="https://layerzeroscan.com/" target="_blank">
                   Explorer
                 </a>
-              </li>
-              <li className="disabled">
-                <Link href="">OFT Mint & Bridge</Link>
               </li>
             </ul>
           </div>
