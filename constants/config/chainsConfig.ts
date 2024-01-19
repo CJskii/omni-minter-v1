@@ -43,6 +43,7 @@ import { tenet } from "../customChains/tenet";
 import { astar } from "../customChains/astar";
 import { kava } from "../customChains/kava";
 import { pgn } from "../customChains/pgn";
+import { beraArtio } from "../customChains/beraArtio";
 import { getContractAddress } from "../../common/utils/getters/getConstants";
 import {
   getLayerZeroChainId,
@@ -58,6 +59,10 @@ import { NFT_CONTRACT_ABI } from "../contracts/wormhole";
 import { Network, ExtendedNetwork } from "../../common/types/network";
 
 export const mainnetChains: Network[] = [
+  {
+    ...beraArtio,
+    iconUrl: "/chain-icons/beraArtio.png",
+  },
   {
     ...base,
     iconUrl: "/chain-icons/base.svg",
