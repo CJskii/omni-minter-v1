@@ -1,0 +1,19 @@
+{
+  "functions": {
+    "pages/api/mint.ts": {
+      "maxDuration": 30
+    },
+    "pages/api/bridge.ts": {
+      "maxDuration": 30
+    },
+    "pages/api/createUser.ts": {
+      "maxDuration": 30
+    },
+    "pages/api/emailSubscribe.ts": {
+      "maxDuration": 30
+    },
+    "pages/api/*.ts": {
+      "maxDuration": 15
+    }
+  }
+}
