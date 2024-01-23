@@ -22,7 +22,7 @@ const Footer = dynamic(() => import("../common/components/elements/Footer"), {
 const alertProps = {
   title:
     "Share your thoughts in our quick survey and enter the draw for 50 USDC - it's your chance to make an impact and win!",
-  link: "https://app.deform.cc/form/e6f8a515-1a03-4d57-bd13-42edad13db8a/",
+  link: "https://1gxxjo2bfzu.typeform.com/to/hBQzrhho",
 };
 
 function MyApp({ Component, pageProps }: AppProps) {
@@ -34,7 +34,7 @@ function MyApp({ Component, pageProps }: AppProps) {
     <WagmiConfig config={wagmiConfig}>
       <RainbowKitProvider chains={chains} theme={theme}>
         <div className="flex flex-col justify-between items-center min-h-screen font-plex-mono">
-          {/* <Alert {...alertProps} /> */}
+          <Alert {...alertProps} />
           <Navbar />
           <main className="flex flex-col justify-center items-center gap-4 py-8 px-4 rounded-lg my-4 w-full min-h-full">
             <Component {...pageProps} />
