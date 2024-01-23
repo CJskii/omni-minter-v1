@@ -34,8 +34,11 @@ function MyApp({ Component, pageProps }: AppProps) {
     <WagmiConfig config={wagmiConfig}>
       <RainbowKitProvider chains={chains} theme={theme}>
         <div className="flex flex-col justify-between items-center min-h-screen font-plex-mono">
-          <Alert {...alertProps} />
-          <Navbar />
+          <div className="flex flex-col justify-center items-center w-full">
+            <Alert {...alertProps} />
+            <Navbar />
+          </div>
+
           <main className="flex flex-col justify-center items-center gap-4 py-8 px-4 rounded-lg my-4 w-full min-h-full">
             <Component {...pageProps} />
           </main>
