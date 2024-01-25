@@ -52,7 +52,6 @@ const Navbar = () => {
                 <Link href="/layerzero/onft-bridge">ONFT Bridge</Link>
               </li>
               <li>
-              <li>
                 <Link href="/layerzero/oft-mint-bridge">OFT Mint & Bridge</Link>
               </li>
               <li>
@@ -165,6 +164,9 @@ const Navbar = () => {
             </li>
             <li onClick={() => setExpanded(false)}>
               <Link href="/layerzero/gas-refuel">Gas Refuel</Link>
+            </li>
+            <li onClick={() => setExpanded(false)}>
+              <Link href="/layerzero/oft-mint-bridge">OFT Mint & Bridge</Link>
             </li>
             <li onClick={() => setExpanded(false)}>
               <Link href="/wormhole/nft-mint">wNFT Mint</Link>
