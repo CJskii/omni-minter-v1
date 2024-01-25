@@ -32,8 +32,11 @@ const Navbar = () => {
             <div
               tabIndex={20}
               role="button"
-              className={`btn z-[100] m-0 p-2 hover:bg-transparent hover:border-transparent ${
-                router.pathname.startsWith("/layerzero/") ? "text-primary" : ""
+              className={`btn z-[100] m-0 p-2 hover:bg-transparent hover:border-transparent hover:text-accent ${
+                router.pathname.startsWith("/layerzero/") &&
+                !router.pathname.includes("gas-refuel")
+                  ? "text-primary"
+                  : ""
               }`}
             >
               LayerZero
@@ -49,8 +52,6 @@ const Navbar = () => {
                 <Link href="/layerzero/onft-bridge">ONFT Bridge</Link>
               </li>
               <li>
-                <Link href="/layerzero/gas-refuel">Gas Refuel</Link>
-              </li>
               <li>
                 <Link href="/layerzero/oft-mint-bridge">OFT Mint & Bridge</Link>
               </li>
@@ -66,7 +67,7 @@ const Navbar = () => {
             <div
               tabIndex={0}
               role="button"
-              className={`btn m-0 p-2 hover:bg-transparent hover:border-transparent z-[100] ${
+              className={`btn m-0 p-2 hover:bg-transparent hover:border-transparent z-[100] hover:text-accent ${
                 router.pathname.startsWith("/wormhole/") ? "text-primary" : ""
               }`}
             >
@@ -94,8 +95,16 @@ const Navbar = () => {
           </div>
 
           <Link
+            href="/layerzero/gas-refuel"
+            className={`btn hover:bg-transparent  hover:border-transparent hover:text-accent ${
+              router.pathname === "/layerzero/gas-refuel" ? "text-primary" : ""
+            }`}
+          >
+            Gas Refuel
+          </Link>
+          <Link
             href="/leaderboard"
-            className={`btn hover:bg-transparent hover:border-transparent ${
+            className={`btn hover:bg-transparent hover:border-transparent hover:text-accent${
               router.pathname === "/leaderboard" ? "text-primary" : ""
             }`}
           >
@@ -103,7 +112,7 @@ const Navbar = () => {
           </Link>
           <Link
             href="/faq"
-            className={`btn hover:bg-transparent  hover:border-transparent ${
+            className={`btn hover:bg-transparent  hover:border-transparent hover:text-accent${
               router.pathname === "/faq" ? "text-primary" : ""
             }`}
           >

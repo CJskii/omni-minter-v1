@@ -9,3 +9,29 @@
   scrollbar-width: none;
   -ms-overflow-style: none;
 }
+
+.animated-gradient-text {
+  background: linear-gradient(90deg, #bbbaba, #882ac3, #da7aeb, #c5c2c2);
+
+  background-size: 200% auto;
+  color: #fff;
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: gradient-animation 5s linear infinite;
+  transition: background-position 0.4s;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+@keyframes gradient-animation {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
