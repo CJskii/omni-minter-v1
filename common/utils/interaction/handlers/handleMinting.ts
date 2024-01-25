@@ -48,7 +48,7 @@ const handleLayerZeroMinting = async ({
     const contract = new Contract(
       mintNetwork.deployedContracts.layerzero.ONFT.address,
       mintNetwork.deployedContracts.layerzero.ONFT.ABI,
-      signer
+      signer as any,
     );
     const contractFeeInWei = await contract.fee();
     const feeInEther = ethers.utils.formatEther(contractFeeInWei);
@@ -94,7 +94,7 @@ const handleWormholeMinting = async ({
     const contract = new Contract(
       mintNetwork.deployedContracts.wormhole.NFT.address,
       mintNetwork.deployedContracts.wormhole.NFT.ABI,
-      signer
+      signer as any,
     );
     const contractFeeInWei = await contract.fee();
     const feeInEther = ethers.utils.formatEther(contractFeeInWei);

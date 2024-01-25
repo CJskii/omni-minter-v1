@@ -1,5 +1,5 @@
 import "../styles/globals.css";
-import "@fontsource/ibm-plex-mono";
+// import "@fontsource/ibm-plex-mono";
 import type { AppProps } from "next/app";
 import { RainbowKitProvider } from "@rainbow-me/rainbowkit";
 import { WagmiConfig } from "wagmi";
@@ -8,22 +8,32 @@ import dynamic from "next/dynamic";
 import useReferalCode from "../common/components/hooks/useReferalCode";
 import { wagmiConfig, theme, chains } from "../constants/config/wagmiConfig";
 import Alert from "../common/components/elements/Alert";
+import { ThemeProvider } from "@/components/ui/theme-provider";
+import { Inter, Raleway } from "next/font/google";
+import Provider from "@/components/dashboard/provider";
 
-const Navbar = dynamic(() => import("../common/components/elements/Navbar"), {
-  loading: () => <span className="loading loading-dots loading-lg"></span>,
-  ssr: true,
+export const raleway = Raleway({
+  subsets: ["latin"],
+  variable: "--font-raleway",
 });
 
-const Footer = dynamic(() => import("../common/components/elements/Footer"), {
-  loading: () => <span className="loading loading-dots loading-lg"></span>,
-  ssr: false,
-});
+const inter = Inter({ subsets: ["latin"] });
 
-const alertProps = {
-  title:
-    "Share your thoughts in our quick survey and enter the draw for 50 USDC - it's your chance to make an impact and win!",
-  link: "https://mintly.deform.cc/survey",
-};
+// const Navbar = dynamic(() => import("../common/components/elements/Navbar"), {
+//   loading: () => <span className="loading loading-dots loading-lg"></span>,
+//   ssr: true,
+// });
+
+// const Footer = dynamic(() => import("../common/components/elements/Footer"), {
+//   loading: () => <span className="loading loading-dots loading-lg"></span>,
+//   ssr: false,
+// });
+
+// const alertProps = {
+//   title:
+//     "Share your thoughts in our quick survey and enter the draw for 50 USDC - it's your chance to make an impact and win!",
+//   link: "https://mintly.deform.cc/survey",
+// };
 
 function MyApp({ Component, pageProps }: AppProps) {
   const router = useRouter();
@@ -31,21 +41,37 @@ function MyApp({ Component, pageProps }: AppProps) {
   useReferalCode(router);
 
   return (
-    <WagmiConfig config={wagmiConfig}>
-      <RainbowKitProvider chains={chains} theme={theme}>
-        <div className="flex flex-col justify-between items-center min-h-screen font-plex-mono">
-          <div className="flex flex-col justify-center items-center w-full">
-            <Alert {...alertProps} />
-            <Navbar />
-          </div>
+    <>
+      <WagmiConfig config={wagmiConfig}>
+        <RainbowKitProvider chains={chains}>
+          <ThemeProvider
+            attribute="class"
+            defaultTheme="system"
+            enableSystem
+            disableTransitionOnChange
+          >
+            <div className={`${raleway.variable}`}>
+              <Component {...pageProps} />
+            </div>
+          </ThemeProvider>
+        </RainbowKitProvider>
+      </WagmiConfig>
+      {/* <WagmiConfig config={wagmiConfig}>
+        <RainbowKitProvider chains={chains} theme={theme}>
+          <div className="flex flex-col justify-between items-center min-h-screen font-plex-mono">
+            <div className="flex flex-col justify-center items-center w-full">
+              <Alert {...alertProps} />
+              <Navbar />
+            </div>
 
-          <main className="flex flex-col justify-center items-center gap-4 py-8 px-4 rounded-lg my-4 w-full min-h-full">
-            <Component {...pageProps} />
-          </main>
-          <Footer />
-        </div>
-      </RainbowKitProvider>
-    </WagmiConfig>
+            <main className="flex flex-col justify-center items-center gap-4 py-8 px-4 rounded-lg my-4 w-full min-h-full">
+              <Component {...pageProps} />
+            </main>
+            <Footer />
+          </div>
+        </RainbowKitProvider>
+      </WagmiConfig> */}
+    </>
   );
 }
 

@@ -1,6 +1,6 @@
 import { useEffect, useRef } from "react";
 import DisplayModalMessage from "./DisplayModalMessage";
-import { UserRewardModal } from "../../../common/types/rewards";
+import type { UserRewardModal } from "@/common/types/rewards";
 
 const UserRewardModal = (props: UserRewardModal) => {
   const { showRewardModal, setShowRewardModal, isLoading, response } = props;
@@ -24,6 +24,7 @@ const UserRewardModal = (props: UserRewardModal) => {
           {isLoading && showRewardModal ? (
             <span className="loading loading-infinity w-[4rem] h-[4rem]"></span>
           ) : (
+            // @ts-ignore
             <DisplayModalMessage
               showRewardModal={showRewardModal}
               response={response}
