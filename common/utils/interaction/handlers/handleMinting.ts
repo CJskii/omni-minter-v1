@@ -7,24 +7,82 @@ import { getTokenId } from "../../getters/getTokenId";
 export const handleMinting = async ({
   mintNetwork,
   contractProvider,
+  mintQuantity,
 }: {
   mintNetwork: Network;
   contractProvider: {
     type: string;
     contract: string;
   };
+  mintQuantity?: number;
 }) => {
   // TODO: Refactor this function with dynamic gas limit
   const mintGasLimit = mintNetwork.name == "Arbitrum One" ? 2000000 : 1000000;
-
-  if (contractProvider.type == "layerzero") {
-    return handleLayerZeroMinting({ mintNetwork, mintGasLimit });
+  if (
+    contractProvider.type == "layerzero" &&
+    contractProvider.contract == "ONFT"
+  ) {
+    return handleONFTMint({ mintNetwork, mintGasLimit });
+  } else if (
+    contractProvider.type == "layerzero" &&
+    contractProvider.contract == "OFT"
+  ) {
+    return handleOFTMint({ mintNetwork, mintGasLimit, quantity: mintQuantity });
   } else if (contractProvider.type == "wormhole") {
     return handleWormholeMinting({ mintNetwork, mintGasLimit });
   }
 };
 
-const handleLayerZeroMinting = async ({
+const handleOFTMint = async ({
+  mintNetwork,
+  mintGasLimit,
+  quantity = 1,
+}: {
+  mintNetwork: Network;
+  mintGasLimit: number;
+  quantity?: number;
+}) => {
+  try {
+    const provider = await getProviderOrSigner();
+    const signer = (await getProviderOrSigner(
+      true
+    )) as ethers.providers.JsonRpcSigner;
+
+    const address = await signer.getAddress();
+
+    if (!(provider instanceof ethers.providers.Web3Provider)) {
+      console.error("Provider is not an instance of Web3Provider");
+      return;
+    }
+
+    if (!mintNetwork.deployedContracts)
+      throw new Error(`No deployed contracts found for ${mintNetwork.name}`);
+
+    const contract = new Contract(
+      mintNetwork.deployedContracts.layerzero.OFT.address,
+      mintNetwork.deployedContracts.layerzero.OFT.ABI,
+      signer
+    );
+    const contractFeeInWei = await contract.fee();
+    const totalFeeInWei = contractFeeInWei.mul(quantity);
+
+    const tx = await (
+      await contract.mint(address, quantity, {
+        value: totalFeeInWei,
+        gasLimit: mintGasLimit,
+      })
+    ).wait();
+
+    const txHash = tx.transactionHash;
+
+    return { mintedID: quantity, txHash };
+  } catch (e) {
+    console.log(e);
+    throw new Error((e as any).data?.message || (e as any)?.message);
+  }
+};
+
+const handleONFTMint = async ({
   mintNetwork,
   mintGasLimit,
 }: {

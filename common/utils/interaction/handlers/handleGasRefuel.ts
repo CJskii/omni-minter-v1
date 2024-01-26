@@ -76,7 +76,7 @@ const handleGasTransaction = async ({
 
   let adapterParams = ethers.utils.solidityPack(
     ["uint16", "uint", "uint", "address"],
-    [2, 200000, gasInWei.toString(), refundAddress]
+    [2, 300000, gasInWei.toString(), refundAddress]
   );
 
   const gasPrice = await signer.getGasPrice();
