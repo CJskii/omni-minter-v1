@@ -137,7 +137,7 @@ const oftBridge = async ({
     );
 
     // conver TOKEN_ID from ether to wei
-    const quantityInWei = ethers.utils.parseEther("1").toString();
+    const quantityInWei = ethers.utils.parseEther(TOKEN_ID).toString();
 
     let [nativeFee, transferFee, totalCost] = await contract.getSendGas(
       remoteChainId,
