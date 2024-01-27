@@ -3,6 +3,7 @@ import { Contract } from "@ethersproject/contracts";
 import getProviderOrSigner from "../../getters/getProviderOrSigner";
 import { Network } from "../../../types/network";
 import { getTokenId } from "../../getters/getTokenId";
+import { getGas } from "../../getters/getConstants";
 
 export const handleMinting = async ({
   mintNetwork,
@@ -16,8 +17,11 @@ export const handleMinting = async ({
   };
   mintQuantity?: number;
 }) => {
-  // TODO: Refactor this function with dynamic gas limit
-  const mintGasLimit = mintNetwork.name == "Arbitrum One" ? 2000000 : 1000000;
+  const mintGasLimit = getGas({
+    network: mintNetwork.name,
+    txType: "mint",
+  });
+
   if (
     contractProvider.type == "layerzero" &&
     contractProvider.contract == "ONFT"

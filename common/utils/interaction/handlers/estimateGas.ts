@@ -5,6 +5,7 @@ import { Contract } from "@ethersproject/contracts";
 import getProviderOrSigner from "../../getters/getProviderOrSigner";
 import { estimateGasParams } from "../../../types/gas-refuel";
 import { Network } from "../../../types/network";
+import { getGas } from "../../getters/getConstants";
 
 export const estimateGasRequest = async ({
   fromNetwork,
@@ -49,6 +50,10 @@ const estimateGasBridgeFee = async ({
   const signer = (await getProviderOrSigner(true)) as JsonRpcSigner;
   const ownerAddress = await signer.getAddress();
   const refundAddress = recipientAddress || ownerAddress;
+  const adapterParamsGas = getGas({
+    network: targetNetwork.name,
+    adapterParams: true,
+  });
 
   if (!fromNetwork.deployedContracts)
     throw new Error(`No deployed contracts found for ${fromNetwork.name}`);
@@ -61,7 +66,7 @@ const estimateGasBridgeFee = async ({
   const gasInWei = ethers.utils.parseUnits(value, "ether");
   let adapterParams = ethers.utils.solidityPack(
     ["uint16", "uint", "uint", "address"],
-    [2, 300000, gasInWei.toString(), refundAddress]
+    [2, adapterParamsGas, gasInWei.toString(), refundAddress]
   );
 
   try {

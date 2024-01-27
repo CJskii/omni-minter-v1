@@ -4,6 +4,7 @@ import { Contract } from "@ethersproject/contracts";
 import getProviderOrSigner from "../../getters/getProviderOrSigner";
 import { Network } from "../../../types/network";
 import handleInteraction from "./handleInteraction";
+import { getGas } from "../../getters/getConstants";
 
 export const handleBridging = async ({
   TOKEN_ID,
@@ -21,7 +22,15 @@ export const handleBridging = async ({
   };
   address: string;
 }) => {
-  const txGasLimit = fromNetwork.name == "Arbitrum One" ? 4000000 : 2000000;
+  const txGasLimit = getGas({
+    network: fromNetwork.name,
+    txType: "bridge",
+  });
+  const adapterParamsGas = getGas({
+    network: toNetwork.name,
+    adapterParams: true,
+  });
+
   const signer = await getProviderOrSigner(true);
   const ownerAddress = await (signer as JsonRpcSigner).getAddress();
   let tx;
@@ -36,6 +45,7 @@ export const handleBridging = async ({
       ownerAddress,
       signer: signer as JsonRpcSigner,
       txGasLimit,
+      adapterParamsGas,
     });
 
     if (tx.hash) {
@@ -58,6 +68,7 @@ export const handleBridging = async ({
       ownerAddress,
       signer: signer as JsonRpcSigner,
       txGasLimit,
+      adapterParamsGas,
     });
 
     if (tx.hash) {
@@ -98,6 +109,7 @@ const oftBridge = async ({
   ownerAddress,
   signer,
   txGasLimit,
+  adapterParamsGas,
 }: {
   TOKEN_ID: string;
   fromNetwork: Network;
@@ -105,6 +117,7 @@ const oftBridge = async ({
   ownerAddress: string;
   signer: JsonRpcSigner;
   txGasLimit: number;
+  adapterParamsGas: number;
 }) => {
   if (!fromNetwork.deployedContracts)
     throw new Error(`No deployed contracts found for ${fromNetwork.name}`);
@@ -120,13 +133,12 @@ const oftBridge = async ({
 
     const adapterParams = ethers.utils.solidityPack(
       ["uint16", "uint256"],
-      [1, 300000]
+      [1, adapterParamsGas]
     );
 
     // conver TOKEN_ID from ether to wei
     const quantityInWei = ethers.utils.parseEther("1").toString();
 
-    // TODO: Read fees from the contract
     let [nativeFee, transferFee, totalCost] = await contract.getSendGas(
       remoteChainId,
       ownerAddress,
@@ -166,6 +178,7 @@ const onftBridge = async ({
   ownerAddress,
   signer,
   txGasLimit,
+  adapterParamsGas,
 }: {
   TOKEN_ID: string;
   fromNetwork: Network;
@@ -173,6 +186,7 @@ const onftBridge = async ({
   ownerAddress: string;
   signer: JsonRpcSigner;
   txGasLimit: number;
+  adapterParamsGas: number;
 }) => {
   if (!fromNetwork.deployedContracts)
     throw new Error(`No deployed contracts found for ${fromNetwork.name}`);
@@ -188,7 +202,7 @@ const onftBridge = async ({
 
     const adapterParams = ethers.utils.solidityPack(
       ["uint16", "uint256"],
-      [1, 300000]
+      [1, adapterParamsGas]
     );
 
     const fees = await contract.estimateSendFee(
