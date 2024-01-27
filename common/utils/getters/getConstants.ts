@@ -5,6 +5,8 @@ import { getNFTEnvVarName } from "./contracts/wNFT";
 import { getONFTEnvVarName } from "./contracts/onft";
 import { getRefuelEnvVarName } from "./contracts/refuel";
 import { getOFTEnvVarName } from "./contracts/oft";
+import TRANSACTION_GAS from "../../../constants/config/txGas.json";
+import ADAPTER_PARAMS_GAS from "../../../constants/config/adapterParamsGas.json";
 
 interface ContractAddressMap {
   [key: string]: string;
@@ -14,11 +16,26 @@ interface ChainIdMap {
   [key: string]: number;
 }
 
+interface TxGasMap {
+  [key: string]: {
+    [key: string]: number;
+  };
+}
+
+type getGasParams = {
+  network: string;
+  txType?: string;
+  adapterParams?: boolean;
+};
+
 const LZ_CHAIN_ID: ChainIdMap = CHAIN_ID_LZ as ChainIdMap;
 const WH_CHAIN_ID: ChainIdMap = CHAIN_ID_WH as ChainIdMap;
 
 const CONTRACT_ADDRESS: ContractAddressMap =
   CONTRACT_ADDRESS_JSON as ContractAddressMap;
+
+const GAS = TRANSACTION_GAS as unknown as TxGasMap;
+const ADAPTER_PARAMS = ADAPTER_PARAMS_GAS as unknown as ChainIdMap;
 
 export const getContractAddress = (fromNetwork: string, contract: string) => {
   try {
@@ -59,6 +76,24 @@ export const getWormholeChainId = (targetNetwork: string) => {
   targetNetwork = transformNetworkName(targetNetwork);
   const remoteChainId = WH_CHAIN_ID[targetNetwork.toLowerCase()];
   return remoteChainId;
+};
+
+export const getGas = ({
+  network,
+  txType,
+  adapterParams = false,
+}: getGasParams) => {
+  network = transformNetworkName(network);
+
+  if (adapterParams) {
+    return ADAPTER_PARAMS[network.toLowerCase()];
+  }
+
+  if (!txType) {
+    throw new Error("txType is required");
+  }
+
+  return GAS[network.toLowerCase()][txType.toLowerCase()];
 };
 
 const getEnvVarName = (fromNetwork: string, contract: string) => {
