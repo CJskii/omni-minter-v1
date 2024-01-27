@@ -5,6 +5,7 @@ import getProviderOrSigner from "../../getters/getProviderOrSigner";
 import { handleErrors } from "./handleErrors";
 import { GasTransferParams } from "../../../types/gas-refuel";
 import { Network } from "../../../types/network";
+import { getGas } from "../../getters/getConstants";
 
 export const gasTransferRequest = async ({
   fromNetwork,
@@ -62,6 +63,14 @@ const handleGasTransaction = async ({
   const signer = (await getProviderOrSigner(true)) as JsonRpcSigner;
   const ownerAddress = await signer.getAddress();
   const refundAddress = recipientAddress || ownerAddress;
+  const txGasLimit = getGas({
+    network: fromNetwork.name,
+    txType: "bridge",
+  });
+  const adapterParamsGas = getGas({
+    network: targetNetwork.name,
+    adapterParams: true,
+  });
 
   if (!fromNetwork.deployedContracts)
     throw new Error(`No deployed contracts found for ${fromNetwork.name}`);
@@ -76,7 +85,7 @@ const handleGasTransaction = async ({
 
   let adapterParams = ethers.utils.solidityPack(
     ["uint16", "uint", "uint", "address"],
-    [2, 300000, gasInWei.toString(), refundAddress]
+    [2, adapterParamsGas, gasInWei.toString(), refundAddress]
   );
 
   const gasPrice = await signer.getGasPrice();
@@ -97,7 +106,7 @@ const handleGasTransaction = async ({
         value: totalCost,
         // gasLimit: ethers.utils.parseUnits("250000", "wei"),
         gasPrice: gasPrice.mul(5).div(4),
-        gasLimit: fromNetwork.name == "Arbitrum One" ? 2000000 : 1500000,
+        gasLimit: txGasLimit,
       }
     );
 
