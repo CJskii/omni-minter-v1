@@ -11,6 +11,19 @@ import Alert from "../common/components/elements/Alert";
 import { ThemeProvider } from "@/components/ui/theme-provider";
 import { Inter, Raleway } from "next/font/google";
 import Provider from "@/components/dashboard/provider";
+import {
+  ThirdwebProvider,
+  ConnectWallet,
+  metamaskWallet,
+  coinbaseWallet,
+  walletConnect,
+  localWallet,
+  embeddedWallet,
+  trustWallet,
+  rainbowWallet,
+} from "@thirdweb-dev/react";
+
+import { Ethereum, Polygon } from "@thirdweb-dev/chains";
 
 export const raleway = Raleway({
   subsets: ["latin"],
@@ -42,18 +55,43 @@ function MyApp({ Component, pageProps }: AppProps) {
 
   return (
     <>
+      {/* TODO: Remove wagmi and rainbowkit provider  */}
+      {/* Figure out how to pass existing chain setup to thirdweb provider  */}
       <WagmiConfig config={wagmiConfig}>
         <RainbowKitProvider chains={chains}>
-          <ThemeProvider
-            attribute="class"
-            defaultTheme="system"
-            enableSystem
-            disableTransitionOnChange
+          <ThirdwebProvider
+            activeChain={Polygon}
+            supportedChains={[Ethereum, Polygon]}
+            clientId="5750b942ae7000c3536f29a336a2e915"
+            supportedWallets={[
+              metamaskWallet({ recommended: true }),
+              coinbaseWallet(),
+              walletConnect(),
+              localWallet(),
+              embeddedWallet({
+                auth: {
+                  options: ["email", "google", "apple"],
+                },
+              }),
+              trustWallet(),
+              rainbowWallet(),
+            ]}
+            authConfig={{
+              authUrl: "/api/auth",
+              domain: process.env.NEXT_PUBLIC_THIRDWEB_AUTH_DOMAIN || "",
+            }}
           >
-            <div className={`${raleway.variable}`}>
-              <Component {...pageProps} />
-            </div>
-          </ThemeProvider>
+            <ThemeProvider
+              attribute="class"
+              defaultTheme="system"
+              enableSystem
+              disableTransitionOnChange
+            >
+              <div className={`${raleway.variable}`}>
+                <Component {...pageProps} />
+              </div>
+            </ThemeProvider>
+          </ThirdwebProvider>
         </RainbowKitProvider>
       </WagmiConfig>
       {/* <WagmiConfig config={wagmiConfig}>
