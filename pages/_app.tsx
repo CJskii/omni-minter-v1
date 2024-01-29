@@ -23,7 +23,8 @@ import {
   rainbowWallet,
 } from "@thirdweb-dev/react";
 
-import { Ethereum, Polygon } from "@thirdweb-dev/chains";
+import { mainnetChainsThirdWeb } from "@/constants/config/thirdwebChainsConfig";
+import { activeChains } from "@/constants/config/thirdwebChainsConfig";
 
 export const raleway = Raleway({
   subsets: ["latin"],
@@ -50,9 +51,8 @@ const inter = Inter({ subsets: ["latin"] });
 
 function MyApp({ Component, pageProps }: AppProps) {
   const router = useRouter();
-
   useReferalCode(router);
-
+  console.log(mainnetChainsThirdWeb);
   return (
     <>
       {/* TODO: Remove wagmi and rainbowkit provider  */}
@@ -60,8 +60,7 @@ function MyApp({ Component, pageProps }: AppProps) {
       <WagmiConfig config={wagmiConfig}>
         <RainbowKitProvider chains={chains}>
           <ThirdwebProvider
-            activeChain={Polygon}
-            supportedChains={[Ethereum, Polygon]}
+            supportedChains={mainnetChainsThirdWeb}
             clientId="5750b942ae7000c3536f29a336a2e915"
             supportedWallets={[
               metamaskWallet({ recommended: true }),

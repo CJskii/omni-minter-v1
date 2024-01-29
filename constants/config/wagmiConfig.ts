@@ -17,7 +17,7 @@ export const theme = darkTheme({
 
 export const { chains, publicClient, webSocketPublicClient } = configureChains(
   [...customChains],
-  [publicProvider()]
+  [publicProvider()],
 );
 
 const { connectors } = getDefaultWallets({
