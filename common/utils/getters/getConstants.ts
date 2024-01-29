@@ -5,6 +5,7 @@ import { getNFTEnvVarName } from "./contracts/wNFT";
 import { getONFTEnvVarName } from "./contracts/onft";
 import { getRefuelEnvVarName } from "./contracts/refuel";
 import { getOFTEnvVarName } from "./contracts/oft";
+import LZ_ENDPOINT_JSON from "../../../constants/contracts/layerZeroEndpointv1.json";
 
 interface ContractAddressMap {
   [key: string]: string;
@@ -19,6 +20,7 @@ const WH_CHAIN_ID: ChainIdMap = CHAIN_ID_WH as ChainIdMap;
 
 const CONTRACT_ADDRESS: ContractAddressMap =
   CONTRACT_ADDRESS_JSON as ContractAddressMap;
+const LZ_ENDPOINT: ContractAddressMap = LZ_ENDPOINT_JSON as ContractAddressMap;
 
 export const getContractAddress = (fromNetwork: string, contract: string) => {
   try {
@@ -59,6 +61,11 @@ export const getWormholeChainId = (targetNetwork: string) => {
   targetNetwork = transformNetworkName(targetNetwork);
   const remoteChainId = WH_CHAIN_ID[targetNetwork.toLowerCase()];
   return remoteChainId;
+};
+
+export const getLayerZeroEndpoint = (targetNetwork: string) => {
+  targetNetwork = transformNetworkName(targetNetwork);
+  return LZ_ENDPOINT[targetNetwork.toLowerCase()];
 };
 
 const getEnvVarName = (fromNetwork: string, contract: string) => {
