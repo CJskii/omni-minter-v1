@@ -52,7 +52,6 @@ const inter = Inter({ subsets: ["latin"] });
 function MyApp({ Component, pageProps }: AppProps) {
   const router = useRouter();
   useReferalCode(router);
-  console.log(mainnetChainsThirdWeb);
   return (
     <>
       {/* TODO: Remove wagmi and rainbowkit provider  */}
@@ -61,7 +60,7 @@ function MyApp({ Component, pageProps }: AppProps) {
         <RainbowKitProvider chains={chains}>
           <ThirdwebProvider
             supportedChains={mainnetChainsThirdWeb}
-            clientId="5750b942ae7000c3536f29a336a2e915"
+            clientId={process.env.THIRDWEB_CLIENT_ID || ""}
             supportedWallets={[
               metamaskWallet({ recommended: true }),
               coinbaseWallet(),

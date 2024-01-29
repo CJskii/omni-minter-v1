@@ -7,9 +7,25 @@ import { EyeOff, PenIcon, Pencil, Search } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import DashboardLayout from "@/components/dashboard/layout";
 
+import { useUser, useAddress, useConnect } from "@thirdweb-dev/react";
+
 export default function ProfilePage() {
+  const { user, isLoggedIn, isLoading } = useUser();
+  const address = useAddress();
+
+  console.log({ user, isLoggedIn, isLoading, address });
+
+  // if (!isLoggedIn) we display a message to log in
+  // if (isLoading) we display a loading indicator
+  // if (user) we display the user data
+
   return (
     <DashboardLayout>
+      {isLoggedIn && <div>{user?.address}</div>}
+      {isLoading && <div>Loading...</div>}
+      {!isLoggedIn && address && <div>Not logged in</div>}
+      {!address && <div>Please connect your wallet first</div>}
+
       <div className="space-y-6 md:space-y-12 px-1 py-2 md:px-0 md:py-6">
         <Typography variant={"h2"} className=" font-raleway">
           Profile
