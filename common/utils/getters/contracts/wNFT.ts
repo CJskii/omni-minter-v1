@@ -18,6 +18,8 @@ export const getNFTEnvVarName = (fromNetwork: string) => {
       return process.env.NEXT_PUBLIC_ARBITRUM_NFT_CONTRACT_ADDRESS;
     case "POLYGON":
       return process.env.NEXT_PUBLIC_POLYGON_NFT_CONTRACT_ADDRESS;
+    case "BASE":
+      return process.env.NEXT_PUBLIC_BASE_NFT_CONTRACT_ADDRESS;
     default:
       return "";
   }
