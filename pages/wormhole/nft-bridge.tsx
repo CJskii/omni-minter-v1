@@ -22,7 +22,7 @@ const ONFTBridge = () => {
       <Bridging
         passedNftId={nftId}
         mintNetwork={mintNetwork}
-        contractProvider={{ type: "wormhole", contract: "NFT" }}
+        contractProvider={{ type: "wormhole", contract: "W_NFT" }}
         stepDescription={"Bridge wNFT"}
       />{" "}
     </>
