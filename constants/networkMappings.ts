@@ -21,8 +21,8 @@ export const networkTransferMappings: NetworkTransferMappings = {
     ONFT: layerZeroMapping,
   },
   wormhole: {
-    ERC20: wormholeMapping,
-    NFT: wormholeMapping,
-    REFUEL: wormholeMapping,
+    W_ERC20: wormholeMapping,
+    W_NFT: wormholeMapping,
+    W_REFUEL: wormholeMapping,
   },
 };
