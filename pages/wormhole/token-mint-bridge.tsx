@@ -5,13 +5,12 @@ const OFT = () => {
   return (
     <>
       <HeadComponent
-        title="Mintly: OFT Bridge - Bridge Your OFT Tokens Across Multiple Chains"
-        description="Mintly's OFT Bridge: Where seamless OFT bridging meets LayerZero's interoperability. Start bridging your OFT tokens across multiple chains effortlessly."
+        title="Mintly: Bridge - Bridge Your wERC20 Tokens Across Multiple Chains"
+        description="Mintly's Wormhole ERC20 Bridge: Where seamless ERC20 bridging meets Wormhole interoperability. Start bridging your wERC20 tokens across multiple chains effortlessly."
       />
       <TokenBridge
         contractProvider={{ type: "wormhole", contract: "W_ERC20" }}
       />
-      {/* <div>{"Coming soon ;)"}</div> */}
     </>
   );
 };

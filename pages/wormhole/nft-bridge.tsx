@@ -16,8 +16,8 @@ const ONFTBridge = () => {
   return (
     <>
       <HeadComponent
-        title="Mintly: ONFT Bridge - Seamlessly Bridge Your Omnichain Non-Fungible Tokens (ONFTs) with Mintly's Advanced ONFT Bridge"
-        description="Seamlessly bridge your Omnichain Non-Fungible Tokens (ONFTs) with Mintly's advanced ONFT Bridge. Experience the ease of cross-chain transfers, enhancing your digital asset's interoperability through LayerZero."
+        title="Mintly: wNFT Bridge - Seamlessly Bridge Your Wormhole Non-Fungible Tokens (wNFTs) with Mintly's Advanced Wormhole Bridge"
+        description="Seamlessly bridge your Wormhole Non-Fungible Tokens (wNFTs) with Mintly's advanced Wormhole Bridge. Experience the ease of cross-chain transfers, enhancing your digital asset's interoperability through Wormhole."
       />
       <Bridging
         passedNftId={nftId}
