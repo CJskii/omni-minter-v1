@@ -37,6 +37,7 @@ export interface Network {
 }
 
 type DeployedContracts = {
+  [key: string]: any;
   layerzero: {
     ONFT: {
       address: string;
@@ -52,15 +53,15 @@ type DeployedContracts = {
     };
   };
   wormhole: {
-    NFT: {
+    W_NFT: {
       address: string;
       ABI: any[];
     };
-    ERC20: {
+    W_ERC20: {
       address: string;
       ABI: any[];
     };
-    REFUEL: {
+    W_REFUEL: {
       address: string;
       ABI: any[];
     };

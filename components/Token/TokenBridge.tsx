@@ -100,9 +100,9 @@ const TokenBridge = ({
     if (!fromNetwork.deployedContracts || !address) return;
     try {
       const balanceInWei = await getBalance({
-        abi: fromNetwork.deployedContracts.layerzero.OFT.ABI,
+        abi: fromNetwork.deployedContracts[type][contract].ABI,
         walletAddress: address,
-        contractAddress: fromNetwork.deployedContracts.layerzero.OFT.address,
+        contractAddress: fromNetwork.deployedContracts[type][contract].address,
       });
 
       const balanceInEther = ethers.utils.formatEther(balanceInWei);

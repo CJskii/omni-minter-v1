@@ -354,16 +354,16 @@ export const getSupportedChains = () => {
             },
           },
           wormhole: {
-            NFT: {
+            W_NFT: {
               address: getContractAddress(chain.name, "NFT") as string,
               ABI: NFT_CONTRACT_ABI,
             },
-            ERC20: {
+            W_ERC20: {
               address: "" as string,
               // getContractAddress(chain.name, "ERC20"),
               ABI: CONTRACT_ABI, // change to ERC20 abi
             },
-            REFUEL: {
+            W_REFUEL: {
               address: " " as string,
               // getContractAddress(chain.name, "RefuelWormhole"),
               ABI: CONTRACT_ABI, // change to Refuel abi
@@ -407,14 +407,14 @@ const getContractProviders = (chain: Network) => {
   if (layerzeroContracts.REFUEL.address) {
     contractProviders.layerzero.push("REFUEL");
   }
-  if (wormholeContracts.NFT.address) {
+  if (wormholeContracts.W_NFT.address) {
     contractProviders.wormhole.push("W_NFT");
   }
-  if (wormholeContracts.ERC20.address) {
+  if (wormholeContracts.W_ERC20.address) {
     contractProviders.wormhole.push("W_ERC20");
   }
-  if (wormholeContracts.REFUEL.address) {
-    contractProviders.wormhole.push("W_Refuel");
+  if (wormholeContracts.W_REFUEL.address) {
+    contractProviders.wormhole.push("W_REFUEL");
   }
 
   return contractProviders;
@@ -437,15 +437,15 @@ const getDeployedContracts = (chain: Network) => {
       },
     },
     wormhole: {
-      NFT: {
+      W_NFT: {
         address: getContractAddress(chain.name, "W_NFT") as string,
         ABI: NFT_CONTRACT_ABI, // change to NFT abi
       },
-      ERC20: {
+      W_ERC20: {
         address: getContractAddress(chain.name, "W_ERC20") as string,
         ABI: ERC_20_ABI, // change to ERC20 abi
       },
-      REFUEL: {
+      W_REFUEL: {
         address: getContractAddress(chain.name, "W_REFUEL") as string,
         ABI: ERC_20_ABI, // change to Refuel abi
       },
