@@ -38,7 +38,7 @@ export const handleBridging = async ({
     contractProvider.type == "layerzero" &&
     contractProvider.contract == "ONFT"
   ) {
-    tx = await onftBridge({
+    tx = await handleONFTBridge({
       TOKEN_ID,
       fromNetwork,
       toNetwork,
@@ -61,7 +61,7 @@ export const handleBridging = async ({
     contractProvider.type == "layerzero" &&
     contractProvider.contract == "OFT"
   ) {
-    tx = await oftBridge({
+    tx = await handleOFTBridge({
       TOKEN_ID,
       fromNetwork,
       toNetwork,
@@ -80,8 +80,33 @@ export const handleBridging = async ({
     }
 
     return tx;
-  } else if (contractProvider.type == "wormhole") {
-    tx = await wormholeBridge({
+  } else if (
+    contractProvider.type == "wormhole" &&
+    contractProvider.contract == "W_NFT"
+  ) {
+    tx = await handleWNFTBridge({
+      TOKEN_ID,
+      fromNetwork,
+      toNetwork,
+      ownerAddress,
+      signer: signer as JsonRpcSigner,
+      txGasLimit,
+    });
+
+    if (tx.hash) {
+      await handleInteraction({
+        address,
+        operation: "new_bridge",
+        type: contractProvider.type,
+      });
+    }
+
+    return tx;
+  } else if (
+    contractProvider.type == "wormhole" &&
+    contractProvider.contract == "W_ERC20"
+  ) {
+    tx = await handleWERC20Bridge({
       TOKEN_ID,
       fromNetwork,
       toNetwork,
@@ -102,7 +127,7 @@ export const handleBridging = async ({
   }
 };
 
-const oftBridge = async ({
+const handleOFTBridge = async ({
   TOKEN_ID,
   fromNetwork,
   toNetwork,
@@ -171,7 +196,7 @@ const oftBridge = async ({
   }
 };
 
-const onftBridge = async ({
+const handleONFTBridge = async ({
   TOKEN_ID,
   fromNetwork,
   toNetwork,
@@ -239,7 +264,7 @@ const onftBridge = async ({
   }
 };
 
-const wormholeBridge = async ({
+const handleWNFTBridge = async ({
   TOKEN_ID,
   fromNetwork,
   toNetwork,
@@ -260,12 +285,74 @@ const wormholeBridge = async ({
     );
 
   const contract = new Contract(
-    fromNetwork.deployedContracts.wormhole.NFT.address,
-    fromNetwork.deployedContracts.wormhole.NFT.ABI,
+    fromNetwork.deployedContracts.wormhole.W_NFT.address,
+    fromNetwork.deployedContracts.wormhole.W_NFT.ABI,
     signer
   );
 
-  const targetAddress = toNetwork.deployedContracts.wormhole.NFT.address;
+  const targetAddress = toNetwork.deployedContracts.wormhole.W_NFT.address;
+  const targetChainId = toNetwork.whParams?.remoteChainId;
+
+  const GAS_LIMIT = 300000; // TODO: Implement dynamic gas limit
+  const receiverValue = 0; // receiver value is 0 for NFTs
+
+  try {
+    const [estimatedFee, totalCost] = await contract.getBridgeGas(
+      targetChainId,
+      receiverValue,
+      GAS_LIMIT
+    );
+
+    let tx = await contract.sendPayload(
+      targetChainId,
+      targetAddress,
+      TOKEN_ID,
+      receiverValue,
+      GAS_LIMIT,
+      targetChainId,
+      ownerAddress,
+      {
+        value: totalCost,
+        gasLimit: txGasLimit,
+      }
+    );
+    await tx.wait();
+
+    console.log("NFT sent!");
+
+    return tx;
+  } catch (e) {
+    throw new Error((e as any).data?.message || (e as any)?.message);
+  }
+};
+
+const handleWERC20Bridge = async ({
+  TOKEN_ID,
+  fromNetwork,
+  toNetwork,
+  ownerAddress,
+  signer,
+  txGasLimit,
+}: {
+  TOKEN_ID: string;
+  fromNetwork: Network;
+  toNetwork: Network;
+  ownerAddress: string;
+  signer: JsonRpcSigner;
+  txGasLimit: number;
+}) => {
+  if (!fromNetwork.deployedContracts || !toNetwork.deployedContracts)
+    throw new Error(
+      `No deployed contracts found for ${fromNetwork.name} or ${toNetwork.name}`
+    );
+
+  const contract = new Contract(
+    fromNetwork.deployedContracts.wormhole.W_ERC20.address,
+    fromNetwork.deployedContracts.wormhole.W_ERC20.ABI,
+    signer
+  );
+
+  const targetAddress = toNetwork.deployedContracts.wormhole.W_ERC20.address;
   const targetChainId = toNetwork.whParams?.remoteChainId;
 
   const GAS_LIMIT = 300000; // TODO: Implement dynamic gas limit
