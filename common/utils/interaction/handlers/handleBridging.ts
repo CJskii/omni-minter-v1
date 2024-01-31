@@ -357,6 +357,7 @@ const handleWERC20Bridge = async ({
 
   const GAS_LIMIT = 300000; // TODO: Implement dynamic gas limit
   const receiverValue = 0; // receiver value is 0 for NFTs
+  const quantityInWei = ethers.utils.parseEther(TOKEN_ID).toString();
 
   try {
     const [estimatedFee, totalCost] = await contract.getBridgeGas(
@@ -368,7 +369,7 @@ const handleWERC20Bridge = async ({
     let tx = await contract.sendPayload(
       targetChainId,
       targetAddress,
-      TOKEN_ID,
+      quantityInWei,
       receiverValue,
       GAS_LIMIT,
       targetChainId,
@@ -379,8 +380,6 @@ const handleWERC20Bridge = async ({
       }
     );
     await tx.wait();
-
-    console.log("NFT sent!");
 
     return tx;
   } catch (e) {
