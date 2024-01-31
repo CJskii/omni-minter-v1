@@ -261,7 +261,7 @@ const TokenBridge = ({
             <MintedOFTModal {...mintModalProps} />
             <BridgeOFTModal {...bridgeModalProps} />
             <h2 className="text-xl font-bold leading-tight sm:text-4xl text-content-focus text-center">
-              OFT Bridge
+              {type === "wormhole" ? "wERC20" : "OFT"} Bridge
             </h2>
             <div className="flex justify-center items-center flex-col">
               <p className="text-center py-2">Your Balance: {userBalance}</p>

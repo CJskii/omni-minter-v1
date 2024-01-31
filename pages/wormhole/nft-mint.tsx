@@ -11,7 +11,7 @@ const Mint: NextPage = () => {
         description="Mintly's Mint page: Where seamless ONFT creation meets LayerZero's interoperability. Start minting and bridging your ONFTs across multiple chains effortlessly."
       />
       <Minting
-        contractProvider={{ type: "wormhole", contract: "NFT" }}
+        contractProvider={{ type: "wormhole", contract: "W_NFT" }}
         stepDescription="Mint wNFT"
       />
     </>

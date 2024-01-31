@@ -5,6 +5,7 @@ import { getNFTEnvVarName } from "./contracts/wNFT";
 import { getONFTEnvVarName } from "./contracts/onft";
 import { getRefuelEnvVarName } from "./contracts/refuel";
 import { getOFTEnvVarName } from "./contracts/oft";
+import { getERC20GasEnvVarName } from "./contracts/wERC20";
 import TRANSACTION_GAS from "../../../constants/config/txGas.json";
 import ADAPTER_PARAMS_GAS from "../../../constants/config/adapterParamsGas.json";
 
@@ -103,11 +104,17 @@ const getEnvVarName = (fromNetwork: string, contract: string) => {
   if (contract === "REFUEL") {
     return getRefuelEnvVarName(fromNetwork);
   }
-  if (contract === "NFT") {
+  if (contract === "W_NFT") {
     return getNFTEnvVarName(fromNetwork);
   }
   if (contract === "OFT") {
     return getOFTEnvVarName(fromNetwork);
+  }
+  if (contract === "W_ERC20") {
+    return getERC20GasEnvVarName(fromNetwork);
+  }
+  if (contract === "W_REFUEL") {
+    return getERC20GasEnvVarName(fromNetwork);
   }
 };
 

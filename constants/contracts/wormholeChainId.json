@@ -8,5 +8,6 @@
   "celo": 14,
   "moonbeam": 16,
   "arbitrum": 23,
-  "optimism": 24
+  "optimism": 24,
+  "base": 30
 }

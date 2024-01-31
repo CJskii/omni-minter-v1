@@ -9,6 +9,7 @@ export const wormholeMapping = {
     "Moonbeam",
     "Arbitrum One",
     "OP Mainnet",
+    "Base",
   ],
   "BNB Smart Chain": [
     "Ethereum",
@@ -20,6 +21,7 @@ export const wormholeMapping = {
     "Moonbeam",
     "Arbitrum One",
     "OP Mainnet",
+    "Base",
   ],
 
   Polygon: [
@@ -32,6 +34,7 @@ export const wormholeMapping = {
     "Moonbeam",
     "Arbitrum One",
     "OP Mainnet",
+    "Base",
   ],
 
   Avalanche: [
@@ -44,6 +47,7 @@ export const wormholeMapping = {
     "Moonbeam",
     "Arbitrum One",
     "OP Mainnet",
+    "Base",
   ],
 
   Fantom: [
@@ -56,6 +60,7 @@ export const wormholeMapping = {
     "Moonbeam",
     "Arbitrum One",
     "OP Mainnet",
+    "Base",
   ],
 
   Klaytn: [
@@ -68,6 +73,7 @@ export const wormholeMapping = {
     "Moonbeam",
     "Arbitrum One",
     "OP Mainnet",
+    "Base",
   ],
 
   Celo: [
@@ -80,6 +86,7 @@ export const wormholeMapping = {
     "Moonbeam",
     "Arbitrum One",
     "OP Mainnet",
+    "Base",
   ],
 
   Moonbeam: [
@@ -92,6 +99,7 @@ export const wormholeMapping = {
     "Celo",
     "Arbitrum One",
     "OP Mainnet",
+    "Base",
   ],
 
   "Arbitrum One": [
@@ -104,6 +112,7 @@ export const wormholeMapping = {
     "Celo",
     "Moonbeam",
     "OP Mainnet",
+    "Base",
   ],
 
   "OP Mainnet": [
@@ -116,5 +125,17 @@ export const wormholeMapping = {
     "Celo",
     "Moonbeam",
     "Arbitrum One",
+    "Base",
+  ],
+  Base: [
+    "BNB Smart Chain",
+    "Polygon",
+    "Avalanche",
+    "Fantom",
+    "Klaytn",
+    "Celo",
+    "Moonbeam",
+    "Arbitrum One",
+    "OP Mainnet",
   ],
 };

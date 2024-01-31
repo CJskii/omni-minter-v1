@@ -54,7 +54,7 @@ import {
   REFUEL_CONTRACT_ABI,
   OFT_CONTRACT_ABI,
 } from "../contracts/abi";
-import { NFT_CONTRACT_ABI } from "../contracts/wormhole";
+import { NFT_CONTRACT_ABI, ERC_20_ABI } from "../contracts/wormhole";
 import { Network, ExtendedNetwork } from "../../common/types/network";
 
 export const mainnetChains: Network[] = [
@@ -408,13 +408,13 @@ const getContractProviders = (chain: Network) => {
     contractProviders.layerzero.push("REFUEL");
   }
   if (wormholeContracts.NFT.address) {
-    contractProviders.wormhole.push("NFT");
+    contractProviders.wormhole.push("W_NFT");
   }
   if (wormholeContracts.ERC20.address) {
-    contractProviders.wormhole.push("ERC20");
+    contractProviders.wormhole.push("W_ERC20");
   }
   if (wormholeContracts.REFUEL.address) {
-    contractProviders.wormhole.push("Refuel");
+    contractProviders.wormhole.push("W_Refuel");
   }
 
   return contractProviders;
@@ -438,18 +438,16 @@ const getDeployedContracts = (chain: Network) => {
     },
     wormhole: {
       NFT: {
-        address: getContractAddress(chain.name, "NFT") as string,
+        address: getContractAddress(chain.name, "W_NFT") as string,
         ABI: NFT_CONTRACT_ABI, // change to NFT abi
       },
       ERC20: {
-        address: "" as string,
-        // getContractAddress(chain.name, "ERC20"),
-        ABI: CONTRACT_ABI, // change to ERC20 abi
+        address: getContractAddress(chain.name, "W_ERC20") as string,
+        ABI: ERC_20_ABI, // change to ERC20 abi
       },
       REFUEL: {
-        address: " " as string,
-        // getContractAddress(chain.name, "RefuelWormhole"),
-        ABI: CONTRACT_ABI, // change to Refuel abi
+        address: getContractAddress(chain.name, "W_REFUEL") as string,
+        ABI: ERC_20_ABI, // change to Refuel abi
       },
     },
   };
