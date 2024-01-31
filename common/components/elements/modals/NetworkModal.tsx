@@ -80,6 +80,9 @@ const NetworkModal = ({
                       {network.nativeCurrency.symbol}
                     </span>
                   </div>
+                  {network.name == "Base" ? (
+                    <span className="badge badge-lg text-accent">NEW</span>
+                  ) : null}
                 </a>
               </li>
             ))}
