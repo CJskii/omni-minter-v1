@@ -16,17 +16,27 @@ export const estimateGasRequest = async ({
   setErrorMessage,
   setShowGasModal,
   recipientAddress,
+  type,
 }: estimateGasParams) => {
   setIsLoading(true);
   try {
-    const estimatedFee = await estimateGasBridgeFee({
-      fromNetwork,
-      targetNetwork: toNetwork,
-      value: inputAmount,
-      recipientAddress,
-    });
+    if (type === "layerzero") {
+      const estimatedFee = await estimateLayerZeroGasFee({
+        fromNetwork,
+        targetNetwork: toNetwork,
+        value: inputAmount,
+        recipientAddress,
+      });
+      setGasFee(estimatedFee);
+    } else if (type === "wormhole") {
+      const estimatedFee = await estimateWormholeGasFee({
+        fromNetwork,
+        targetNetwork: toNetwork,
+        value: inputAmount,
+      });
+      setGasFee(estimatedFee);
+    }
 
-    setGasFee(estimatedFee);
     setIsLoading(false);
   } catch (e) {
     console.error(e);
@@ -36,7 +46,7 @@ export const estimateGasRequest = async ({
   }
 };
 
-const estimateGasBridgeFee = async ({
+const estimateLayerZeroGasFee = async ({
   fromNetwork,
   targetNetwork,
   value,
@@ -75,6 +85,43 @@ const estimateGasBridgeFee = async ({
       refundAddress,
       gasInWei.toString(),
       adapterParams
+    );
+
+    return totalCost;
+  } catch (error) {
+    console.error(`Error estimating gas fee: ${(error as any).message}`);
+    throw error; // Propagate the error to handle it in the UI layer
+  }
+};
+
+const estimateWormholeGasFee = async ({
+  fromNetwork,
+  targetNetwork,
+  value,
+}: {
+  fromNetwork: Network;
+  targetNetwork: Network;
+  value: string;
+}) => {
+  const signer = (await getProviderOrSigner(true)) as JsonRpcSigner;
+  const ownerAddress = await signer.getAddress();
+
+  if (!fromNetwork.deployedContracts)
+    throw new Error(`No deployed contracts found for ${fromNetwork.name}`);
+  const contract = new Contract(
+    fromNetwork.deployedContracts.wormhole.W_REFUEL.address,
+    fromNetwork.deployedContracts.wormhole.W_REFUEL.ABI,
+    signer
+  );
+
+  const gasInWei = ethers.utils.parseUnits(value, "ether");
+  const GAS_LIMIT = 300000;
+
+  try {
+    const [estimatedFee, totalCost] = await contract.getBridgeGas(
+      targetNetwork.whParams?.remoteChainId,
+      gasInWei.toString(),
+      GAS_LIMIT
     );
 
     return totalCost;
