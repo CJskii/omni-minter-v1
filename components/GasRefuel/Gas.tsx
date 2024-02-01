@@ -118,7 +118,8 @@ const Gas = ({
   };
 
   const handleMaxButton = () => {
-    const maxGas = getMaxGasValue(toNetwork.name);
+    const maxGas = getMaxGasValue({ toNetwork: toNetwork.name, type });
+    console.log(toNetwork.name, type, maxGas);
     if (maxGas) {
       setInputAmount(maxGas.toString());
     }

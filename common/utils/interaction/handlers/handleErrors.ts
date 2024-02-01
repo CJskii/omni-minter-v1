@@ -90,6 +90,12 @@ export const handleErrors = ({
       return setErrorMessage(
         "Invalid address provided. Please check and try again."
       );
+    } else if (
+      genericMessage.includes("getBridgeGas(uint16,uint256,uint256)")
+    ) {
+      return setErrorMessage(
+        "Please lower the amount you're trying to send and try again."
+      );
     } else {
       return setErrorMessage(
         `An error occurred: ${dataMessage ? dataMessage : genericMessage}`
