@@ -200,7 +200,6 @@ const handleWERC20Mint = async ({
   quantity?: number;
 }) => {
   try {
-    // TODO: Cross check this implementation with hardhat setup
     const provider = await getProviderOrSigner();
     const signer = (await getProviderOrSigner(
       true
