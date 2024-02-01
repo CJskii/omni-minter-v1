@@ -1,65 +1,61 @@
 import { useEffect, useRef } from "react";
 
-type MintedOFTModalProps = {
-  setShowMintModal: (show: boolean) => void;
-  showMintModal: boolean;
+type BridgeTokenModalProps = {
+  setShowBridgingModal: (show: boolean) => void;
+  showBridgingModal: boolean;
   txHash: string;
   setTxHash: (hash: string) => void;
   errorMessage: string;
   setErrorMessage: (message: string) => void;
   isLoading: boolean;
-  isMinting: boolean;
-  userBalance: number;
+  isBridging: boolean;
+  quantity: string;
+  toNetwork: string;
+  type: string;
 };
 
-const MintedOFTModal = (props: MintedOFTModalProps) => {
+const BridgeTokenModal = (props: BridgeTokenModalProps) => {
   const {
-    setShowMintModal,
-    showMintModal,
+    showBridgingModal,
+    setShowBridgingModal,
+    isLoading,
     txHash,
     setTxHash,
     errorMessage,
     setErrorMessage,
-    isLoading,
-    isMinting,
-    userBalance,
+    quantity,
+    toNetwork,
+    type,
   } = props;
-
   const dialogRef = useRef<null | HTMLDialogElement>(null);
 
   useEffect(() => {
-    if (showMintModal && dialogRef.current) {
+    if (showBridgingModal && dialogRef.current) {
       dialogRef.current.showModal();
-    } else if (!showMintModal && dialogRef.current) {
+    } else if (!showBridgingModal && dialogRef.current) {
       dialogRef.current.close();
     }
-  }, [showMintModal]);
+  }, [showBridgingModal]);
 
   const SuccessDisplay = () => {
-    if (!showMintModal) return null;
+    if (!showBridgingModal) return null;
     return (
       <div className="card card-compact w-full max-w-xl bg-base-100 shadow-xl">
         <div className="card-body">
-          <h2 className="card-title">Successful Mint</h2>
-          <p className="text-lg">
-            {`Your new balance is ${
-              isMinting ? (
-                <span className="loading loading-ring loading-xs"></span>
-              ) : (
-                userBalance
-              )
-            } MIN`}
+          <h2 className="card-title">Successful Bridging</h2>
+          <p className="text-xl">
+            {`Your ${quantity} ${type === "layerzero" ? "$MIN" : "$wMINT"} ${
+              Number(quantity) === 1 ? "token is" : "tokens are"
+            } on the way to ${toNetwork}!`}
           </p>
-          <p className="text-[sm]"></p>
           <p className="text-clip break-words text-[10px]">TX: {txHash}</p>
-
           <div className="card-actions justify-end">
             <button
               onClick={() => {
                 if (dialogRef.current) {
                   dialogRef.current.close();
                 }
-                setShowMintModal(false);
+                setShowBridgingModal(false);
                 setTxHash("");
               }}
               className="relative inline-flex items-center justify-center w-full px-4 py-4 text-primary-focus text-xl font-semibold transition-all duration-200 border-[1px] border-base-200 hover:opacity-80 focus:opacity-80 focus:bg-gradient-to-l from-primary to-secondary hover:text-content focus:text-success-content focus:outline-none"
@@ -74,12 +70,12 @@ const MintedOFTModal = (props: MintedOFTModalProps) => {
 
   return (
     <div>
-      <dialog ref={dialogRef} id="oft_mint_modal" className="modal">
+      <dialog ref={dialogRef} id="my_mint_modal" className="modal">
         <form
           method="dialog"
           className="modal-box p-0 flex justify-center items-center"
         >
-          {isLoading && showMintModal ? (
+          {isLoading && showBridgingModal ? (
             <span className="loading loading-infinity w-[4rem] h-[4rem]"></span>
           ) : errorMessage ? (
             <p className="text-red-600 p-4">{errorMessage}</p>
@@ -94,7 +90,7 @@ const MintedOFTModal = (props: MintedOFTModalProps) => {
             if (dialogRef.current) {
               dialogRef.current.close();
             }
-            setShowMintModal(false);
+            setShowBridgingModal(false);
             setTxHash("");
             setErrorMessage("");
           }}
@@ -104,4 +100,4 @@ const MintedOFTModal = (props: MintedOFTModalProps) => {
   );
 };
 
-export default MintedOFTModal;
+export default BridgeTokenModal;
