@@ -15,7 +15,8 @@ const Navbar = () => {
     router.pathname === "/layerzero/oft-mint-bridge" ||
     router.pathname === "/wormhole/nft-bridge" ||
     router.pathname === "/wormhole/nft-mint" ||
-    router.pathname === "/wormhole/token-mint-bridge";
+    router.pathname === "/wormhole/token-mint-bridge" ||
+    router.pathname === "/wormhole/gas-refuel";
 
   return (
     <div className="navbar bg-base-200 border-orange-700 justify-between min-w-full">

@@ -113,6 +113,7 @@ const Gas = ({
       setTransactionBlockNumber,
       gasFee,
       recipientAddress,
+      type,
     });
   };
 
@@ -138,6 +139,7 @@ const Gas = ({
         setErrorMessage,
         setShowGasModal,
         recipientAddress,
+        type,
       });
     } catch (e) {
       console.error(e);
@@ -171,13 +173,13 @@ const Gas = ({
             <h2 className="text-xl font-bold leading-tight sm:text-4xl text-content-focus text-center">
               Gas Refuel
             </h2>
-            <p className="text-sm text-center p-2">
-              Note: this is experimental feature, please proceed with caution!
-            </p>
-            <p className="text-sm text-center">
+            <p className="text-sm text-center py-2">
               If you run into any issues please contact us in our{" "}
               <DiscordLink />
             </p>
+            <span className="text-xs text-center">
+              {`Excess of unused gas will be refunded to your ${toNetwork.name} address.`}
+            </span>
 
             <div className="grid grid-cols-[1fr,auto,1fr] items-center gap-4 py-4 px-2 mt-4 max-sm:flex max-sm:flex-col">
               <NetworkModal
@@ -211,7 +213,7 @@ const Gas = ({
               />
             </div>
 
-            {gasFee === "" && (
+            {gasFee === "" && type != "wormhole" && (
               <div className="flex flex-col gap-2">
                 <label htmlFor="recipientAddress">
                   Sending to a friend? (optional):
