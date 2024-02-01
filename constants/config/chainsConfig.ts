@@ -326,7 +326,6 @@ export const getSupportedChains = () => {
         lzParams: {
           lzEndpointAddress: chain.lzEndpointAddress,
           remoteChainId: getLayerZeroChainId(chain.name),
-          maxGas: getMaxGasValue(chain.name),
         },
         whParams: {
           whEndpointAddress: "",
@@ -377,7 +376,6 @@ export const getSupportedChains = () => {
         lzParams: {
           lzEndpointAddress: "",
           remoteChainId: getLayerZeroChainId(chain.name),
-          maxGas: getMaxGasValue(chain.name),
         },
         // TODO: Add wormhole params
       }));

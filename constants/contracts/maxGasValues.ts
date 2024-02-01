@@ -1,10 +1,11 @@
 interface MaxGasValues {
   [key: string]: {
-    adapterParamMaxGas: number;
+    adapterParamMaxGas?: number;
+    refuel?: number;
   };
 }
 
-export const maxGasValues: MaxGasValues = {
+export const maxGasValuesLayerzero: MaxGasValues = {
   arbitrum: {
     adapterParamMaxGas: 0.2,
   },
@@ -135,5 +136,38 @@ export const maxGasValues: MaxGasValues = {
   },
   goerli: {
     adapterParamMaxGas: 0.05,
+  },
+};
+
+export const maxGasValuesWormhole: MaxGasValues = {
+  arbitrum: {
+    refuel: 0.075,
+  },
+  avalanche: {
+    refuel: 5,
+  },
+  bsc: {
+    refuel: 0.6,
+  },
+  fantom: {
+    refuel: 500,
+  },
+  optimism: {
+    refuel: 0.075,
+  },
+  celo: {
+    refuel: 250,
+  },
+  moonbeam: {
+    refuel: 250,
+  },
+  polygon: {
+    refuel: 250,
+  },
+  base: {
+    refuel: 0.075,
+  },
+  klaytn: {
+    refuel: 1000,
   },
 };
