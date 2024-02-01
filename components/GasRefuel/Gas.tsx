@@ -17,7 +17,7 @@ import Preview from "./Preview";
 import Confirm from "./ConfirmTransaction";
 import DiscordLink from "../../common/components/elements/DiscordLink";
 import Link from "next/link";
-import Router from "next/router";
+import { useRouter } from "next/router";
 
 const NetworkModal = dynamic(
   () => import("../../common/components/elements/modals/NetworkModal"),
@@ -43,6 +43,7 @@ const Gas = ({
   const { chain } = useNetwork();
   const { openChainModal } = useChainModal();
   const { type, contract } = contractProvider;
+  const router = useRouter();
 
   const [inputAmount, setInputAmount] = useState("");
   const [gasFee, setGasFee] = useState("");
@@ -180,13 +181,13 @@ const Gas = ({
             <div className="w-full flex justify-center items-center gap-4 py-2">
               <Link
                 href="/layerzero/gas-refuel"
-                className={`p-2 hover:opacity-80 rounded-md text-sm ${Router.pathname === "/layerzero/gas-refuel" ? "text-primary" : ""}`}
+                className={`p-2 hover:opacity-80 rounded-md text-sm ${router.pathname === "/layerzero/gas-refuel" ? "text-primary" : ""}`}
               >
                 LayerZero
               </Link>
               <Link
                 href="/wormhole/gas-refuel"
-                className={`p-2 hover:opacity-80 rounded-md text-sm ${Router.pathname === "/wormhole/gas-refuel" ? "text-primary" : ""}`}
+                className={`p-2 hover:opacity-80 rounded-md text-sm ${router.pathname === "/wormhole/gas-refuel" ? "text-primary" : ""}`}
               >
                 Wormhole <div className="badge text-accent text-xs">NEW</div>
               </Link>
