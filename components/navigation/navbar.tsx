@@ -44,9 +44,11 @@ export function Header() {
       </div>
       <div className="hidden items-center gap-3 md:flex">
         <ThemeToggler />
-        <Button className="bg-gradient rounded-xl font-normal  text-white hover:opacity-90">
-          Contact Us
-        </Button>
+        <Link href={"/contact-us"}>
+          <Button className="bg-gradient rounded-xl font-normal  text-white hover:opacity-90">
+            Contact Us
+          </Button>
+        </Link>
       </div>
       <div className="block md:hidden">
         <HeaderSheet />
@@ -85,7 +87,7 @@ export function NavLinks() {
       <DropdownMenu>
         <DropdownMenuTrigger asChild className="w-full">
           <Button className="" variant={"navbar"}>
-            Warmhole
+            Wormhole
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent className="border-0 bg-white/30 dark:bg-black/30 backdrop-blur-xl">
@@ -108,6 +110,12 @@ export function NavLinks() {
         className={cn(buttonVariants({ variant: "navbar" }))}
       >
         Airdrop
+      </Link>
+      <Link
+        href={"/featured"}
+        className={cn(buttonVariants({ variant: "navbar" }))}
+      >
+        Featured
       </Link>
     </>
   );

@@ -6,13 +6,14 @@ import { useNetworkSelection } from "../../common/components/hooks/useNetworkSel
 import dynamic from "next/dynamic";
 import { ExtendedNetwork } from "../../common/types/network";
 import CardImage from "./CardImage";
+import DashboardCard from "../dashboard/dashboard-card";
 
 const NetworkModal = dynamic(
   () => import("../../common/components/elements/modals/NetworkModal"),
   {
     loading: () => <span className="loading loading-dots loading-lg"></span>,
     ssr: true,
-  }
+  },
 );
 
 const CustomButtonMint = dynamic(() => import("../Buttons/CustomButtonMint"), {
@@ -25,7 +26,7 @@ const CustomButtonNetwork = dynamic(
   {
     loading: () => <span className="loading loading-dots loading-lg"></span>,
     ssr: true,
-  }
+  },
 );
 
 const Minting = ({
@@ -57,7 +58,7 @@ const Minting = ({
 
     if (chain?.name && !chain.unsupported) {
       const networkObject = fromFilteredChains.find(
-        (net) => net.name === chain.name
+        (net) => net.name === chain.name,
       );
       selected =
         (networkObject as ExtendedNetwork) ||
@@ -73,8 +74,8 @@ const Minting = ({
   }, [chain?.name]);
 
   return (
-    <div className="flex flex-col justify-betweeen items-center min-w-full">
-      <section className="bg-base card card-side bg-base-200 shadow-xl rounded-none bg">
+    <div className="flex z-30 flex-col justify-betweeen items-center min-w-full">
+      <DashboardCard className="bg-white shadow-xl p-0">
         <div className="grid grid-cols-1 lg:grid-cols-2 bg-base">
           <CardImage />
           {/* Mint Form */}
@@ -124,7 +125,7 @@ const Minting = ({
             </div>
           </div>
         </div>
-      </section>
+      </DashboardCard>
     </div>
   );
 };

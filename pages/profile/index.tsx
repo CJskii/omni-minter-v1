@@ -6,6 +6,8 @@ import { Input } from "@/components/ui/input";
 import { EyeOff, PenIcon, Pencil, Search } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import DashboardLayout from "@/components/dashboard/layout";
+import profile from "@/assets/dashboard/profile.svg";
+import profileDark from "@/assets/dashboard/profile-dark.svg";
 
 import { useUser, useAddress, useConnect } from "@thirdweb-dev/react";
 
@@ -24,7 +26,17 @@ export default function ProfilePage() {
       {isLoggedIn && <div>{user?.address}</div>}
       {isLoading && <div>Loading...</div>}
       {!isLoggedIn && address && <div>Not logged in</div>}
-      {!address && <div>Please connect your wallet first</div>}
+
+      {!address && (
+        <div className=" flex items-center justify-center">
+          <Image src={profile} alt="profile" className="dark:hidden block" />
+          <Image
+            src={profileDark}
+            alt="profile"
+            className="dark:block hidden"
+          />
+        </div>
+      )}
 
       <div className="space-y-6 md:space-y-12 px-1 py-2 md:px-0 md:py-6">
         <Typography variant={"h2"} className=" font-raleway">

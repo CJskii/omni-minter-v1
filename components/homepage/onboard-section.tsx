@@ -1,8 +1,7 @@
 import base from "@/assets/base-bg.svg";
 import polygonZkEvm from "@/assets/polygon-bg.svg";
 import mintly from "@/assets/homepage-background/mintly.svg";
-import warmhole from "@/assets/warmhole-bg.svg";
-
+import wormhole from "@/assets/warmhole-bg.svg";
 import Image from "next/image";
 import { Typography } from "../ui/typography";
 import { Card } from "../ui/card";
@@ -10,9 +9,9 @@ import { ScrollArea, ScrollBar } from "../ui/scroll-area";
 
 const ongoingChains = [
   {
-    title: "Warmhole",
+    title: "Wormhole",
     description: "Lorem ipsum dolor sit amet consectetur.",
-    background: warmhole,
+    background: wormhole,
   },
   {
     title: "Polygon zkEVM",
@@ -25,9 +24,9 @@ const ongoingChains = [
     background: base,
   },
   {
-    title: "Warmhole",
+    title: "Wormhole",
     description: "Lorem ipsum dolor sit amet consectetur.",
-    background: warmhole,
+    background: wormhole,
   },
 ];
 

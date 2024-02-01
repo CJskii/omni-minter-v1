@@ -1,7 +1,7 @@
 import ellipse1 from "@/assets/ellipse1.svg";
 import ellipse2 from "@/assets/ellipse2.svg";
 import layerzero from "@/assets/layerzero-logo.svg";
-import warmhole from "@/assets/warmhole-logo.svg";
+import wormhole from "@/assets/warmhole-logo.svg";
 import { ChevronRightIcon } from "lucide-react";
 import Image from "next/image";
 import Marquee from "react-fast-marquee";
@@ -37,7 +37,7 @@ export default function HeroSection() {
         <Marquee autoFill pauseOnClick>
           <div className="bg-background-secondary flex w-full items-center py-5">
             <Image alt="layerzero-logo" src={layerzero} className="mx-6" />
-            <Image alt="warmhole-logo" src={warmhole} className="mx-6" />
+            <Image alt="wormhole-logo" src={wormhole} className="mx-6" />
           </div>
         </Marquee>
       </div>

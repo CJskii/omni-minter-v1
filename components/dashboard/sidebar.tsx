@@ -50,7 +50,7 @@ const links: Links[] = [
 export function DashboardSidebar() {
   const path = usePathname();
   return (
-    <div className="group flex min-h-screen flex-col items-center gap-4  bg-[#F6F6F6] py-4 dark:border-neutral-700 dark:bg-[#110E14] md:w-[100px] md:border-r lg:w-[280px] 2xl:w-[320px]">
+    <div className="group flex min-h-screen flex-col items-center gap-4  bg-[#F6F6F6] py-4 dark:border-neutral-700 dark:bg-[#110E14] md:w-[90px] md:border-r lg:w-[280px] 2xl:w-[320px]">
       <div className=" block self-start px-6 md:hidden lg:block lg:px-10">
         <Link href={"/"}>
           <>

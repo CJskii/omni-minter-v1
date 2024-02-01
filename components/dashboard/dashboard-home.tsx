@@ -2,14 +2,14 @@ import React from "react";
 import { Typography } from "../ui/typography";
 import { Card } from "../ui/card";
 import layerzero from "@/assets/dashboard/layerzero.svg";
-import warmhole from "@/assets/dashboard/warmhole.svg";
+import wormhole from "@/assets/dashboard/warmhole.svg";
 import Image from "next/image";
 
 const data = [
   {
     title: "Wormhole",
     difficulty: "Easy",
-    image: warmhole,
+    image: wormhole,
   },
   {
     title: "LayerZero",
@@ -25,7 +25,7 @@ export default function DashboardHome() {
         {data.map((item, idx) => (
           <Card
             key={idx}
-            className="relative w-full rounded-2xl md:col-span-3 md:w-5/12"
+            className="relative w-full rounded-2xl md:col-span-3 md:w-5/12 transition-all ease-in-out hover:scale-[1.015] hover:shadow-md cursor-pointer"
           >
             <div className="absolute flex h-full flex-col items-start justify-between p-4 text-white">
               <Typography variant={"large"} className="font-normal md:text-xl">

@@ -41,7 +41,7 @@ const CardImage = () => {
           alt={currentImage.toString()}
           width={400}
           height={400}
-          className="object-cover w-full h-full"
+          className="object-cover w-full h-full "
           onLoad={() => setIsLoading(false)}
           loading="eager"
         />

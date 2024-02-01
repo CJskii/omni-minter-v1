@@ -17,7 +17,7 @@ export function DashboardContainer({ children }: ComponentProps<"div">) {
         <div className=" fixed z-40 w-full">
           <DashboardHeader />
         </div>
-        <div className="w-full p-6 py-28 md:pl-[125px] md:py-24 lg:pl-[320px] lg:pr-9">
+        <div className="w-full p-6 py-28 md:pl-[125px] md:py-24 lg:pl-[320px] 2xl:pl-[360px] lg:pr-9">
           {children}
         </div>
       </div>
