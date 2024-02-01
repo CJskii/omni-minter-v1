@@ -53,7 +53,14 @@ const MintTokenModal = (props: MintTokenModalProps) => {
             } ${type === "layerzero" ? "$MIN" : "$wMINT"}.`}
           </p>
           <p className="text-[sm]"></p>
-          <p className="text-clip break-words text-[10px]">TX: {txHash}</p>
+          <p
+            className="text-clip break-words text-[10px] hover:text-accent cursor-pointer"
+            onClick={() => {
+              navigator.clipboard.writeText(txHash);
+            }}
+          >
+            TX: {txHash}
+          </p>
 
           <div className="card-actions justify-end">
             <button
