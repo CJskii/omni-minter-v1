@@ -28,6 +28,7 @@ export interface GasModalProps {
     transactionBlockNumber: number;
   };
   recipentAddress: string;
+  type: string;
 }
 
 export interface estimateGasParams {
