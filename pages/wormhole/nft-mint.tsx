@@ -7,8 +7,8 @@ const Mint: NextPage = () => {
   return (
     <>
       <HeadComponent
-        title="Mintly: Mint - Mint Your ONFTs and Bridge Them Across Multiple Chains"
-        description="Mintly's Mint page: Where seamless ONFT creation meets LayerZero's interoperability. Start minting and bridging your ONFTs across multiple chains effortlessly."
+        title="Mintly: Mint - Mint Your wNFTs and Bridge Them Across Multiple Chains"
+        description="Mintly's Mint page: Where seamless wNFT creation meets Wormhole interoperability. Start minting and bridging your wNFTs across multiple chains effortlessly."
       />
       <Minting
         contractProvider={{ type: "wormhole", contract: "W_NFT" }}

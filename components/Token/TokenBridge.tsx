@@ -12,8 +12,8 @@ import { handleErrors } from "../../common/utils/interaction/handlers/handleErro
 import { ethers } from "ethers";
 import { requestNetworkSwitch } from "../../common/utils/requestNetworkSwitch";
 import NetworkModal from "../../common/components/elements/modals/NetworkModal";
-import MintedOFTModal from "../Modals/MintedOFTModal";
-import BridgeOFTModal from "../Modals/BridgeOFTModal";
+import MintTokenModal from "../Modals/MintedTokenModal";
+import BridgeTokenModal from "../Modals/BridgeTokenModal";
 import Step from "./Step";
 import BridgeOFTButton from "../Buttons/CustomButtonOFTBridge";
 import { getBalance } from "../../common/utils/getters/getBalance";
@@ -100,9 +100,9 @@ const TokenBridge = ({
     if (!fromNetwork.deployedContracts || !address) return;
     try {
       const balanceInWei = await getBalance({
-        abi: fromNetwork.deployedContracts.layerzero.OFT.ABI,
+        abi: fromNetwork.deployedContracts[type][contract].ABI,
         walletAddress: address,
-        contractAddress: fromNetwork.deployedContracts.layerzero.OFT.address,
+        contractAddress: fromNetwork.deployedContracts[type][contract].address,
       });
 
       const balanceInEther = ethers.utils.formatEther(balanceInWei);
@@ -208,6 +208,7 @@ const TokenBridge = ({
     isMinting,
     handleMintButton,
     userBalance,
+    type,
   };
 
   const bridgeModalProps = {
@@ -221,6 +222,7 @@ const TokenBridge = ({
     isBridging,
     quantity: bridgeAmount,
     toNetwork: toNetwork.name,
+    type,
   };
 
   const step1Props = {
@@ -258,8 +260,8 @@ const TokenBridge = ({
       <section className="bg-base card card-side bg-base-200 shadow-xl rounded-none">
         <div className="flex items-center justify-center px-4 py-10 sm:px-6 lg:px-8 sm:p-8">
           <div className="md:w-full xl:max-w-2xl 2xl:max-w-2xl xl:mx-auto 2xl:pl-8 h-full flex flex-col justify-between lg:p-8">
-            <MintedOFTModal {...mintModalProps} />
-            <BridgeOFTModal {...bridgeModalProps} />
+            <MintTokenModal {...mintModalProps} />
+            <BridgeTokenModal {...bridgeModalProps} />
             <h2 className="text-xl font-bold leading-tight sm:text-4xl text-content-focus text-center">
               {type === "wormhole" ? "wERC20" : "OFT"} Bridge
             </h2>

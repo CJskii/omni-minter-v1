@@ -83,12 +83,14 @@ const Navbar = () => {
                 <Link href="/wormhole/nft-bridge">NFT Bridge</Link>
               </li>
               <li>
+                <Link href="/wormhole/token-mint-bridge">
+                  ERC20 Mint & Bridge
+                </Link>
+              </li>
+              <li>
                 <a href="https://wormholescan.io/" target="_blank">
                   Explorer
                 </a>
-              </li>
-              <li className="disabled">
-                <Link href="">ERC20 Mint & Bridge</Link>
               </li>
             </ul>
           </div>
@@ -157,13 +159,13 @@ const Navbar = () => {
             className="dropdown-content menu p-2 shadow bg-base-100 rounded-box w-64 z-100"
           >
             <li onClick={() => setExpanded(false)}>
+              <Link href="/layerzero/gas-refuel">Gas Refuel</Link>
+            </li>
+            <li onClick={() => setExpanded(false)}>
               <Link href="/layerzero/onft-mint">ONFT Mint</Link>
             </li>
             <li onClick={() => setExpanded(false)}>
               <Link href="/layerzero/onft-bridge">ONFT Bridge</Link>
-            </li>
-            <li onClick={() => setExpanded(false)}>
-              <Link href="/layerzero/gas-refuel">Gas Refuel</Link>
             </li>
             <li onClick={() => setExpanded(false)}>
               <Link href="/layerzero/oft-mint-bridge">OFT Mint & Bridge</Link>
@@ -173,6 +175,11 @@ const Navbar = () => {
             </li>
             <li onClick={() => setExpanded(false)}>
               <Link href="/wormhole/nft-bridge">wNFT Bridge</Link>
+            </li>
+            <li onClick={() => setExpanded(false)}>
+              <Link href="/wormhole/token-mint-bridge">
+                wERC20 Mint & Bridge
+              </Link>
             </li>
             <li onClick={() => setExpanded(false)}>
               <Link href="/leaderboard">Leaderboard</Link>

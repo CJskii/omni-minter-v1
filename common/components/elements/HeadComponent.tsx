@@ -8,8 +8,8 @@ interface HeadComponentProps {
 }
 
 const HeadComponent: React.FC<HeadComponentProps> = ({
-  title = "Mintly: Omnichain Interoperability with LayerZero Technology",
-  description = "Mintly redefines blockchain efficiency with wallet integration, gas refueling, cross-chain messaging, and interoperability, all powered by LayerZero. Mint and Bridge OFT and ONFT tokens across multiple chains.",
+  title = "Mintly: Omnichain Interoperability with LayerZero and Wormhole Technology",
+  description = "Mintly redefines blockchain efficiency with wallet integration, gas refueling, cross-chain messaging, and interoperability, all powered by LayerZero and Wormhole. Mint and Bridge wERC20, OFT, wNFT and ONFT tokens across multiple chains.",
   image = "https://pbs.twimg.com/profile_banners/1280015719229386754/1691925867/1500x500",
   twitterHandle = "@Mintly_lol",
 }) => {

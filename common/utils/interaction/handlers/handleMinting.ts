@@ -1,5 +1,5 @@
 import { ethers } from "ethers";
-import { Contract } from "@ethersproject/contracts";
+import { Contract } from "ethers";
 import getProviderOrSigner from "../../getters/getProviderOrSigner";
 import { Network } from "../../../types/network";
 import { getTokenId } from "../../getters/getTokenId";
@@ -32,8 +32,20 @@ export const handleMinting = async ({
     contractProvider.contract == "OFT"
   ) {
     return handleOFTMint({ mintNetwork, mintGasLimit, quantity: mintQuantity });
-  } else if (contractProvider.type == "wormhole") {
-    return handleWormholeMinting({ mintNetwork, mintGasLimit });
+  } else if (
+    contractProvider.type == "wormhole" &&
+    contractProvider.contract == "W_NFT"
+  ) {
+    return handleWNFTMint({ mintNetwork, mintGasLimit });
+  } else if (
+    contractProvider.type == "wormhole" &&
+    contractProvider.contract == "W_ERC20"
+  ) {
+    return handleWERC20Mint({
+      mintNetwork,
+      mintGasLimit,
+      quantity: mintQuantity,
+    });
   }
 };
 
@@ -132,7 +144,7 @@ const handleONFTMint = async ({
   }
 };
 
-const handleWormholeMinting = async ({
+const handleWNFTMint = async ({
   mintNetwork,
   mintGasLimit,
 }: {
@@ -154,8 +166,8 @@ const handleWormholeMinting = async ({
 
     // Initiate contract instance and get fee
     const contract = new Contract(
-      mintNetwork.deployedContracts.wormhole.NFT.address,
-      mintNetwork.deployedContracts.wormhole.NFT.ABI,
+      mintNetwork.deployedContracts.wormhole.W_NFT.address,
+      mintNetwork.deployedContracts.wormhole.W_NFT.ABI,
       signer
     );
     const contractFeeInWei = await contract.fee();
@@ -172,6 +184,55 @@ const handleWormholeMinting = async ({
     let mintedID = await getTokenId({ txHash, mintNetwork, provider });
 
     return { mintedID, txHash };
+  } catch (e) {
+    console.log(e);
+    throw new Error((e as any).data?.message || (e as any)?.message);
+  }
+};
+
+const handleWERC20Mint = async ({
+  mintNetwork,
+  mintGasLimit,
+  quantity = 1,
+}: {
+  mintNetwork: Network;
+  mintGasLimit: number;
+  quantity?: number;
+}) => {
+  try {
+    const provider = await getProviderOrSigner();
+    const signer = (await getProviderOrSigner(
+      true
+    )) as ethers.providers.JsonRpcSigner;
+
+    const address = await signer.getAddress();
+
+    if (!(provider instanceof ethers.providers.Web3Provider)) {
+      console.error("Provider is not an instance of Web3Provider");
+      return;
+    }
+
+    if (!mintNetwork.deployedContracts)
+      throw new Error(`No deployed contracts found for ${mintNetwork.name}`);
+
+    const contract = new Contract(
+      mintNetwork.deployedContracts.wormhole.W_ERC20.address,
+      mintNetwork.deployedContracts.wormhole.W_ERC20.ABI,
+      signer
+    );
+    const contractFeeInWei = await contract.fee();
+    const totalFeeInWei = contractFeeInWei.mul(quantity);
+
+    const tx = await (
+      await contract.mint(address, quantity, {
+        value: totalFeeInWei,
+        gasLimit: mintGasLimit,
+      })
+    ).wait();
+
+    const txHash = tx.transactionHash;
+
+    return { mintedID: quantity, txHash };
   } catch (e) {
     console.log(e);
     throw new Error((e as any).data?.message || (e as any)?.message);
