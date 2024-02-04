@@ -48,7 +48,14 @@ const BridgeTokenModal = (props: BridgeTokenModalProps) => {
               Number(quantity) === 1 ? "token is" : "tokens are"
             } on the way to ${toNetwork}!`}
           </p>
-          <p className="text-clip break-words text-[10px]">TX: {txHash}</p>
+          <p
+            className="text-clip break-words text-[10px] hover:text-accent cursor-pointer"
+            onClick={() => {
+              navigator.clipboard.writeText(txHash);
+            }}
+          >
+            TX: {txHash}
+          </p>
           <div className="card-actions justify-end">
             <button
               onClick={() => {

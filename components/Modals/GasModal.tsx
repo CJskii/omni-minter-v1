@@ -11,6 +11,7 @@ const GasModal = (props: GasModalProps) => {
     errorMessage,
     setErrorMessage,
     recipentAddress,
+    type,
   } = props;
 
   const { toNetwork, inputAmount, transactionBlockNumber } = props.data;
@@ -34,11 +35,23 @@ const GasModal = (props: GasModalProps) => {
             {recipentAddress ? "Your friend" : "You"} will receive {inputAmount}{" "}
             ${toNetwork.nativeCurrency.symbol} shortly.
           </p>
-          <p className="text-[sm]">
+          <p className="text-xs">
             Transaction will be included in block{" "}
             <strong>{transactionBlockNumber}</strong>
           </p>
-          <p className="text-clip break-words text-[10px]">TX: {txHash}</p>
+          <p
+            className="text-clip break-words text-[10px] hover:text-accent cursor-pointer"
+            onClick={() => {
+              navigator.clipboard.writeText(txHash);
+            }}
+          >
+            TX: {txHash}
+          </p>
+          {type === "wormhole" ? (
+            <p className="text-xs italic">
+              Note: Wormhole transactions can take up to 30 minutes
+            </p>
+          ) : null}
 
           <div className="card-actions justify-end">
             <button

@@ -16,6 +16,8 @@ import { handleErrors } from "../../common/utils/interaction/handlers/handleErro
 import Preview from "./Preview";
 import Confirm from "./ConfirmTransaction";
 import DiscordLink from "../../common/components/elements/DiscordLink";
+import Link from "next/link";
+import { useRouter } from "next/router";
 
 const NetworkModal = dynamic(
   () => import("../../common/components/elements/modals/NetworkModal"),
@@ -41,6 +43,7 @@ const Gas = ({
   const { chain } = useNetwork();
   const { openChainModal } = useChainModal();
   const { type, contract } = contractProvider;
+  const router = useRouter();
 
   const [inputAmount, setInputAmount] = useState("");
   const [gasFee, setGasFee] = useState("");
@@ -113,11 +116,13 @@ const Gas = ({
       setTransactionBlockNumber,
       gasFee,
       recipientAddress,
+      type,
     });
   };
 
   const handleMaxButton = () => {
-    const maxGas = getMaxGasValue(toNetwork.name);
+    const maxGas = getMaxGasValue({ toNetwork: toNetwork.name, type });
+    console.log(toNetwork.name, type, maxGas);
     if (maxGas) {
       setInputAmount(maxGas.toString());
     }
@@ -138,6 +143,7 @@ const Gas = ({
         setErrorMessage,
         setShowGasModal,
         recipientAddress,
+        type,
       });
     } catch (e) {
       console.error(e);
@@ -167,17 +173,32 @@ const Gas = ({
                 transactionBlockNumber,
               }}
               recipentAddress={recipientAddress}
+              type={type}
             />
             <h2 className="text-xl font-bold leading-tight sm:text-4xl text-content-focus text-center">
               Gas Refuel
             </h2>
-            <p className="text-sm text-center p-2">
-              Note: this is experimental feature, please proceed with caution!
-            </p>
-            <p className="text-sm text-center">
+            <div className="w-full flex justify-center items-center gap-4 py-2">
+              <Link
+                href="/layerzero/gas-refuel"
+                className={`p-2 hover:opacity-80 rounded-md text-sm ${router.pathname === "/layerzero/gas-refuel" ? "text-primary" : ""}`}
+              >
+                LayerZero
+              </Link>
+              <Link
+                href="/wormhole/gas-refuel"
+                className={`p-2 hover:opacity-80 rounded-md text-sm ${router.pathname === "/wormhole/gas-refuel" ? "text-primary" : ""}`}
+              >
+                Wormhole <div className="badge text-accent text-xs">NEW</div>
+              </Link>
+            </div>
+            <p className="text-sm text-center py-2">
               If you run into any issues please contact us in our{" "}
               <DiscordLink />
             </p>
+            <span className="text-xs text-center">
+              {`Excess of unused gas will be refunded to your ${toNetwork.name} address.`}
+            </span>
 
             <div className="grid grid-cols-[1fr,auto,1fr] items-center gap-4 py-4 px-2 mt-4 max-sm:flex max-sm:flex-col">
               <NetworkModal
@@ -211,7 +232,7 @@ const Gas = ({
               />
             </div>
 
-            {gasFee === "" && (
+            {gasFee === "" && type != "wormhole" && (
               <div className="flex flex-col gap-2">
                 <label htmlFor="recipientAddress">
                   Sending to a friend? (optional):

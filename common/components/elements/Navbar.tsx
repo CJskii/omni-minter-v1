@@ -15,7 +15,8 @@ const Navbar = () => {
     router.pathname === "/layerzero/oft-mint-bridge" ||
     router.pathname === "/wormhole/nft-bridge" ||
     router.pathname === "/wormhole/nft-mint" ||
-    router.pathname === "/wormhole/token-mint-bridge";
+    router.pathname === "/wormhole/token-mint-bridge" ||
+    router.pathname === "/wormhole/gas-refuel";
 
   return (
     <div className="navbar bg-base-200 border-orange-700 justify-between min-w-full">
@@ -67,7 +68,10 @@ const Navbar = () => {
               tabIndex={0}
               role="button"
               className={`btn m-0 p-2 hover:bg-transparent hover:border-transparent z-[100] hover:text-accent ${
-                router.pathname.startsWith("/wormhole/") ? "text-primary" : ""
+                router.pathname.startsWith("/wormhole/") &&
+                !router.pathname.includes("gas-refuel")
+                  ? "text-primary"
+                  : ""
               }`}
             >
               Wormhole
@@ -98,7 +102,10 @@ const Navbar = () => {
           <Link
             href="/layerzero/gas-refuel"
             className={`btn hover:bg-transparent  hover:border-transparent hover:text-accent ${
-              router.pathname === "/layerzero/gas-refuel" ? "text-primary" : ""
+              router.pathname === "/layerzero/gas-refuel" ||
+              router.pathname === "/wormhole/gas-refuel"
+                ? "text-primary"
+                : ""
             }`}
           >
             Gas Refuel

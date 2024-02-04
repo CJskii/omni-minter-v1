@@ -11,6 +11,7 @@ export interface GasTransferParams {
   setTransactionBlockNumber: (transactionBlockNumber: number) => void;
   gasFee: string;
   recipientAddress: string;
+  type: string;
 }
 
 export interface GasModalProps {
@@ -27,6 +28,7 @@ export interface GasModalProps {
     transactionBlockNumber: number;
   };
   recipentAddress: string;
+  type: string;
 }
 
 export interface estimateGasParams {
@@ -38,6 +40,7 @@ export interface estimateGasParams {
   setErrorMessage: (errorMessage: string) => void;
   setShowGasModal: (showGasModal: boolean) => void;
   recipientAddress: string;
+  type: string;
 }
 
 export interface IPreview {

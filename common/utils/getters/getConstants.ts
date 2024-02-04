@@ -119,6 +119,9 @@ const getEnvVarName = (fromNetwork: string, contract: string) => {
 };
 
 export const transformNetworkName = (networkName: string) => {
+  if (!networkName) {
+    return "";
+  }
   switch (networkName.toLowerCase()) {
     case "polygon mumbai":
       networkName = "mumbai";
