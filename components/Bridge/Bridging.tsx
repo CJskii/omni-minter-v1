@@ -14,7 +14,7 @@ const NetworkModal = dynamic(
   {
     loading: () => <span className="loading loading-dots loading-lg"></span>,
     ssr: true,
-  }
+  },
 );
 
 const BridgingModal = dynamic(() => import("../Modals/BridgingModal"), {
@@ -27,7 +27,7 @@ const CustomButtonNetwork = dynamic(
   {
     loading: () => <span className="loading loading-dots loading-lg"></span>,
     ssr: true,
-  }
+  },
 );
 
 const CustomButtonBridge = dynamic(
@@ -35,7 +35,7 @@ const CustomButtonBridge = dynamic(
   {
     loading: () => <span className="loading loading-dots loading-lg"></span>,
     ssr: true,
-  }
+  },
 );
 
 interface BridgeProps {
@@ -107,7 +107,7 @@ const Bridging = (props: BridgeProps) => {
         contract,
       }) as string[];
       const defaultNetwork = networksByProvider.find((network) =>
-        validNetworks.includes(network.name)
+        validNetworks.includes(network.name),
       );
 
       defaultNetwork
@@ -141,7 +141,7 @@ const Bridging = (props: BridgeProps) => {
       setIsLoading(true);
       setShowBridgingModal(true);
       console.log(
-        `Sending NFT #${TOKEN_ID} from ${fromNetwork.name} to ${toNetwork.name}`
+        `Sending NFT #${TOKEN_ID} from ${fromNetwork.name} to ${toNetwork.name}`,
       );
 
       const result = await handleBridging({

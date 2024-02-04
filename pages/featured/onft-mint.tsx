@@ -1,10 +1,5 @@
-import gridMobile from "@/assets/homepage-background/bg-grid-mobile.svg";
-import grid from "@/assets/homepage-background/bg-grid.svg";
 import featured from "@/assets/homepage-background/featured.svg";
 import logoLight from "@/assets/light-logo.svg";
-import { Header } from "@/components/navigation/navbar";
-import { Footer } from "@/components/ui/footer";
-import { Input } from "@/components/ui/input";
 import { Typography } from "@/components/ui/typography";
 import { SparkleIcon } from "lucide-react";
 import Image from "next/image";
@@ -21,11 +16,11 @@ import { Layout } from "@/components/dashboard/layout";
 
 export default function Featured() {
   return (
-    <Layout>
+    <Layout className="px-0 pt-28 pb-16 min-h-[90vh]">
       <div className=" z-10 py-10 md:py-16  flex items-center justify-center">
         <div className="bg-gradient my-auto grid grid-cols-12 rounded-xl md:w-9/12 items-start">
           <div className="col-span-full md:col-span-5 relative flex items-start justify-start">
-            <div className="rounded-t-xl md:rounded-tl-xl absolute top-0 w-full py-2 px-5 bg-gradient-to-t from-black/0 via-black/50 to-black flex items-center flex-wrap gap-y-4 gap-x-6">
+            <div className=" md:rounded-tl-xl absolute top-0 w-full py-2 px-5 bg-gradient-to-t from-black/0 via-black/50 to-black flex items-center flex-wrap gap-y-4 gap-x-6">
               <Image src={logoLight} alt="mintly logo" className="w-40" />
             </div>
             <Image

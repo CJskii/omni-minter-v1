@@ -14,12 +14,37 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 
-interface Path {
+interface NavLinks {
   label: string;
-  path: string;
+  paths: {
+    href: string;
+    label: string;
+  }[];
 }
 
-const paths: Path[] = [];
+const navLinks: NavLinks[] = [
+  {
+    label: "Layerzero",
+    paths: [
+      {
+        href: "/layerzero/onft-mint",
+        label: "",
+      },
+      {
+        href: "/layerzero/onft-bridge",
+        label: "",
+      },
+      {
+        href: "https://layerzeroscan.com/",
+        label: "",
+      },
+      {
+        href: "#",
+        label: "",
+      },
+    ],
+  },
+];
 
 export function Header() {
   return (
@@ -60,26 +85,40 @@ export function Header() {
 export function NavLinks() {
   return (
     <>
+      <Link
+        href={"/dashboard"}
+        className={cn(buttonVariants({ variant: "navbar" }))}
+      >
+        Airdrop
+      </Link>
       <DropdownMenu>
         <DropdownMenuTrigger asChild className="w-full">
           <Button className="" variant={"navbar"}>
             Layerzero
           </Button>
         </DropdownMenuTrigger>
-        <DropdownMenuContent className="border-0 bg-white/30 dark:bg-black/30 backdrop-blur-xl">
-          <DropdownMenuItem>
-            <Link href={"/layerzero/onft-mint"}>ONFT Mint</Link>
-          </DropdownMenuItem>
-          <DropdownMenuItem>
-            <Link href={"/layerzero/onft-bridge"}>ONFT Bridge</Link>
-          </DropdownMenuItem>
-          <DropdownMenuItem>
-            <Link href={"https://layerzeroscan.com/"} target="_blank">
+        <DropdownMenuContent className="border-0 bg-[#E8E8E8]/70 dark:bg-black/30 backdrop-blur-xl">
+          <Link href={"/layerzero/onft-mint"}>
+            <DropdownMenuItem className=" cursor-pointer">
+              ONFT Mint
+            </DropdownMenuItem>
+          </Link>
+
+          <Link href={"/layerzero/onft-bridge"}>
+            <DropdownMenuItem className=" cursor-pointer">
+              ONFT Bridge
+            </DropdownMenuItem>
+          </Link>
+          <Link href={"https://layerzeroscan.com/"} target="_blank">
+            <DropdownMenuItem className=" cursor-pointer">
               Explorer
-            </Link>
-          </DropdownMenuItem>
+            </DropdownMenuItem>
+          </Link>
+
           <DropdownMenuItem disabled>
-            <Link href={"#"}>ONFT & Mint Bridge</Link>
+            <Link aria-disabled href={"#"}>
+              ONFT & Mint Bridge
+            </Link>
           </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
@@ -90,33 +129,74 @@ export function NavLinks() {
             Wormhole
           </Button>
         </DropdownMenuTrigger>
-        <DropdownMenuContent className="border-0 bg-white/30 dark:bg-black/30 backdrop-blur-xl">
-          <DropdownMenuItem>
-            <Link href={"/wormhole/nft-mint"}>NFT Mint</Link>
-          </DropdownMenuItem>
-          <DropdownMenuItem>
-            <Link href={"/wormhole/nft-bridge"}>NFT Bridge</Link>
-          </DropdownMenuItem>
-          <DropdownMenuItem>
-            <Link href={"https://wormholescan.io/"}>Explorer</Link>
-          </DropdownMenuItem>
-          <DropdownMenuItem disabled>
-            <Link href={"#"}>ERC20 & Mint Bridge</Link>
-          </DropdownMenuItem>
+        <DropdownMenuContent className="border-0 bg-[#E8E8E8]/70 dark:bg-black/30 backdrop-blur-xl">
+          <Link href={"/wormhole/nft-mint"}>
+            <DropdownMenuItem className=" cursor-pointer">
+              NFT Mint
+            </DropdownMenuItem>
+          </Link>
+          <Link href={"/wormhole/nft-bridge"}>
+            <DropdownMenuItem className=" cursor-pointer">
+              wNFT Bridge
+            </DropdownMenuItem>
+          </Link>
+          <Link href={"https://wormholescan.io/"}>
+            <DropdownMenuItem className=" cursor-pointer">
+              Explorer
+            </DropdownMenuItem>
+          </Link>
+          <Link href={"#"}>
+            <DropdownMenuItem disabled className=" cursor-pointer">
+              ERC20 & Mint Bridge
+            </DropdownMenuItem>
+          </Link>
         </DropdownMenuContent>
       </DropdownMenu>
-      <Link
-        href={"/dashboard"}
-        className={cn(buttonVariants({ variant: "navbar" }))}
-      >
-        Airdrop
-      </Link>
-      <Link
-        href={"/featured"}
-        className={cn(buttonVariants({ variant: "navbar" }))}
-      >
-        Featured
-      </Link>
+
+      <DropdownMenu>
+        <DropdownMenuTrigger asChild className="w-full">
+          <Button className="" variant={"navbar"}>
+            Featured
+          </Button>
+        </DropdownMenuTrigger>
+        <DropdownMenuContent className="border-0 bg-[#E8E8E8]/70 dark:bg-black/30 backdrop-blur-xl">
+          <Link href={"/featured/onft-mint"}>
+            <DropdownMenuItem className=" cursor-pointer">
+              oNFT Mint
+            </DropdownMenuItem>
+          </Link>
+          <Link href={"/featured/wnft-bridge"}>
+            <DropdownMenuItem className=" cursor-pointer">
+              wNFT Bridge
+            </DropdownMenuItem>
+          </Link>
+          <Link href={"/featured/wERC20-bridge"}>
+            <DropdownMenuItem className=" cursor-pointer">
+              wERC20 Bridge
+            </DropdownMenuItem>
+          </Link>
+        </DropdownMenuContent>
+      </DropdownMenu>
+
+      <DropdownMenu>
+        <DropdownMenuTrigger asChild className="w-full">
+          <Button className="" variant={"navbar"}>
+            Resources
+          </Button>
+        </DropdownMenuTrigger>
+        <DropdownMenuContent className="border-0 bg-[#E8E8E8]/70 dark:bg-black/30 backdrop-blur-xl">
+          <Link href={"/blogs"}>
+            <DropdownMenuItem className=" cursor-pointer">
+              Blogs
+            </DropdownMenuItem>
+          </Link>
+          <Link href={"/chains"}>
+            <DropdownMenuItem className=" cursor-pointer">
+              Supported Chains
+            </DropdownMenuItem>
+          </Link>
+        </DropdownMenuContent>
+      </DropdownMenu>
     </>
   );
 }
