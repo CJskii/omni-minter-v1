@@ -27,7 +27,7 @@ const Alert = (props: { title: string; link: string }) => {
       className={`alert alert-info rounded-none flex justify-center items-center bg-base-200 border-x-0 border-t-0 border-b-2 border-b-primary ${!showAlert ? "hidden" : ""}`}
     >
       <a
-        // href={link}
+        href={link}
         // target="_blank"
         className="animated-gradient-text text-md font-bold"
       >

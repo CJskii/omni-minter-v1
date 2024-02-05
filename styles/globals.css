@@ -21,7 +21,7 @@
   animation: gradient-animation 5s linear infinite;
   transition: background-position 0.4s;
   text-decoration: none;
-  /* cursor: pointer; */
+  cursor: pointer;
 }
 
 @keyframes gradient-animation {

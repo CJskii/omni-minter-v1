@@ -22,7 +22,7 @@ const Footer = dynamic(() => import("../common/components/elements/Footer"), {
 const alertProps = {
   title:
     "Mintly.lol is our only website, do not interact with any other domain as you will lose your asssets",
-  link: "https://mintly.deform.cc/survey",
+  link: "https://mintly.lol",
 };
 
 function MyApp({ Component, pageProps }: AppProps) {
