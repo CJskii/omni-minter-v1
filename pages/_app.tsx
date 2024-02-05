@@ -21,7 +21,7 @@ const Footer = dynamic(() => import("../common/components/elements/Footer"), {
 
 const alertProps = {
   title:
-    "Share your thoughts in our quick survey and enter the draw for 50 USDC - it's your chance to make an impact and win!",
+    "Mintly.lol is our only website, do not interact with any other domain as you will lose your asssets",
   link: "https://mintly.deform.cc/survey",
 };
 
