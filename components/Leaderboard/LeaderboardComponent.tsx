@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import { callLeaderboardAPI } from "../../common/utils/api/leaderboard";
 import LoadingSpinner from "./Loading";
 import { useAccount } from "wagmi";
 import UserStats from "./Stats/UserStats";
@@ -16,22 +15,25 @@ import { User as LeaderboardData } from "../../common/types/leaderboard";
 // address: string
 // points: numbe
 
-const LeaderboardComponent = () => {
-  const [leaderboard, setLeaderboard] = useState<LeaderboardData[]>([]);
+export interface User {
+  ethereumAddress: string;
+  totalPoints: number;
+  inviteLink: string;
+  currentRewardDay?: any;
+  lastRewardClaimedAt: string;
+  mints: [{ count: number }];
+  bridges: [{ count: number }];
+  interactions: [{ count: number }];
+  streaks: [{ currentStreak: number }];
+}
+
+const LeaderboardComponent = ({ leaderboard }: { leaderboard: User[] }) => {
   const [userData, setUserData] = useState<LeaderboardData[]>([]);
   const { address } = useAccount();
 
   useEffect(() => {
-    fetchLeaderboard().then((data) => {
-      if (data) {
-        setLeaderboard(data);
-      }
-    });
-  }, []);
-
-  useEffect(() => {
     const filteredStats = leaderboard.filter(
-      (user) => user.ethereumAddress === address
+      (user: any) => user.ethereumAddress === address
     );
 
     if (filteredStats.length > 0) {
@@ -45,12 +47,6 @@ const LeaderboardComponent = () => {
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [leaderboard, address]);
-
-  const fetchLeaderboard = async () => {
-    const response = await callLeaderboardAPI();
-    const data = await response.json();
-    return data.data;
-  };
 
   const fetchUserStats = async () => {
     if (address === undefined) return;
