@@ -157,10 +157,194 @@ model GnStreak {
   DiscordUser   DiscordUser @relation(fields: [discordUserId], references: [id])
 }
 
+// NEW SCHEMA
+
+model Account {
+  id                                    Int           @id @default(autoincrement())
+  ethereumAddress                       String        @unique
+  inviteCode                            String        @unique
+  role                                  Role          @default(USER)
+  createdAt                             DateTime      @default(now())
+  updatedAt                             DateTime
+  discordHandle                         String?       @unique
+  email                                 String?       @unique
+  githubHandle                          String?       @unique
+  twitterHandle                         String?       @unique
+  Interaction                           Interaction[]
+  Referral_Referral_referredIdToAccount Referral[]    @relation("Referral_referredIdToAccount")
+  Referral_Referral_referrerIdToAccount Referral[]    @relation("Referral_referrerIdToAccount")
+  UserProject                           UserProject[]
+  UserReward                            UserReward[]
+  UserTask                              UserTask[]
+}
+
+model Interaction {
+  id           Int             @id @default(autoincrement())
+  type         InteractionType
+  contractType ContractType?
+  chainId      Int?
+  points       Int             @default(0)
+  userId       Int
+  createdAt    DateTime        @default(now())
+  updatedAt    DateTime
+  Account      Account         @relation(fields: [userId], references: [id])
+}
+
+model Link {
+  id        Int      @id @default(autoincrement())
+  url       String
+  type      LinkType
+  projectId Int
+  Project   Project  @relation(fields: [projectId], references: [id])
+}
+
+model Project {
+  id               Int            @id @default(autoincrement())
+  name             String
+  shortDescription String
+  about            String
+  moreDescription  String
+  difficulty       DifficultyType
+  category         CategoryType
+  likelihood       LikelihoodType
+  rating           Float
+  featured         Boolean        @default(false)
+  network          String
+  createdAt        DateTime       @default(now())
+  updatedAt        DateTime
+  Link             Link[]
+  Task             Task[]
+  UserProject      UserProject[]
+}
+
+model Referral {
+  id                                   Int      @id @default(autoincrement())
+  referrerId                           Int
+  referredId                           Int
+  pointsAwarded                        Boolean  @default(false)
+  points                               Int      @default(0)
+  createdAt                            DateTime @default(now())
+  updatedAt                            DateTime
+  Account_Referral_referredIdToAccount Account  @relation("Referral_referredIdToAccount", fields: [referredId], references: [id])
+  Account_Referral_referrerIdToAccount Account  @relation("Referral_referrerIdToAccount", fields: [referrerId], references: [id])
+}
+
+model Reward {
+  id          Int          @id @default(autoincrement())
+  name        String
+  description String
+  basePoints  Int
+  type        RewardType
+  day         Int?
+  isDeleted   Boolean      @default(false)
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime
+  UserReward  UserReward[]
+}
+
+model Step {
+  id          Int    @id @default(autoincrement())
+  name        String
+  description String
+  taskId      Int
+  Task        Task   @relation(fields: [taskId], references: [id])
+}
+
+model Task {
+  id           Int            @id @default(autoincrement())
+  name         String
+  difficulty   DifficultyType
+  about        String
+  instructions String
+  projectId    Int
+  Step         Step[]
+  Project      Project        @relation(fields: [projectId], references: [id])
+  UserTask     UserTask[]
+}
+
+model UserProject {
+  id        Int     @id @default(autoincrement())
+  userId    Int
+  projectId Int
+  Project   Project @relation(fields: [projectId], references: [id])
+  Account   Account @relation(fields: [userId], references: [id])
+}
+
+model UserReward {
+  id        Int        @id @default(autoincrement())
+  userId    Int
+  rewardId  Int
+  claimedAt DateTime   @default(now())
+  type      RewardType
+  points    Int        @default(0)
+  Reward    Reward     @relation(fields: [rewardId], references: [id])
+  Account   Account    @relation(fields: [userId], references: [id])
+}
+
+model UserTask {
+  id        Int     @id @default(autoincrement())
+  userId    Int
+  taskId    Int
+  completed Boolean @default(false)
+  Task      Task    @relation(fields: [taskId], references: [id])
+  Account   Account @relation(fields: [userId], references: [id])
+}
+
 enum DiscordSupportTicketType {
   VERIFICATION
   PARTNERSHIPS
   BUGS
   SCAM
   OTHER
+}
+
+enum CategoryType {
+  L1
+  L2
+  DEFI
+  NFT
+  DAO
+  OTHER
+}
+
+enum ContractType {
+  NO_CONTRACT
+  ONFT_ERC721
+  OFT_ERC20
+  GAS_REFUEL
+  WNFT_ERC721
+}
+
+enum DifficultyType {
+  EASY
+  MEDIUM
+  HARD
+}
+
+enum InteractionType {
+  MINT
+  BRIDGE
+  V1
+}
+
+enum LikelihoodType {
+  LOW
+  MEDIUM
+  HIGH
+}
+
+enum LinkType {
+  TWITTER
+  GITHUB
+  TELEGRAM
+  DISCORD
+}
+
+enum RewardType {
+  DAILY
+}
+
+enum Role {
+  ADMIN
+  USER
 }
