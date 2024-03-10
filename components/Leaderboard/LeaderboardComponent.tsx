@@ -30,6 +30,7 @@ export interface User {
 const LeaderboardComponent = ({ leaderboard }: { leaderboard: User[] }) => {
   const [userData, setUserData] = useState<LeaderboardData[]>([]);
   const { address } = useAccount();
+  console.log("leaderboard", leaderboard);
 
   useEffect(() => {
     const filteredStats = leaderboard.filter(
@@ -76,7 +77,8 @@ const LeaderboardComponent = ({ leaderboard }: { leaderboard: User[] }) => {
             /> */}
           </>
         ) : (
-          <LoadingSpinner />
+          // <LoadingSpinner />
+          <></>
         )}
         {userData.length > 0 ? (
           <div className="flex flex-col justify-center items-center gap-2">
@@ -101,7 +103,9 @@ const LeaderboardComponent = ({ leaderboard }: { leaderboard: User[] }) => {
         {leaderboard.length > 0 ? (
           <LeaderboardTable leaderboard={leaderboard} />
         ) : (
-          <></>
+          <>
+            <LoadingSpinner />
+          </>
         )}
       </div>
     </section>

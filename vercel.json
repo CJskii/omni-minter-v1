@@ -10,7 +10,7 @@
       "maxDuration": 30
     },
     "pages/api/*.ts": {
-      "maxDuration": 15
+      "maxDuration": 30
     }
   }
 }
