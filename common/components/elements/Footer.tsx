@@ -85,7 +85,7 @@ const Footer = () => {
           </svg>
         </a>
         <a
-          href="https://discord.gg/VWbgEbF2Nf"
+          href="https://discord.gg/Fqcz4QegXB"
           target="_blank"
           aria-label="Discord"
         >
