@@ -5,6 +5,17 @@ export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
+  res.setHeader(
+    "Access-Control-Allow-Origin",
+    "http://localhost:3000" || "https://www.etherway.io/"
+  );
+  res.setHeader("Access-Control-Allow-Methods", "POST, OPTIONS");
+  res.setHeader("Access-Control-Allow-Headers", "Content-Type");
+
+  if (req.method === "OPTIONS") {
+    return res.status(200).end();
+  }
+
   if (req.method !== "POST") {
     return res
       .status(405)
@@ -26,13 +37,13 @@ export default async function handler(
           equals: ethereumAddress,
           mode: "insensitive",
         },
-        select: {
-          totalPoints: true,
-          ethereumAddress: true,
-          mints: true,
-          bridges: true,
-          inviteCount: true,
-        },
+      },
+      select: {
+        totalPoints: true,
+        ethereumAddress: true,
+        mints: true,
+        bridges: true,
+        inviteCount: true,
       },
     });
 
