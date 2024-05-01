@@ -5,10 +5,7 @@ export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
-  res.setHeader(
-    "Access-Control-Allow-Origin",
-    "http://localhost:3000" || "https://www.etherway.io/"
-  );
+  res.setHeader("Access-Control-Allow-Origin", "https://www.etherway.io/");
   res.setHeader("Access-Control-Allow-Methods", "POST, OPTIONS");
   res.setHeader("Access-Control-Allow-Headers", "Content-Type");
 
