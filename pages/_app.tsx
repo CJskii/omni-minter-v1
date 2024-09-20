@@ -7,7 +7,6 @@ import { useRouter } from "next/router";
 import dynamic from "next/dynamic";
 import useReferalCode from "../common/components/hooks/useReferalCode";
 import { wagmiConfig, theme, chains } from "../constants/config/wagmiConfig";
-import Alert from "../common/components/elements/Alert";
 
 const Navbar = dynamic(() => import("../common/components/elements/Navbar"), {
   loading: () => <span className="loading loading-dots loading-lg"></span>,
@@ -19,12 +18,6 @@ const Footer = dynamic(() => import("../common/components/elements/Footer"), {
   ssr: false,
 });
 
-const alertProps = {
-  title:
-    "Mintly.lol is our only website, do not interact with any other domain as you will lose your asssets",
-  link: "https://mintly.lol",
-};
-
 function MyApp({ Component, pageProps }: AppProps) {
   const router = useRouter();
 
@@ -35,7 +28,6 @@ function MyApp({ Component, pageProps }: AppProps) {
       <RainbowKitProvider chains={chains} theme={theme}>
         <div className="flex flex-col justify-between items-center min-h-screen font-plex-mono">
           <div className="flex flex-col justify-center items-center w-full">
-            <Alert {...alertProps} />
             <Navbar />
           </div>
 

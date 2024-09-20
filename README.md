@@ -1,29 +1,45 @@
-This is a [RainbowKit](https://rainbowkit.com) + [wagmi](https://wagmi.sh) + [Next.js](https://nextjs.org/) project bootstrapped with [`create-rainbowkit`](https://github.com/rainbow-me/rainbowkit/tree/main/packages/create-rainbowkit).
+![Mintly Banner](./public/banner.jpeg)
 
-## Getting Started
+# **OmniMinter v1**
 
-First, run the development server:
+Live at: [https://omnichain-minter.vercel.app/](https://omnichain-minter.vercel.app/)
 
-```bash
-npm run dev
-```
+**OmniMinter v1** is a multi-chain NFT and token minting platform designed to operate across 31 mainnet blockchain ecosystems. This version includes **LayerZero V1 contracts**, featuring **OFT (Omnichain Fungible Tokens)**, **ONFT (Omnichain Non-Fungible Tokens)**, gas refuel capabilities, and cross-chain support via **Wormhole** for both **ERC20** and **ERC721** tokens.
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## 🌟 **Features**
 
-You can start editing the page by modifying `pages/index.tsx`. The page auto-updates as you edit the file.
+- **LayerZero V1 Integration**: Support for **LayerZero V1** contracts, allowing seamless cross-chain communication for NFTs and tokens.
+  - **Omnichain Fungible Tokens (OFT)**: Mint and transfer ERC20 tokens across multiple chains.
+  - **Omnichain Non-Fungible Tokens (ONFT)**: Mint and transfer NFTs (ERC721) across chains, making NFTs interoperable.
+- **Cross-Chain Bridging with Wormhole**: Leveraging **Wormhole** to enable decentralized cross-chain bridging for **ERC20** (fungible tokens) and **ERC721** (non-fungible tokens), providing secure asset transfers across multiple chains.
+- **Gas Refuel**: Built-in gas refueling capabilities, allowing users to execute transactions on multiple chains without needing native tokens on each chain.
+- **Prisma ORM**: Integrated with **Prisma** for database management, ensuring smooth handling of application data.
+- **Next.js & TypeScript**: The platform is built using **Next.js** and **TypeScript**, offering a highly scalable, maintainable, and type-safe development experience.
+- **RainbowKit & Wagmi**: Used for Ethereum wallet integration and seamless Web3 connectivity, offering users a frictionless experience when connecting their wallets.
 
-## Learn More
+## 🔧 **Relevant Technologies**
 
-To learn more about this stack, take a look at the following resources:
+- **Blockchain & Web3**:
 
-- [RainbowKit Documentation](https://rainbowkit.com) - Learn how to customize your wallet connection flow.
-- [wagmi Documentation](https://wagmi.sh) - Learn how to interact with Ethereum.
-- [Next.js Documentation](https://nextjs.org/docs) - Learn how to build a Next.js application.
+  - **LayerZero V1**: Cross-chain messaging and interoperability for ERC20 and ERC721 tokens.
+  - **Wormhole**: Decentralized bridging protocol for ERC20 and ERC721 tokens across multiple chains.
+  - **Ethers.js & Viem**: For seamless blockchain interactions and wallet management.
+  - **RainbowKit & Wagmi**: Tools for Ethereum wallet integration and Web3 connectivity.
 
-You can check out [the RainbowKit GitHub repository](https://github.com/rainbow-me/rainbowkit) - your feedback and contributions are welcome!
+- **Frontend**:
 
-## Deploy on Vercel
+  - **Next.js**: A modern React framework for fast, server-side rendered applications.
+  - **TailwindCSS & DaisyUI**: Utility-first CSS framework and components for rapid UI development.
+  - **Framer Motion**: For smooth, performant animations to enhance user experience.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+- **Forms & State Management**:
 
-Check out the [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+  - **React Hook Form**: Simplified form handling.
+  - **TanStack React Query**: State management and caching for data synchronization.
+
+- **Dev Tools**:
+  - **Webpack Bundle Analyzer**: For build optimization and analysis.
+
+## 📃 **License**
+
+This project is licensed under the [MIT License](LICENSE).
