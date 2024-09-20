@@ -12,9 +12,19 @@ Live at: [https://omnichain-minter.vercel.app/](https://omnichain-minter.vercel.
   - **Omnichain Fungible Tokens (OFT)**: Mint and transfer ERC20 tokens across multiple chains.
   - **Omnichain Non-Fungible Tokens (ONFT)**: Mint and transfer NFTs (ERC721) across chains, making NFTs interoperable.
 - **Cross-Chain Bridging with Wormhole**: Leveraging **Wormhole** to enable decentralized cross-chain bridging for **ERC20** (fungible tokens) and **ERC721** (non-fungible tokens), providing secure asset transfers across multiple chains.
+
 - **Gas Refuel**: Built-in gas refueling capabilities, allowing users to execute transactions on multiple chains without needing native tokens on each chain.
+
+- **Leaderboard System**: Users can track their activity and rank on a **live leaderboard**, rewarding top participants and fostering competition within the community.
+
+- **Referral System**: Users can refer others to the platform and earn rewards for successful referrals, incentivizing growth and user engagement.
+
+- **Daily Reward System**: Active users are rewarded daily for their participation, encouraging ongoing engagement and interaction on the platform.
+
 - **Prisma ORM**: Integrated with **Prisma** for database management, ensuring smooth handling of application data.
+
 - **Next.js & TypeScript**: The platform is built using **Next.js** and **TypeScript**, offering a highly scalable, maintainable, and type-safe development experience.
+
 - **RainbowKit & Wagmi**: Used for Ethereum wallet integration and seamless Web3 connectivity, offering users a frictionless experience when connecting their wallets.
 
 ## 🔧 **Relevant Technologies**
